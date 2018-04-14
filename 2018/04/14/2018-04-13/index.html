@@ -15,7 +15,7 @@
 <meta property="og:description" content="2018年4月13日 第0000题将你的 QQ 头像（或者微博头像）右上角加上红色的数字，类似于微信未读信息数量那种提示效果。 类似于图中效果 12345678910111213#导入pillow库from PIL import Image, ImageDraw, ImageFontdef add_num(img):    draw = ImageDraw.Draw(img)    myfont">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://jyue0812.github.io/blog/2018/04/14/2018-04-13/1523605328059.png">
-<meta property="og:updated_time" content="2018-04-14T02:24:43.694Z">
+<meta property="og:updated_time" content="2018-04-14T02:31:22.730Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ZY">
 <meta name="twitter:description" content="2018年4月13日 第0000题将你的 QQ 头像（或者微博头像）右上角加上红色的数字，类似于微信未读信息数量那种提示效果。 类似于图中效果 12345678910111213#导入pillow库from PIL import Image, ImageDraw, ImageFontdef add_num(img):    draw = ImageDraw.Draw(img)    myfont">
@@ -79,7 +79,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>2018年4月13日</p>
-<h4 id="第0000题"><a href="#第0000题" class="headerlink" title="第0000题"></a>第0000题</h4><p>将你的 QQ 头像（或者微博头像）右上角加上红色的数字，类似于微信未读信息数量那种提示效果。 类似于图中效果<br><img src="/blog/2018/04/14/2018-04-13/1523605328059.png" alt="老鼠"></p>
+<h4 id="第0000题"><a href="#第0000题" class="headerlink" title="第0000题"></a>第0000题</h4><p>将你的 QQ 头像（或者微博头像）右上角加上红色的数字，类似于微信未读信息数量那种提示效果。 类似于图中效果<br><img src="/blog/2018/04/14/2018-04-13/1523605328059.png" alt="Alt text"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#导入pillow库</span><br><span class="line">from PIL import Image, ImageDraw, ImageFont</span><br><span class="line"></span><br><span class="line">def add_num(img):</span><br><span class="line">    draw = ImageDraw.Draw(img)</span><br><span class="line">    myfont = ImageFont.truetype(&apos;C:/windows/fonts/Arial.ttf&apos;, size=40)</span><br><span class="line">    width, height = img.size</span><br><span class="line">    draw.text((width - 45, 0), &apos;99&apos;, font=myfont, fill=&quot;#ff0000&quot;)</span><br><span class="line">    img.save(&apos;result.jpg&apos;, &apos;jpeg&apos;)</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    image = Image.open(&apos;image.jpg&apos;)</span><br><span class="line">    add_num(image)</span><br></pre></td></tr></table></figure>
 <h4 id="今日总结"><a href="#今日总结" class="headerlink" title="今日总结"></a>今日总结</h4><ol>
 <li><p>安装了git，用hexo+git配置了个人博客<br> a. hexo+git安装配置方法参考这篇《使用Hexo+Github一步步搭建属于自己的博客（基础）》<br> 链接：<a href="https://www.cnblogs.com/fengxiongZz/p/7707219.html" target="_blank" rel="noopener">https://www.cnblogs.com/fengxiongZz/p/7707219.html</a><br> b. 学习了简单的git命令</p>
@@ -93,9 +93,9 @@
 </code></pre><p>c. Hexo博客的跨设备同步</p>
 <pre><code>&gt; 链接： https://www.jianshu.com/p/6fb0b287f950
 </code></pre><p>d. hexo插入图片的方法</p>
-<blockquote>
-<p>把主页配置文件_config.yml 里的post_asset_folder:这个选项设置为true<br>在你的hexo目录下执行这样一句话npm install hexo-asset-image<br>–save，这是下载安装一个可以上传本地图片的插件，来自dalao：dalao的git 等待一小段时间后，再运行hexo n “xxxx”来生成md博文时，/source/_posts文件夹内除了xxxx.md文件还有一个同名的文件夹</p>
-</blockquote>
+<pre><code>&gt; 把主页配置文件_config.yml 里的post_asset_folder:这个选项设置为true
+&gt; 在你的hexo目录下执行这样一句话npm install hexo-asset-image
+</code></pre><p>–save，这是下载安装一个可以上传本地图片的插件，来自dalao：dalao的git 等待一小段时间后，再运行hexo n “xxxx”来生成md博文时，/source/_posts文件夹内除了xxxx.md文件还有一个同名的文件夹</p>
 </li>
 <li><p>安装印象笔记+马克飞象</p>
 </li>
