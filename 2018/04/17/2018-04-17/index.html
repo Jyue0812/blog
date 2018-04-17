@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ZY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="2018年4月17日 第0005题你有一个目录，装了很多照片，把它们的尺寸变成都不大于 iPhone5 分辨率的大小。 12345678910111213141516171819202122232425262728#导入glob和pillow库import globfrom PIL import Image#设置iPhone5的分辨率高度宽度iphone5_width = 1136iphone5_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZY">
+<meta property="og:url" content="https://jyue0812.github.io/2018/04/17/2018-04-17/index.html">
+<meta property="og:site_name" content="ZY">
+<meta property="og:description" content="2018年4月17日 第0005题你有一个目录，装了很多照片，把它们的尺寸变成都不大于 iPhone5 分辨率的大小。 12345678910111213141516171819202122232425262728#导入glob和pillow库import globfrom PIL import Image#设置iPhone5的分辨率高度宽度iphone5_width = 1136iphone5_">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-17T08:37:15.010Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ZY">
+<meta name="twitter:description" content="2018年4月17日 第0005题你有一个目录，装了很多照片，把它们的尺寸变成都不大于 iPhone5 分辨率的大小。 12345678910111213141516171819202122232425262728#导入glob和pillow库import globfrom PIL import Image#设置iPhone5的分辨率高度宽度iphone5_width = 1136iphone5_">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="ZY" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">ZY</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jyue0812.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2018-04-17" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/04/17/2018-04-17/" class="article-date">
+  <time datetime="2018-04-17T08:37:14.905Z" itemprop="datePublished">2018-04-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>2018年4月17日</p>
+<h4 id="第0005题"><a href="#第0005题" class="headerlink" title="第0005题"></a>第0005题</h4><p>你有一个目录，装了很多照片，把它们的尺寸变成都不大于 iPhone5 分辨率的大小。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">#导入glob和pillow库</span><br><span class="line">import glob</span><br><span class="line">from PIL import Image</span><br><span class="line"></span><br><span class="line">#设置iPhone5的分辨率高度宽度</span><br><span class="line">iphone5_width = 1136</span><br><span class="line">iphone5_depth = 640</span><br><span class="line"></span><br><span class="line">path = glob.glob(&apos;*.jpg&apos;)</span><br><span class="line">for p in path:</span><br><span class="line">    image = Image.open(p, &apos;r&apos;)</span><br><span class="line">    #取图片高宽</span><br><span class="line">    width, height = image.size</span><br><span class="line">	</span><br><span class="line">	#对图片宽度高度与iPhone5高度宽度进行比较</span><br><span class="line">    if width &gt; iphone5_width:</span><br><span class="line">        new_width = iphone5_width * height / width</span><br><span class="line">        new_height = iphone5_depth * height / width</span><br><span class="line">	</span><br><span class="line">	if height &gt; iphone5_height:</span><br><span class="line">        new_width = iphone5_width * height / width</span><br><span class="line">        new_height = iphone5_depth * height / width</span><br><span class="line">        </span><br><span class="line">        #重新等比例缩小图片分辨率</span><br><span class="line">        new_image = image.resize((int(new_width), int(new_height)))</span><br><span class="line">        #以新的名字命名并保存</span><br><span class="line">        new_image_name = p[:-4] + &apos;_new.jpg&apos;</span><br><span class="line">        new_image.save(new_image_name, &apos;jpeg&apos;)</span><br></pre></td></tr></table></figure>
+<h4 id="今日总结"><a href="#今日总结" class="headerlink" title="今日总结"></a>今日总结</h4><ol>
+<li>resize为什么用两对括号</li>
+<li>在学mySql和mongodb和redis</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/04/17/2018-04-17/" data-id="cjg3f1rvd0001w0qx9x68utni" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2018/04/17/2018-04-16/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/04/17/2018-04-17/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/04/17/2018-04-16/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/04/14/2018-04-14/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/04/14/2018-04-13/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 ZY<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
