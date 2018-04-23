@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ZY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="2018年4月22日 第0013题第 0013 题： 用 Python 写一个爬图片的程序，爬 这个链接里的日本妹子图片 :-) http://tieba.baidu.com/p/2166231880 1234567891011121314151617181920212223242526272829303132import urllib.requestfrom lxml import etree#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZY">
+<meta property="og:url" content="https://jyue0812.github.io/2018/04/23/2018-04-22/index.html">
+<meta property="og:site_name" content="ZY">
+<meta property="og:description" content="2018年4月22日 第0013题第 0013 题： 用 Python 写一个爬图片的程序，爬 这个链接里的日本妹子图片 :-) http://tieba.baidu.com/p/2166231880 1234567891011121314151617181920212223242526272829303132import urllib.requestfrom lxml import etree#">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-23T00:53:19.638Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ZY">
+<meta name="twitter:description" content="2018年4月22日 第0013题第 0013 题： 用 Python 写一个爬图片的程序，爬 这个链接里的日本妹子图片 :-) http://tieba.baidu.com/p/2166231880 1234567891011121314151617181920212223242526272829303132import urllib.requestfrom lxml import etree#">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="ZY" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">ZY</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jyue0812.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2018-04-22" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/04/23/2018-04-22/" class="article-date">
+  <time datetime="2018-04-23T00:53:19.637Z" itemprop="datePublished">2018-04-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>2018年4月22日</p>
+<h4 id="第0013题"><a href="#第0013题" class="headerlink" title="第0013题"></a>第0013题</h4><p>第 0013 题： 用 Python 写一个爬图片的程序，爬 这个链接里的日本妹子图片 :-) <a href="http://tieba.baidu.com/p/2166231880" target="_blank" rel="noopener">http://tieba.baidu.com/p/2166231880</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">import urllib.request</span><br><span class="line">from lxml import etree</span><br><span class="line"># 获取网页源代码</span><br><span class="line">def getHtml():</span><br><span class="line">    url = &quot;http://tieba.baidu.com/p/2166231880&quot;</span><br><span class="line">    headers = &#123;&quot;User-Agent&quot; : &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4)&quot;&#125;</span><br><span class="line"></span><br><span class="line">    request = urllib.request.Request(url, headers=headers)</span><br><span class="line">    response = urllib.request.urlopen(request)</span><br><span class="line">    content = response.read().decode(&quot;utf-8&quot;)</span><br><span class="line">    return content</span><br><span class="line"></span><br><span class="line"># 获取图片</span><br><span class="line">def getImage():</span><br><span class="line">    html = getHtml()</span><br><span class="line">    html = etree.HTML(html)</span><br><span class="line">    links = html.xpath(&apos;//img[@class=&quot;BDE_Image&quot;]/@src&apos;)</span><br><span class="line">    return links</span><br><span class="line"></span><br><span class="line"># 下载保存图片</span><br><span class="line">def downloadImage():</span><br><span class="line">    images = getImage()</span><br><span class="line">    for image in images:</span><br><span class="line">        filename = image[-10:]</span><br><span class="line">        with open(filename, &apos;wb&apos;) as f:</span><br><span class="line">            headers = &#123;&quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4)&quot;&#125;</span><br><span class="line">            request = urllib.request.Request(image, headers=headers)</span><br><span class="line">            response = urllib.request.urlopen(request)</span><br><span class="line">            url = response.read()</span><br><span class="line">            f.write(url)</span><br><span class="line"></span><br><span class="line">downloadImage()</span><br></pre></td></tr></table></figure>
+<h4 id="第0010题"><a href="#第0010题" class="headerlink" title="第0010题"></a>第0010题</h4><p>使用 Python 生成类似于下图中的字母验证码图片</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import string</span><br><span class="line">import random</span><br><span class="line">from PIL import Image, ImageDraw, ImageFont</span><br><span class="line"></span><br><span class="line"># 获得任意四个英文字母</span><br><span class="line">def getLetters():</span><br><span class="line">    letters = string.ascii_letters</span><br><span class="line">    str1 = &quot;&quot;</span><br><span class="line">    for i in range(4):</span><br><span class="line">        a = random.choice(letters)</span><br><span class="line">        str1 += a + &apos;   &apos;</span><br><span class="line">    return str1</span><br><span class="line"></span><br><span class="line"># 对图片进行处理</span><br><span class="line">def dealImage(str):</span><br><span class="line">    image = Image.open(&apos;image.png&apos;)</span><br><span class="line">    draw = ImageDraw.Draw(image)</span><br><span class="line">    myfont = ImageFont.truetype(&apos;C:/windows/fonts/Arial.ttf&apos;, size=40)</span><br><span class="line">    width, height = image.size</span><br><span class="line">    draw.text((width/2-90, height/2-20), str, font=myfont, fill=&quot;#ff0000&quot;)</span><br><span class="line">    image.save(&apos;result.jpg&apos;, &apos;png&apos;)</span><br><span class="line"></span><br><span class="line">en = getLetters()</span><br><span class="line">dealImage(en)</span><br></pre></td></tr></table></figure>
+<h4 id="第0011题"><a href="#第0011题" class="headerlink" title="第0011题"></a>第0011题</h4><p>敏感词文本文件 filtered_words.txt，里面的内容为以下内容，当用户输入敏感词语时，则打印出 Freedom，否则打印出 Human Rights。<br>北京<br>程序员<br>公务员<br>领导<br>牛比<br>牛逼<br>你娘<br>你妈<br>love<br>sex<br>jiangge</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">user_input = input(&quot;请输入一个词语：&quot;)</span><br><span class="line">with open(&apos;filtered_words.txt&apos;) as fr:</span><br><span class="line">    words = fr.readlines()</span><br><span class="line">    count = 0</span><br><span class="line">    for word in words:</span><br><span class="line">        word = word.strip()</span><br><span class="line">        if user_input == word:</span><br><span class="line">            print(&quot;Freedom&quot;)</span><br><span class="line">            count += 1</span><br><span class="line">    if count == 0:</span><br><span class="line">        print(&quot;Human Rights&quot;)</span><br></pre></td></tr></table></figure>
+<h4 id="第0012题"><a href="#第0012题" class="headerlink" title="第0012题"></a>第0012题</h4><p>敏感词文本文件 filtered_words.txt，里面的内容 和 0011题一样，当用户输入敏感词语，则用 星号 * 替换，例如当用户输入「北京是个好城市」，则变成「**是个好城市」。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">user_input = input(&quot;请输入一个词语：&quot;)</span><br><span class="line">with open(&apos;filtered_words.txt&apos;) as fr:</span><br><span class="line">    words = fr.readlines()</span><br><span class="line">    for word in words:</span><br><span class="line">        word = word.strip()</span><br><span class="line">        if re.search(word, user_input):</span><br><span class="line">            result = re.sub(word, &quot;*&quot;*len(word), user_input)</span><br><span class="line">            print(result)</span><br></pre></td></tr></table></figure>
+<h4 id="实验楼项目1"><a href="#实验楼项目1" class="headerlink" title="实验楼项目1"></a>实验楼项目1</h4><p>要求：<br>本实验用 50 行 Python 代码完成图片转字符画小工具。通过本实验将学习到 Linux 命令行操作，Python 基础，pillow 库的使用，argparse 库的使用。</p>
+<p>实验知识点<br>本节实验中我们将实践以下知识：<br>Linux 命令行操作<br>Python 基础<br>pillow 库的使用<br>argparse 库的使用（参考教程）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">from PIL import Image</span><br><span class="line">import argparse</span><br><span class="line"></span><br><span class="line">parser = argparse.ArgumentParser()</span><br><span class="line">parser.add_argument(&apos;file&apos;)</span><br><span class="line">parser.add_argument(&apos;-o&apos;, &apos;--output&apos;)</span><br><span class="line">parser.add_argument(&apos;--width&apos;, type = int, default = 80)</span><br><span class="line">parser.add_argument(&apos;--height&apos;, type = int, default = 80)</span><br><span class="line">args = parser.parse_args()</span><br><span class="line">IMG = args.file</span><br><span class="line">WIDTH = args.width</span><br><span class="line">HEIGHT = args.height</span><br><span class="line">OUTPUT = args.output</span><br><span class="line"></span><br><span class="line">#字符画是一系列字符的组合，我们可以把字符看作是比较大块的像素，一个字符能表现一种颜色（暂且这么理解吧），字符的种类越多，可以表现的颜色也越多，图片也会更有层次感。</span><br><span class="line"></span><br><span class="line">ascii_char = list(&quot;$@B%8&amp;WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1&#123;&#125;[]?-_+~&lt;&gt;i!lI;:,\&quot;^`&apos;. &quot;)</span><br><span class="line"></span><br><span class="line">def get_char(r,g,b,alpha = 256):</span><br><span class="line">    if alpha == 0:</span><br><span class="line">        return &apos; &apos;</span><br><span class="line">    length = len(ascii_char)</span><br><span class="line">    #灰度值计算公式，因为人眼对RGB颜色的感知并不相同，所以转换的时候需要给予不同的权重。事实上这个原理普遍应用于计算机图像处理系统</span><br><span class="line">    gray = int(0.2126 * r + 0.7152 * g + 0.0722 * b)</span><br><span class="line">    unit = (256.0 + 1)/length</span><br><span class="line">    return ascii_char[int(gray/unit)]</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    im = Image.open(IMG)</span><br><span class="line">    #PIL.Image.NEAREST:低质量 Image.ANTIALIAS:高质量</span><br><span class="line">    im = im.resize((WIDTH,HEIGHT), Image.NEAREST)</span><br><span class="line">    txt = &quot;&quot;</span><br><span class="line">    for i in range(HEIGHT):</span><br><span class="line">        for j in range(WIDTH):</span><br><span class="line">            txt += get_char(*im.getpixel((j,i)))</span><br><span class="line">        txt += &apos;\n&apos;</span><br><span class="line"></span><br><span class="line">    print(txt)</span><br><span class="line"></span><br><span class="line">    if OUTPUT:</span><br><span class="line">        with open(OUTPUT,&apos;w&apos;) as f:</span><br><span class="line">            f.write(txt)</span><br><span class="line">    else:</span><br><span class="line">        with open(&quot;output.txt&quot;,&apos;w&apos;) as f:</span><br><span class="line">            f.write(txt)</span><br></pre></td></tr></table></figure>
+<h4 id="今日总结"><a href="#今日总结" class="headerlink" title="今日总结"></a>今日总结</h4><ol>
+<li>学到了灰度值公式 </li>
+<li>argparse库用来对命令行进行解析</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/04/23/2018-04-22/" data-id="cjgbztdog0002pcqxv6rmd28u" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2018/04/23/2018-04-23/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2018/04/23/2018-04-21/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/04/23/1/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/04/23/2018-04-23/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/04/23/2018-04-22/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/04/23/2018-04-21/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/04/19/2018-04-19/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 ZY<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
