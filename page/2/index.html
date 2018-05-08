@@ -62,6 +62,69 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-2018-04-16" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/04/17/2018-04-16/" class="article-date">
+  <time datetime="2018-04-17T08:36:26.374Z" itemprop="datePublished">2018-04-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>2018年4月16日</p>
+<h4 id="第0004题"><a href="#第0004题" class="headerlink" title="第0004题"></a>第0004题</h4><p>第 0004 题： 任一个英文的纯文本文件，统计其中的单词出现的个数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#打开文件读取内容，以空格分开形成列表</span><br><span class="line">def open_file(path):</span><br><span class="line">    with open(path, &apos;r&apos;) as fr:</span><br><span class="line">        passage = fr.read()</span><br><span class="line">    words = passage.split(&apos; &apos;)</span><br><span class="line">    return words</span><br><span class="line"></span><br><span class="line">#查找单词函数</span><br><span class="line">def search(input_word, words):</span><br><span class="line">    count = 0</span><br><span class="line">    for word in words:</span><br><span class="line">        if word == input_word:</span><br><span class="line">            count += 1</span><br><span class="line">    if count == 0:</span><br><span class="line">        print(&apos;对不起，这篇文章没有这个单词&apos;)</span><br><span class="line">    else:</span><br><span class="line">        print(&apos;这个单词在本文共计出现%s次&apos; %count)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#调用函数</span><br><span class="line">path = &apos;book.txt&apos;</span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    input_word = input(&apos;请输入一个英文单词&apos;)</span><br><span class="line">    words = open_file(path)</span><br><span class="line">    search(input_word, words)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/04/17/2018-04-16/" data-id="cjg3f1rv80000w0qxkl10zpx8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2018-04-14" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/04/14/2018-04-14/" class="article-date">
+  <time datetime="2018-04-14T06:21:24.817Z" itemprop="datePublished">2018-04-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>2018年4月14日</p>
+<h4 id="第0001题"><a href="#第0001题" class="headerlink" title="第0001题"></a>第0001题</h4><p>做为 Apple Store App 独立开发者，你要搞限时促销，为你的应用生成激活码（或者优惠券），使用 Python 如何生成 200 个激活码（或者优惠券）？<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#导入string模块和random模块</span><br><span class="line">import string, random</span><br><span class="line"></span><br><span class="line">license_num = []</span><br><span class="line">#激活码字符取值范围</span><br><span class="line">code = string.ascii_letters + string.digits</span><br><span class="line">code_length = len(code)</span><br><span class="line">def createNum(length, count):</span><br><span class="line">#循环要生成的激活码个数</span><br><span class="line">    for y in range(count):</span><br><span class="line">        new_str = &apos;&apos;</span><br><span class="line">        #循环每个激活码的字数</span><br><span class="line">        x = 0</span><br><span class="line">        while x &lt;= length:</span><br><span class="line">            i = random.randint(0, code_length-1)</span><br><span class="line">            new_str += code[i]</span><br><span class="line">            x += 1</span><br><span class="line">        print(new_str)</span><br><span class="line">createNum(10, 200)</span><br></pre></td></tr></table></figure></p>
+<h4 id="今日总结"><a href="#今日总结" class="headerlink" title="今日总结"></a>今日总结</h4><ol>
+<li>string：对字符串进行操作<ol start="2">
+<li>string.ascii_letters 和 string.digits 可以直接取到所有字母大小写和数字</li>
+</ol>
+</li>
+<li>小项目：银行系统和员工管理系统</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/04/14/2018-04-14/" data-id="cjfz018250001e8qxxhz7xpr0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-2018-04-13" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/04/14/2018-04-13/" class="article-date">
@@ -151,6 +214,14 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/05/08/python3.6编译安装/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/08/centos7__2/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/05/07/centos7__1/">(no title)</a>
           </li>
         
@@ -160,14 +231,6 @@
         
           <li>
             <a href="/blog/2018/04/23/2018-04-23/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/04/23/2018-04-22/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/04/23/2018-04-21/">(no title)</a>
           </li>
         
       </ul>
