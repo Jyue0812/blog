@@ -62,6 +62,233 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-samba" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/11/samba/" class="article-date">
+  <time datetime="2018-05-11T01:00:46.743Z" itemprop="datePublished">2018-05-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="samba"><a href="#samba" class="headerlink" title="samba"></a>samba</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>samba主要运用与windows电脑与linux主机之间进行文件共享</p>
+<h2 id="软硬件环境"><a href="#软硬件环境" class="headerlink" title="软硬件环境"></a>软硬件环境</h2><p>linux 主机s1一台，关闭selinux和防火墙，192.168.199.236</p>
+<p>windows主机 c1一台，192.168.199.2</p>
+<p>搭建之前：关闭防火墙和selinux<br>    service iptables stop<br>    setenforce 0</p>
+<h2 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h2><ol>
+<li><p>在s1上面安装samba服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y samba samba-client	#安装samba服务端与客户端</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编辑samba的配置文件，/etc/samba/smb.conf</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[global]</span>					<span class="comment">#全局的配置</span></span><br><span class="line">        workgroup = MYGROUP	#window里面的工作组，默认是WORKGROUP</span><br><span class="line">        server string = Samba Server Version %v</span><br><span class="line">        security = user</span><br><span class="line">        passdb backend = tdbsam</span><br><span class="line">        load printers = yes</span><br><span class="line">        cups options = raw</span><br><span class="line"><span class="section">[homes]</span>	<span class="comment">#模块的配置</span></span><br><span class="line">        comment = Home Directories</span><br><span class="line">        browseable = no</span><br><span class="line">        writable = yes</span><br><span class="line"><span class="section">[printers]</span>	<span class="comment">#模块的配置</span></span><br><span class="line">        comment = All Printers</span><br><span class="line">        path = /var/spool/samba</span><br><span class="line">        browseable = no</span><br><span class="line">        guest ok = no</span><br><span class="line">        writable = no</span><br><span class="line">        printable = yes</span><br></pre></td></tr></table></figure>
+<p>[global] 定义全局的配置，workgroup用来定义工作组，相信如果你安装过windows的系统，你会对这个workgroup不陌生。一般情况下，需要我们把这里的MYGROUP改成WORKGROUP（windows默认的工作组名字）。</p>
+<p>security = user #这里指定samba的安全等级。关于安全等级有四种：</p>
+<p>share：用户不需要账户及密码即可登录samba服务器</p>
+<p>user：由提供服务的samba服务器负责检查账户及密码（默认）</p>
+<p>server：检查账户及密码的工作由另一台windows或samba服务器负责</p>
+<p>domain：指定windows域控制服务器来验证用户的账户及密码。</p>
+<p>passdb backend = tdbsam # passdb backend（用户后台），samba有三种用户后台：smbpasswd, tdbsam和ldapsam.</p>
+<p>smbpasswd：该方式是使用smb工具smbpasswd给系统用户（真实用户或者虚拟用户）设置一个Samba密码，客户端就用此密码访问Samba资源。smbpasswd在/etc/samba中，有时需要手工创建该文件。</p>
+<p>tdbsam：使用数据库文件创建用户数据库。数据库文件叫passdb.tdb，在/etc/samba中。passdb.tdb用户数据库可使用 <code>smbpasswd -a</code> 创建Samba用户，要创建的Samba用户必须先是系统用户。也可使用pdbedit创建Samba账户。pdbedit参数很多，列出几个主要的：</p>
+<p>pdbedit -a username：新建Samba账户。</p>
+<p>pdbedit -x username：删除Samba账户。</p>
+<p>pdbedit -L：列出Samba用户列表，读取passdb.tdb数据库文件。</p>
+<p>pdbedit -Lv：列出Samba用户列表详细信息。</p>
+<p>pdbedit -c “[D]” -u username：暂停该Samba用户账号。</p>
+<p>pdbedit -c “[]” -u username：恢复该Samba用户账号。</p>
+<p>ldapsam：基于LDAP账户管理方式验证用户。首先要建立LDAP服务，设置 “passdb backend = ldapsam:ldap://LDAP Server”</p>
+<p>load printers 和 cups options 两个参数用来设置打印机相关。</p>
+<p>除了这些参数外，还有几个参数需要你了解：</p>
+<p>netbios name = MYSERVER # 设置出现在网上邻居中的主机名</p>
+<p>hosts allow = 127. 192.168.12. 192.168.13. # 用来设置允许的主机，如果在前面加 ”;” 则表示允许所有主机</p>
+<p>log file = /var/log/samba/%m.log #定义samba的日志，这里的%m是上面的netbios name</p>
+<p>max log size = 50 # 指定日志的最大容量，单位是K</p>
+<p>[homes] 该部分内容共享用户自己的家目录，也就是说，当用户登录到samba服务器上时实际上是进入到了该用户的家目录，用户登陆后，共享名不是homes而是用户自己的标识符，对于单纯的文件共享的环境来说，这部分可以注视掉。</p>
+<p>[printers] 该部分内容设置打印机共享。</p>
+</li>
+</ol>
+<h2 id="samba实践"><a href="#samba实践" class="headerlink" title="samba实践"></a>samba实践</h2><ol>
+<li><p><strong>共享一个目录，任何人都可以访问，即不用输入密码即可访问，要求只读</strong></p>
+<p>修改全局的设置<br>vim /etc/samba/smb.conf</p>
+</li>
+</ol>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[global]</span></span><br><span class="line"><span class="attr">WORKGROUP</span> = WORKGROUP</span><br><span class="line"><span class="attr">security</span> = share</span><br></pre></td></tr></table></figure>
+<p>   然后在配置文件的末尾添加一行</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[share]</span><span class="comment">#文件夹的名字</span></span><br><span class="line">        comment = share all</span><br><span class="line">        path = /var/www/html</span><br><span class="line">        browseable = yes</span><br><span class="line">        public = yes</span><br><span class="line">        writable = no</span><br></pre></td></tr></table></figure>
+<p>   启动samba共享服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/smb start</span><br><span class="line"></span><br><span class="line">service smb start</span><br><span class="line"></span><br><span class="line">testparm	#测试配置文件</span><br></pre></td></tr></table></figure>
+<p>   在windows主机c1上面打开浏览器或者资源管理器地址栏中输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file://10.11.58.179/share	#可查看</span><br><span class="line"></span><br><span class="line">liunx 访问smbclient</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p><strong>共享一个目录，使用用户名和密码登录后才可以访问，要求可以读写</strong></p>
+<p>修改全局配置文件</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[global]</span></span><br><span class="line">        workgroup = WORKGROUP</span><br><span class="line">        server string = Samba Server Version %v</span><br><span class="line">        security = user</span><br><span class="line">        passdb backend = tdbsam</span><br><span class="line">        load printers = yes</span><br><span class="line">        cups options = raw</span><br></pre></td></tr></table></figure>
+<p>添加一个新的共享设置</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[myshare]</span></span><br><span class="line">        comment = share for users</span><br><span class="line">        path = /var/www/html</span><br><span class="line">        browseable = yes </span><br><span class="line">        writable = yes</span><br><span class="line">        public = no</span><br></pre></td></tr></table></figure>
+<p>保存配置文件，修改共享目录权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /samba</span><br><span class="line">chmod 777 /samba</span><br></pre></td></tr></table></figure>
+<p>然后添加用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">useradd user1	#创建测试用户</span><br><span class="line">useradd user2	#创建测试用户</span><br><span class="line"></span><br><span class="line">pdbedit -a user1	#添加用户为samba的用户</span><br><span class="line">pdbedit -a user2	</span><br><span class="line"></span><br><span class="line">pdbedit -L	#列出所有的samba用户</span><br><span class="line"></span><br><span class="line">service smb restart	#重启samba服务</span><br></pre></td></tr></table></figure>
+<p>在windows主机上面打开浏览器或者资源管理器进行查看</p>
+</li>
+<li><p><strong>使用linux访问samba服务器</strong></p>
+<p>在另一台的linux的客户端c2主机上面进行操作</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">yum install -y samba-client	#安装samba客户端</span><br><span class="line"></span><br><span class="line">smbclient //IP/共享名 -U 用户名</span><br><span class="line">smbclient //10.11.53.133/myshare -U user1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>常用命令，使用help + 命令进行查看命令用法</span><br><span class="line">cd, ls, rm, pwd, tar, mkdir, chown, get, put</span><br><span class="line"><span class="meta">#</span>手动进行挂载</span><br><span class="line">mount -t cifs //10.11.53.133/myshare /mnt/smb -o username=user1,password=123456</span><br><span class="line"><span class="meta">#</span>在/etc/fstab上面进行挂载</span><br><span class="line">//10.11.53.133/myshare /mnt/smb cifs username=user1,password=123456 0 0</span><br><span class="line"></span><br><span class="line">file://10.11.53.133</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="linux挂载windows的共享目录"><a href="#linux挂载windows的共享目录" class="headerlink" title="linux挂载windows的共享目录"></a>linux挂载windows的共享目录</h2><ol>
+<li><p>要在linux系统执行以下命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y cifs-utils	#必须要安装这个组件，才可以完美支持</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用sbmclient来进行查看</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smbclient //192.168.2.103/share -U ruidong</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用mount进行挂载</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -t cifs //192.168.2.103/myshare /mnt/smb -o username=ruidong,password=rd920128</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/05/11/samba/" data-id="cjh19ad5p0003hwqx5c1dkt7x" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Ubuntu" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/11/Ubuntu/" class="article-date">
+  <time datetime="2018-05-11T01:00:46.743Z" itemprop="datePublished">2018-05-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>建议安装VMware Tools</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#教程</span></span><br><span class="line">https://jingyan.baidu.com/article/c275f6ba07e269e33d756714.html</span><br></pre></td></tr></table></figure>
+<p>改变分辨率命令</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#打印显示器支持哪些分辨率</span></span><br><span class="line">xrandr</span><br><span class="line"><span class="comment">#设置屏幕分辨率为1360x768，这是一次性命令，下次开机就没有了</span></span><br><span class="line">xrandr -s  <span class="number">1360</span>x768_60<span class="number">.02</span></span><br><span class="line"><span class="comment">#怎么解决，在系统设置的显示栏目里面重新设置并应用</span></span><br></pre></td></tr></table></figure>
+<p>使用管理员权限</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#命令</span></span><br><span class="line">sudo su </span><br><span class="line"><span class="comment">#输入密码的密码是自己的（在root没用设置密码的时候，如果root用户设置过密码以后我们需要使用root用户的密码）</span></span><br></pre></td></tr></table></figure>
+<p>Ubuntu16.04 系统错误报告屏蔽</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo rm /var/crash/*</span><br><span class="line">sudo gedit /etc/default/apport</span><br><span class="line"></span><br><span class="line">将enabled设置为<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>ubuntu使用的apt而不是yum</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装vim</span></span><br><span class="line">apt -y install vim</span><br></pre></td></tr></table></figure>
+<p>Ubuntu16.04软件中心闪退</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get dist-upgrade</span><br><span class="line">sudo apt-get install --reinstall software-center</span><br></pre></td></tr></table></figure>
+<p>apt-get安装源替换清华大学的源</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#1、原文件重命名备份</span></span><br><span class="line">sudo mv /etc/apt/sources.list /etc/apt/source.list.back</span><br><span class="line"></span><br><span class="line"><span class="comment">#2、编辑源列表文件</span></span><br><span class="line">sudo gedit /etc/apt/sources.list</span><br><span class="line"></span><br><span class="line"><span class="comment">#3、用下面的文本作为内容</span></span><br><span class="line"></span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial universe</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates universe</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial multiverse</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates multiverse</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security universe</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security multiverse</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">4</span>、更新</span><br><span class="line"></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
+<p>ubuntu 重启网卡方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">查看网卡信息： ifconfig</span><br><span class="line">设定一个网卡IP：ifconfig eth1 <span class="number">192.168</span><span class="number">.1</span><span class="number">.10</span> netmask <span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span></span><br><span class="line">重启网卡使设定生效：sudo /etc/init.d/networking restart</span><br><span class="line">用ubuntu的系统——&gt;系统管理——&gt;网络的网络设置</span><br><span class="line">关闭网卡 ifdown eth0</span><br><span class="line">开启网卡 ifup eth0</span><br><span class="line">重启网卡，优点是可以指定网卡，不影响其他网络接口</span><br></pre></td></tr></table></figure>
+<p>ubuntu中开启、关闭防火墙</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、关闭ubuntu的防火墙 </span><br><span class="line">ufw disable</span><br><span class="line">开启防火墙</span><br><span class="line">ufw enable</span><br></pre></td></tr></table></figure>
+<p>配置ubuntu ssh远程登录</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1.</span>默认使用ubuntu用户登录，密码为服务器配置时设置的密码，可在重置密码中修改</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">2.</span>修改 root 密码</span><br><span class="line"></span><br><span class="line">[plain] view plain copy</span><br><span class="line">sudo passwd root  </span><br><span class="line"><span class="number">3.</span>修改配置文件</span><br><span class="line"></span><br><span class="line">[plain] view plain copy</span><br><span class="line">sudo gedit /etc/ssh/sshd_config  </span><br><span class="line">找到下面相关配置：</span><br><span class="line"></span><br><span class="line">[plain] view plain copy</span><br><span class="line"><span class="comment"># Authentication:  </span></span><br><span class="line">LoginGraceTime <span class="number">120</span>  </span><br><span class="line">PermitRootLogin prohibit-password  </span><br><span class="line">StrictModes yes  </span><br><span class="line">更改为：</span><br><span class="line"></span><br><span class="line">[plain] view plain copy</span><br><span class="line"><span class="comment"># Authentication:  </span></span><br><span class="line">LoginGraceTime <span class="number">120</span>  </span><br><span class="line"><span class="comment">#PermitRootLogin prohibit-password  </span></span><br><span class="line">PermitRootLogin yes  </span><br><span class="line">StrictModes yes  </span><br><span class="line"><span class="number">4.</span>重启ssh</span><br><span class="line"></span><br><span class="line">[plain] view plain copy</span><br><span class="line">sudo service ssh restart</span><br></pre></td></tr></table></figure>
+<p>安装JDK</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://blog.csdn.net/pucao_cug/article/details/68948639</span><br><span class="line">https://www.itbulu.com/python-pycharm.html</span><br></pre></td></tr></table></figure>
+<p>安装pycharm</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://jingyan.baidu.com/article/60ccbceb4e3b0e64cab19733.html</span><br></pre></td></tr></table></figure>
+<p>解决the system is running in low-graphics mode问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">打不开图形化，那么就进入命令行</span><br><span class="line">ctrl+alt+F1</span><br><span class="line">输入账号密码进入</span><br><span class="line"></span><br><span class="line">cd /etc/X11    </span><br><span class="line">sudo cp xorg.conf.failsafe xorg.conf   </span><br><span class="line">sudo reboot  </span><br><span class="line"></span><br><span class="line">现在可以进入图形化界面</span><br><span class="line"></span><br><span class="line">打开终端，输入：</span><br><span class="line">sudo apt-get install gdm </span><br><span class="line"></span><br><span class="line">gdm是图形化管理工具，在安装的时候学则gdm3</span><br><span class="line"></span><br><span class="line">rm -rf /etc/X11/xorg.conf</span><br><span class="line"></span><br><span class="line">sudo reboot</span><br></pre></td></tr></table></figure>
+<p>apt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">apt-cache search package 搜索软件包</span><br><span class="line"></span><br><span class="line">apt-cache show package  获取包的相关信息，如说明、大小、版本等</span><br><span class="line"></span><br><span class="line">sudo apt-get install package 安装包</span><br><span class="line"></span><br><span class="line">sudo apt-get install package --reinstall   重新安装包</span><br><span class="line"></span><br><span class="line">sudo apt-get -f install   修复安装</span><br><span class="line"></span><br><span class="line">sudo apt-get remove package 删除包</span><br><span class="line"></span><br><span class="line">sudo apt-get remove package --purge 删除包，包括配置文件等</span><br><span class="line"></span><br><span class="line">sudo apt-get update  更新源</span><br><span class="line"></span><br><span class="line">sudo apt-get upgrade 更新已安装的包</span><br><span class="line"></span><br><span class="line">sudo apt-get dist-upgrade 升级系统</span><br><span class="line"></span><br><span class="line">apt-cache depends package 了解使用该包依赖那些包</span><br><span class="line"></span><br><span class="line">apt-cache rdepends package 查看该包被哪些包依赖</span><br><span class="line"></span><br><span class="line">sudo apt-get build-dep package 安装相关的编译环境</span><br><span class="line"></span><br><span class="line">apt-get source package  下载该包的源代码</span><br><span class="line"></span><br><span class="line">sudo apt-get clean &amp;&amp; sudo apt-get autoclean 清理无用的包</span><br><span class="line"></span><br><span class="line">sudo apt-get check 检查是否有损坏的依赖</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/05/11/Ubuntu/" data-id="cjh19ad590000hwqxl2l6ai9r" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-centos7__5" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/11/centos7__5/" class="article-date">
+  <time datetime="2018-05-11T01:00:46.727Z" itemprop="datePublished">2018-05-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#centos7_5</p>
+<p>rpm安装</p>
+<p>redhat系列的包后缀名为 .rpm，yum安装的也是使用rpm包，只不过yum为你解决了依赖问题，如果你想自己通过rpm指令安装，你需要手动解决依赖关系</p>
+<p>安装</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">安装</span><br><span class="line">	rpm -ivh 包名</span><br><span class="line">卸载</span><br><span class="line">	rpm -e 包名</span><br><span class="line">	rpm -e wget<span class="number">-1.12</span><span class="number">-10.</span>el6.x86_64    【不带后缀】</span><br><span class="line">	rpm -e wget</span><br><span class="line">其它选项</span><br><span class="line">	-ql : 查询包安装路径</span><br><span class="line">		rpm -ql wget</span><br><span class="line">	-qa : 列出系统所有的软件</span><br><span class="line">		rpm -qa | grep wget</span><br><span class="line">	-qi : 显示包的详细信息</span><br></pre></td></tr></table></figure>
+<p>源码安装(编译安装)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">在linux里面，几乎所有的软件都是c或者c++来编写的，这种语言写的程序，首先得自己编译一下，生成一个可执行文件，然后再执行这个文件</span><br><span class="line">要写编译代码，你得有编译器，在linux里面编译器就是gcc，gcc-c++</span><br><span class="line">yum install -y gcc gcc-c++</span><br><span class="line"></span><br><span class="line">源代码从网上下载，下载下来之后一般都是  .tar.gz  .tar.bz2</span><br><span class="line">源码安装三部曲</span><br><span class="line"><span class="number">1</span>、配置</span><br><span class="line">	./configure [--prefix=安装路径] [--<span class="keyword">with</span>=关联的其它依赖包]</span><br><span class="line"><span class="number">2</span>、编译</span><br><span class="line">	使用里面自带的makefile，   make </span><br><span class="line"><span class="number">3</span>、安装</span><br><span class="line">	make install</span><br><span class="line">安装过程中，查看上一步是否成功，输入 echo $?  输出0表示成功，其它失败</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<p>2、shell简介</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">shell就是一个命令解释器，将用户输入的指令翻译一下，结果显示给你</span><br><span class="line">两种交互形式</span><br><span class="line"><span class="number">1</span>、指令交互式</span><br><span class="line">	平常学的就是这种格式</span><br><span class="line"><span class="number">2</span>、脚本交互式</span><br><span class="line">	需要写个脚本，然后执行这个脚本即可</span><br><span class="line">	来个简单脚本看看</span><br><span class="line">	shell脚本的后缀  .sh</span><br><span class="line">	开头写这个</span><br><span class="line">	<span class="comment">#!/bin/bash</span></span><br><span class="line">	<span class="comment">#bash是linux默认自带的shell解释器   sh   csh。。。。</span></span><br><span class="line">	</span><br><span class="line">	执行脚本，要分是否在当前目录</span><br><span class="line">	是：  ./test.sh</span><br><span class="line">	否：  /root/test.sh</span><br><span class="line">	</span><br><span class="line">	shell编程</span><br></pre></td></tr></table></figure>
+<p>##3、screen</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">在linux中，管理员通常会通过ssh协议远程登录服务器，然后去安装一些软件，执行一些程序等工作，但是有时候安装软件过程非常的长，或者程序就是死循环，这时候管理员什么也做不了，只能干等着，所以出现了screen这个软件，解决了这种问题</span><br><span class="line">安装</span><br><span class="line">	yum install -y screen</span><br><span class="line">使用</span><br><span class="line">	新建会话   screen -S one</span><br><span class="line">	去往会话   screen -r two</span><br><span class="line">	查看会话   screen -ls</span><br><span class="line">	</span><br><span class="line">在new会话中的快捷键(ctrl + a)(现在的支持不是很好)</span><br><span class="line">	退出回话   ctrl + a + d</span><br><span class="line">	新建窗口   ctrl + a + c</span><br><span class="line">	显示所有窗口   ctrl + a + w</span><br><span class="line">	上一个窗口  ctrl + a + p</span><br><span class="line">	下一个窗口  ctrl + a + n</span><br><span class="line">	杀死窗口    ctrl + a + k   (找准那个点)</span><br><span class="line">窗口全部关闭之后，这个会话就会结束	</span><br><span class="line"></span><br><span class="line"><span class="comment">#如何杀死一个已经Detached的screen会话？</span></span><br><span class="line">screen -X -S session_name quit</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/05/11/centos7__5/" data-id="cjh19ad5p0002hwqxgted5ywd" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-nginx配置详解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/11/nginx配置详解/" class="article-date">
+  <time datetime="2018-05-11T01:00:46.727Z" itemprop="datePublished">2018-05-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="hosts-文件位置-C-Windows-System32-drivers-etc"><a href="#hosts-文件位置-C-Windows-System32-drivers-etc" class="headerlink" title="hosts 文件位置 C:\Windows\System32\drivers\etc"></a>hosts 文件位置 C:\Windows\System32\drivers\etc</h3><h3 id="win10-先复制到桌面-进行修改-然后在复制回去"><a href="#win10-先复制到桌面-进行修改-然后在复制回去" class="headerlink" title="win10 先复制到桌面,进行修改,然后在复制回去"></a>win10 先复制到桌面,进行修改,然后在复制回去</h3><h3 id="nginx-conf-位置-usr-local-nginx-conf"><a href="#nginx-conf-位置-usr-local-nginx-conf" class="headerlink" title="nginx.conf 位置 /usr/local/nginx/conf"></a>nginx.conf 位置 /usr/local/nginx/conf</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  listen <span class="number">80</span>;</span><br><span class="line">  server_name _;</span><br><span class="line">  <span class="comment">#location / &#123;  把这几行注释掉,默认就是用nginx作为服务器,原来只是作为一个VBS(负载均衡器来使用,也就是反向代理)</span></span><br><span class="line">  <span class="comment">#location / &#123;</span></span><br><span class="line">  <span class="comment">#  try_files $uri @apache;</span></span><br><span class="line">  <span class="comment">#&#125;</span></span><br><span class="line">  <span class="comment">#location @apache &#123;</span></span><br><span class="line">  <span class="comment">#  proxy_pass http://127.0.0.1:88;</span></span><br><span class="line">  <span class="comment">#  include proxy.conf;</span></span><br><span class="line">  <span class="comment">#&#125;</span></span><br></pre></td></tr></table></figure>
+<p>#nginx.conf</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#定义Nginx运行的用户和用户组  </span></span><br><span class="line"><span class="attribute">user</span> www www;  </span><br><span class="line">   </span><br><span class="line"><span class="comment">#nginx进程数，建议设置为等于CPU总核心数。  </span></span><br><span class="line"><span class="attribute">worker_processes</span> auto;  </span><br><span class="line">   </span><br><span class="line"><span class="comment">#全局错误日志定义类型，[ debug | info | notice | warn | error | crit ]  </span></span><br><span class="line"><span class="attribute">error_log</span> /data/wwwlogs/error_nginx.log <span class="literal">crit</span>;</span><br><span class="line">   </span><br><span class="line"><span class="comment">#进程文件  </span></span><br><span class="line"><span class="attribute">pid</span> /var/run/nginx.pid;</span><br><span class="line">   </span><br><span class="line"><span class="comment">#一个nginx进程打开的最多文件描述符数目</span></span><br><span class="line"><span class="attribute">worker_rlimit_nofile</span> <span class="number">65535</span>;  </span><br><span class="line">   </span><br><span class="line"><span class="comment">#工作模式与连接数上限  </span></span><br><span class="line"><span class="attribute">events</span>  </span><br><span class="line">&#123;  </span><br><span class="line">	<span class="comment">#参考事件模型，use [ kqueue | rtsig | epoll | /dev/poll | select | poll ]; epoll模型是Linux 2.6以上版本内核中的高性能网络I/O模型，如果跑在FreeBSD(unix系统)上面，就用kqueue模型。  </span></span><br><span class="line">	<span class="attribute">use</span> <span class="literal">epoll</span>;  </span><br><span class="line">	<span class="comment">#单个进程最大连接数（最大连接数=连接数*进程数）  </span></span><br><span class="line">	<span class="attribute">worker_connections</span> <span class="number">65535</span>;  </span><br><span class="line">	<span class="comment">#multi_accept在Nginx接到一个新连接通知后调用accept()来接受尽量多的连接 。off是关闭</span></span><br><span class="line">	<span class="attribute">multi_accept</span> <span class="literal">on</span>;</span><br><span class="line">&#125;  </span><br><span class="line">   </span><br><span class="line"><span class="comment">#设定http服务器  </span></span><br><span class="line"><span class="attribute">http</span>  </span><br><span class="line">&#123;  </span><br><span class="line">	<span class="attribute">include</span> mime.types; <span class="comment">#文件扩展名与文件类型映射表  </span></span><br><span class="line">	<span class="attribute">default_type</span> application/octet-stream; <span class="comment">#默认文件类型  </span></span><br><span class="line">	<span class="attribute">charset</span> utf-<span class="number">8</span>; <span class="comment">#默认编码  </span></span><br><span class="line">	<span class="attribute">server_names_hash_bucket_size</span> <span class="number">128</span>; <span class="comment">#服务器名字的hash表大小  </span></span><br><span class="line">	<span class="attribute">client_header_buffer_size</span> <span class="number">32k</span>; <span class="comment"># 客户端头信息缓冲区大小</span></span><br><span class="line">	<span class="attribute">large_client_header_buffers</span> <span class="number">64k</span>; <span class="comment">#最大客户端头信息缓冲区大小</span></span><br><span class="line">	<span class="attribute">client_max_body_size</span> <span class="number">8m</span>; <span class="comment">#客户端请求的最大文件大小 </span></span><br><span class="line">	<span class="attribute">sendfile</span> <span class="literal">on</span>; <span class="comment">#开启高效文件传输模式，sendfile指令指定nginx是否调用sendfile函数来输出文件，对于普通应用设为 on，如果用来进行下载等应用磁盘IO重负载应用，可设置为off，以平衡磁盘与网络I/O处理速度，降低系统的负载。注意：如果图片显示不正常把这个改成off。  </span></span><br><span class="line">	<span class="attribute">autoindex</span> <span class="literal">on</span>; <span class="comment">#开启目录列表访问  </span></span><br><span class="line">	<span class="attribute">tcp_nopush</span> <span class="literal">on</span>; <span class="comment">#防止网络阻塞  </span></span><br><span class="line">	<span class="attribute">tcp_nodelay</span> <span class="literal">on</span>; <span class="comment">#防止网络阻塞  </span></span><br><span class="line">	<span class="attribute">keepalive_timeout</span> <span class="number">120</span>; <span class="comment">#长连接超时时间，单位是秒  </span></span><br><span class="line"></span><br><span class="line">	   </span><br><span class="line">	<span class="comment">#gzip模块设置  </span></span><br><span class="line">	<span class="attribute">gzip</span> <span class="literal">on</span>; <span class="comment">#开启gzip压缩输出  </span></span><br><span class="line">	<span class="attribute">gzip_min_length</span> <span class="number">1k</span>; <span class="comment">#最小压缩文件大小  </span></span><br><span class="line">	<span class="attribute">gzip_buffers</span> <span class="number">4</span> <span class="number">16k</span>; <span class="comment">#压缩缓冲区  </span></span><br><span class="line">	<span class="attribute">gzip_http_version</span> <span class="number">1</span>.<span class="number">0</span>; <span class="comment">#压缩版本（默认1.1，前端如果是squid2.5请使用1.0）  </span></span><br><span class="line">	<span class="attribute">gzip_comp_level</span> <span class="number">2</span>; <span class="comment">#压缩等级  </span></span><br><span class="line">	<span class="attribute">gzip_types</span> text/plain application/x-javascript text/css application/xml;  </span><br><span class="line">	<span class="comment">#压缩类型，默认就已经包含text/html，所以下面就不用再写了  </span></span><br><span class="line">   </span><br><span class="line">	<span class="attribute">upstream</span> www.baidu.com &#123;  </span><br><span class="line">		<span class="comment">#upstream的负载均衡，weight是权重，可以根据机器配置定义权重。weigth参数表示权值，权值越高被分配到的几率越大。  </span></span><br><span class="line">    	<span class="comment">#hash算法分配</span></span><br><span class="line">    	<span class="comment">#ip_hash</span></span><br><span class="line">    	<span class="comment">#--我是分割线--</span></span><br><span class="line">		<span class="attribute">server</span> <span class="number">192.168.80.121:80</span> weight=<span class="number">3</span>;  <span class="comment">#8核 32G 200M带宽</span></span><br><span class="line">		<span class="attribute">server</span> <span class="number">192.168.80.122:80</span> weight=<span class="number">2</span>;  <span class="comment">#4  16  200M</span></span><br><span class="line">		<span class="attribute">server</span> <span class="number">192.168.80.123:80</span> weight=<span class="number">1</span>;  <span class="comment">#2  4   200M</span></span><br><span class="line">	&#125;  </span><br><span class="line">   </span><br><span class="line">	<span class="comment">#虚拟主机的配置  </span></span><br><span class="line">	<span class="attribute">server</span>  </span><br><span class="line">	&#123;  </span><br><span class="line">		<span class="comment">#监听端口  </span></span><br><span class="line">		<span class="attribute">listen</span> <span class="number">80</span>;  </span><br><span class="line">		<span class="comment">#域名可以有多个，用空格隔开  </span></span><br><span class="line">		<span class="attribute">server_name</span> www.baidu.com baidu.com;  </span><br><span class="line"></span><br><span class="line">		<span class="comment">#先读取的文件类型</span></span><br><span class="line">		index.html index.htm main.py;  </span><br><span class="line"></span><br><span class="line">		<span class="comment">#默认的文件路径</span></span><br><span class="line">		<span class="attribute">root</span> /data/wwwroot/default;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">#404 无法找到文件 显示的样式</span></span><br><span class="line">		<span class="comment">#error_page 404 /404.html;</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">#502 网关错误 显示的样式</span></span><br><span class="line">    	<span class="comment">#error_page 502 /502.html;</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">#图片缓存时间设置  </span></span><br><span class="line">		<span class="attribute">location</span> <span class="regexp">~ .*.(gif|jpg|jpeg|png|bmp|swf)$</span>  </span><br><span class="line">		&#123;  </span><br><span class="line">			<span class="attribute">expires</span> <span class="number">10d</span>;  </span><br><span class="line">		&#125;  </span><br><span class="line">		<span class="comment">#JS和CSS缓存时间设置  </span></span><br><span class="line">		<span class="attribute">location</span> <span class="regexp">~ .*.(js|css)?$</span>  </span><br><span class="line">		&#123;  </span><br><span class="line">			<span class="attribute">expires</span> <span class="number">1h</span>;  </span><br><span class="line">		&#125;     </span><br><span class="line">		<span class="comment">#定义本虚拟主机的访问日志  </span></span><br><span class="line">		<span class="attribute">access_log</span> ar/loginx/hahaaccess.log access;  </span><br><span class="line">		</span><br><span class="line">    	<span class="comment">#设置关联apche服务器</span></span><br><span class="line">    	<span class="attribute">location</span> / &#123;</span><br><span class="line">     	 <span class="attribute">try_files</span> <span class="variable">$uri</span> <span class="variable">@apache</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    	<span class="comment">#设置重定向到apache</span></span><br><span class="line">        <span class="attribute">location</span> <span class="variable">@apache</span> &#123;</span><br><span class="line">      	  <span class="comment">#当nginx接收到请求的时候 跳转到本机的127.0.0.1:88端口</span></span><br><span class="line">          <span class="attribute">proxy_pass</span> http://127.0.0.1:88;</span><br><span class="line">          <span class="attribute">include</span> proxy.conf;</span><br><span class="line">        &#125;</span><br><span class="line">    	<span class="comment">#让apache去引用php</span></span><br><span class="line">        <span class="attribute">location</span> <span class="regexp">~ [^/]\.php(/|$)</span> &#123;</span><br><span class="line">          <span class="attribute">proxy_pass</span> http://127.0.0.1:88;</span><br><span class="line">          <span class="attribute">include</span> proxy.conf;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">#对 "/" 启用反向代理  </span></span><br><span class="line">		<span class="attribute">location</span> / &#123;  </span><br><span class="line">			<span class="comment">#接受请求直接指向本机的88端口</span></span><br><span class="line">			<span class="attribute">proxy_pass</span> http://127.0.0.1:88;</span><br><span class="line"></span><br><span class="line">			<span class="comment">#对发送给客户端的URL进行修改  </span></span><br><span class="line">			<span class="attribute">proxy_redirect</span> <span class="literal">off</span>;  </span><br><span class="line">			<span class="comment">#可以设置重新添加请求头</span></span><br><span class="line">			<span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;  </span><br><span class="line">			<span class="comment">#后端的Web服务器可以通过X-Forwarded-For获取用户真实IP  </span></span><br><span class="line">			<span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;  </span><br><span class="line">			<span class="comment">#以下是一些反向代理的配置，可选。  </span></span><br><span class="line">			<span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;  </span><br><span class="line">			<span class="attribute">client_max_body_size</span> <span class="number">10m</span>; <span class="comment">#允许客户端请求的最大单文件字节数  </span></span><br><span class="line">			<span class="attribute">client_body_buffer_size</span> <span class="number">128k</span>; <span class="comment">#缓冲区代理缓冲用户端请求的最大字节数，  </span></span><br><span class="line">			<span class="attribute">proxy_connect_timeout</span> <span class="number">90</span>; <span class="comment">#nginx跟后端服务器连接超时时间(代理连接超时)  </span></span><br><span class="line">			<span class="attribute">proxy_send_timeout</span> <span class="number">90</span>; <span class="comment">#后端服务器数据回传时间(代理发送超时)  </span></span><br><span class="line">			<span class="attribute">proxy_read_timeout</span> <span class="number">90</span>; <span class="comment">#连接成功后，后端服务器响应时间(代理接收超时)  </span></span><br><span class="line">			<span class="attribute">proxy_buffer_size</span> <span class="number">4k</span>; <span class="comment">#设置代理服务器（nginx）保存用户头信息的缓冲区大小  </span></span><br><span class="line">			<span class="attribute">proxy_buffers</span> <span class="number">4</span> <span class="number">32k</span>; <span class="comment">#proxy_buffers缓冲区，网页平均在32k以下的设置  </span></span><br><span class="line">			<span class="attribute">proxy_busy_buffers_size</span> <span class="number">64k</span>; <span class="comment">#高负荷下缓冲大小（proxy_buffers*2）  </span></span><br><span class="line">			<span class="attribute">proxy_temp_file_write_size</span> <span class="number">64k</span>;  </span><br><span class="line">			<span class="comment">#设定缓存文件夹大小，大于这个值，将从upstream服务器传  </span></span><br><span class="line">		&#125;  </span><br><span class="line">		</span><br><span class="line">		<span class="comment">#所有静态文件由nginx直接读取  </span></span><br><span class="line">		<span class="attribute">location</span> <span class="regexp">~ .*.(htm|html|gif|jpg|jpeg|png|bmp|swf|ioc|rar|zip|txt|flv|mid|doc|ppt|pdf|xls|mp3|wma)$</span>  </span><br><span class="line">		&#123; <span class="attribute">expires</span> <span class="number">15d</span>; &#125;  </span><br><span class="line">		<span class="attribute">location</span> <span class="regexp">~ .*.(js|css)?$</span>  </span><br><span class="line">		&#123; <span class="attribute">expires</span> <span class="number">1h</span>; &#125;  </span><br><span class="line">	&#125; </span><br><span class="line">	<span class="comment">#引入其它的站点位置</span></span><br><span class="line">	<span class="attribute">include</span> vhost/<span class="regexp">*.conf</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>include vhost/*.conf;</p>
+<p>conf目录中没有 vhost目录，我们可以新建一个，</p>
+<p>在conf目中： mkdir vhost</p>
+<p>*.conf的名字可以自己取</p>
+<p>例如:aliyun.conf   baidu.con</p>
+<p>#vim vhost/0.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#虚拟主机的配置  </span><br><span class="line">	server  </span><br><span class="line">	&#123;  </span><br><span class="line">		#监听端口  </span><br><span class="line">		listen 127.0.0.1:88;  </span><br><span class="line">		#域名可以有多个，用空格隔开  </span><br><span class="line">		server_name www.taobao.com taobao.com;  </span><br><span class="line"></span><br><span class="line">		#先读取的文件类型</span><br><span class="line">		index index.html index.htm main.py;  </span><br><span class="line"></span><br><span class="line">		#默认的文件路径</span><br><span class="line">		root /data/wwwroot/project;</span><br><span class="line">		</span><br><span class="line">		#404 无法找到文件 显示的样式</span><br><span class="line">		#error_page 404 /404.html;</span><br><span class="line">		</span><br><span class="line">		#502 网管错误 显示的样式</span><br><span class="line">    		#error_page 502 /502.html;</span><br><span class="line"></span><br><span class="line">		#图片缓存时间设置  </span><br><span class="line">		location ~ .*.(gif|jpg|jpeg|png|bmp|swf)$  </span><br><span class="line">		&#123;  </span><br><span class="line">			expires 10d;  </span><br><span class="line">		&#125;  </span><br><span class="line">		#JS和CSS缓存时间设置  </span><br><span class="line">		location ~ .*.(js|css)?$  </span><br><span class="line">		&#123;  </span><br><span class="line">			expires 1h;  </span><br><span class="line">		&#125;     </span><br><span class="line">		#定义本虚拟主机的访问日志  </span><br><span class="line">		access_log ar/loginx/hahaaccess.log access;  </span><br><span class="line">		   </span><br><span class="line">		#对 &quot;/&quot; 启用反向代理  </span><br><span class="line">		location / &#123;  </span><br><span class="line">			#接受请求直接指向本机的88端口</span><br><span class="line">			proxy_pass http://127.0.0.1:8888;</span><br><span class="line"></span><br><span class="line">			#对发送给客户端的URL进行修改  </span><br><span class="line">			proxy_redirect off;  </span><br><span class="line">			#可以设置重新添加请求头</span><br><span class="line">			proxy_set_header X-Real-IP $remote_addr;  </span><br><span class="line">			#后端的Web服务器可以通过X-Forwarded-For获取用户真实IP  </span><br><span class="line">			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;  </span><br><span class="line">			#以下是一些反向代理的配置，可选。  </span><br><span class="line">			proxy_set_header Host $host;  </span><br><span class="line">			client_max_body_size 10m; #允许客户端请求的最大单文件字节数  </span><br><span class="line">			client_body_buffer_size 128k; #缓冲区代理缓冲用户端请求的最大字节数，  </span><br><span class="line">			proxy_connect_timeout 90; #nginx跟后端服务器连接超时时间(代理连接超时)  </span><br><span class="line">			proxy_send_timeout 90; #后端服务器数据回传时间(代理发送超时)  </span><br><span class="line">			proxy_read_timeout 90; #连接成功后，后端服务器响应时间(代理接收超时)  </span><br><span class="line">			proxy_buffer_size 4k; #设置代理服务器（nginx）保存用户头信息的缓冲区大小  </span><br><span class="line">			proxy_buffers 4 32k; #proxy_buffers缓冲区，网页平均在32k以下的设置  </span><br><span class="line">			proxy_busy_buffers_size 64k; #高负荷下缓冲大小（proxy_buffers*2）  </span><br><span class="line">			proxy_temp_file_write_size 64k;  </span><br><span class="line">			#设定缓存文件夹大小，大于这个值，将从upstream服务器传  </span><br><span class="line">		&#125;  </span><br><span class="line">		</span><br><span class="line">		#所有静态文件由nginx直接读取  </span><br><span class="line">		location ~ .*.(htm|html|gif|jpg|jpeg|png|bmp|swf|ioc|rar|zip|txt|flv|mid|doc|ppt|pdf|xls|mp3|wma)$  </span><br><span class="line">		&#123; expires 15d; &#125;  </span><br><span class="line">		location ~ .*.(js|css)?$  </span><br><span class="line">		&#123; expires 1h; &#125;  </span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/05/11/nginx配置详解/" data-id="cjh19ad590001hwqxkys054cd" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-centos7__4" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/05/10/centos7__4/" class="article-date">
@@ -246,6 +473,7 @@ wget 地址
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p>版本控制系统,SVN ,GIT</p>
+<p>一个项目由多人开发</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SVN不支持多分支 它是本地的仓库,但是,近年它开始做线上分享</span><br><span class="line">GIT支持多分支</span><br><span class="line">GIT的功能更加强大,由于国外的github,国内的 码云,使程序员的代码更加具有开源性.</span><br></pre></td></tr></table></figure>
 <p>Git是一款免费、开源的分布式版本控制系统，用于敏捷高效地处理任何或小或大的项目.</p>
 <p>可以有效、高速的处理从很小到非常大的项目版本管理。[2]<a href="undefined"> </a> Git 是 Linus Torvalds 为了帮助管理 Linux 内核开发而开发的一个开放源码的版本控制软件。</p>
@@ -382,171 +610,6 @@ wget 地址
 
 
   
-    <article id="post-python基础复习" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/04/28/python基础复习/" class="article-date">
-  <time datetime="2018-04-28T02:06:41.079Z" itemprop="datePublished">2018-04-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="python基础复习"><a href="#python基础复习" class="headerlink" title="python基础复习"></a>python基础复习</h4><h5 id="参考书："><a href="#参考书：" class="headerlink" title="参考书："></a>参考书：</h5><p>《Python语言程序设计》第一章：<br>一、什么是计算机<br>计算机包括软件和硬件：</p>
-<ul>
-<li><strong>中央处理器（CPU）</strong> ：<ul>
-<li>central processing unit</li>
-<li>两个组件组成：控制单元，算术逻辑单元</li>
-<li>赫兹hertz =》 兆兹MHz =》千兆赫gigaherts</li>
-<li>计算机中最小的存储单元是<strong>字节</strong></li>
-<li>1字节 = 8比特</li>
-</ul>
-</li>
-<li><strong>内存（主存储器）</strong>：<ul>
-<li>由多个有序的字节序列构成</li>
-<li>是计算机执行程序的工作区</li>
-<li>每个字节有一个唯一地址用来定位存储和获取数据的字节</li>
-<li>可以任意顺序访问内存中字节，因此称为RAM 随机访问内存</li>
-</ul>
-</li>
-<li><strong>存储设备</strong></li>
-<li><strong>输入设备</strong></li>
-<li><strong>输出设备</strong></li>
-<li><strong>通信设备</strong></li>
-</ul>
-<p>二、程序设计语言</p>
-<ul>
-<li><strong>机器语言</strong> ：内嵌在计算机内的原始指令集<ul>
-<li>二进制码的指令</li>
-<li>难懂难修改</li>
-</ul>
-</li>
-<li><strong>汇编语言</strong> ：替代机器语言<ul>
-<li>要用汇编器转换成机器语言</li>
-<li>低级语言</li>
-</ul>
-</li>
-<li><strong>高级语言</strong> </li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://jyue0812.github.io/2018/04/28/python基础复习/" data-id="cjgvv6z3s000138qxpj1zfcim" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-2018-04-23" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/04/23/2018-04-23/" class="article-date">
-  <time datetime="2018-04-23T08:23:32.435Z" itemprop="datePublished">2018-04-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>2018年4月23日</p>
-<h4 id="Scrapy爬虫"><a href="#Scrapy爬虫" class="headerlink" title="Scrapy爬虫"></a>Scrapy爬虫</h4><p>从豆瓣爬取top250的电影，链接：<a href="https://movie.douban.com/top250?start=0" target="_blank" rel="noopener">https://movie.douban.com/top250?start=0</a><br>github位置：<a href="https://github.com/Jyue0812/exercises/tree/master/2018-04-23" target="_blank" rel="noopener">https://github.com/Jyue0812/exercises/tree/master/2018-04-23</a></p>
-<h4 id="遇到的坑："><a href="#遇到的坑：" class="headerlink" title="遇到的坑："></a>遇到的坑：</h4><p>1）HTTP status code is not handled or not allowed：<br>    解决方法：在settings.py中添加HTTPERROR_ALLOWED_CODES = [404]<br>2）write() argument must be str, not bytes<br>    解决方法：使用二进制方法打开<br>3）Scrapy运行ImportError: No module named win32api错误<br>    解决方法：pip install pypiwin32</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://jyue0812.github.io/2018/04/23/2018-04-23/" data-id="cjgbztdob0001pcqx0isoy599" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-2018-04-22" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/04/23/2018-04-22/" class="article-date">
-  <time datetime="2018-04-23T00:53:19.637Z" itemprop="datePublished">2018-04-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>2018年4月22日</p>
-<h4 id="第0013题"><a href="#第0013题" class="headerlink" title="第0013题"></a>第0013题</h4><p>第 0013 题： 用 Python 写一个爬图片的程序，爬 这个链接里的日本妹子图片 :-) <a href="http://tieba.baidu.com/p/2166231880" target="_blank" rel="noopener">http://tieba.baidu.com/p/2166231880</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">import urllib.request</span><br><span class="line">from lxml import etree</span><br><span class="line"># 获取网页源代码</span><br><span class="line">def getHtml():</span><br><span class="line">    url = &quot;http://tieba.baidu.com/p/2166231880&quot;</span><br><span class="line">    headers = &#123;&quot;User-Agent&quot; : &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4)&quot;&#125;</span><br><span class="line"></span><br><span class="line">    request = urllib.request.Request(url, headers=headers)</span><br><span class="line">    response = urllib.request.urlopen(request)</span><br><span class="line">    content = response.read().decode(&quot;utf-8&quot;)</span><br><span class="line">    return content</span><br><span class="line"></span><br><span class="line"># 获取图片</span><br><span class="line">def getImage():</span><br><span class="line">    html = getHtml()</span><br><span class="line">    html = etree.HTML(html)</span><br><span class="line">    links = html.xpath(&apos;//img[@class=&quot;BDE_Image&quot;]/@src&apos;)</span><br><span class="line">    return links</span><br><span class="line"></span><br><span class="line"># 下载保存图片</span><br><span class="line">def downloadImage():</span><br><span class="line">    images = getImage()</span><br><span class="line">    for image in images:</span><br><span class="line">        filename = image[-10:]</span><br><span class="line">        with open(filename, &apos;wb&apos;) as f:</span><br><span class="line">            headers = &#123;&quot;User-Agent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4)&quot;&#125;</span><br><span class="line">            request = urllib.request.Request(image, headers=headers)</span><br><span class="line">            response = urllib.request.urlopen(request)</span><br><span class="line">            url = response.read()</span><br><span class="line">            f.write(url)</span><br><span class="line"></span><br><span class="line">downloadImage()</span><br></pre></td></tr></table></figure>
-<h4 id="第0010题"><a href="#第0010题" class="headerlink" title="第0010题"></a>第0010题</h4><p>使用 Python 生成类似于下图中的字母验证码图片</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">import string</span><br><span class="line">import random</span><br><span class="line">from PIL import Image, ImageDraw, ImageFont</span><br><span class="line"></span><br><span class="line"># 获得任意四个英文字母</span><br><span class="line">def getLetters():</span><br><span class="line">    letters = string.ascii_letters</span><br><span class="line">    str1 = &quot;&quot;</span><br><span class="line">    for i in range(4):</span><br><span class="line">        a = random.choice(letters)</span><br><span class="line">        str1 += a + &apos;   &apos;</span><br><span class="line">    return str1</span><br><span class="line"></span><br><span class="line"># 对图片进行处理</span><br><span class="line">def dealImage(str):</span><br><span class="line">    image = Image.open(&apos;image.png&apos;)</span><br><span class="line">    draw = ImageDraw.Draw(image)</span><br><span class="line">    myfont = ImageFont.truetype(&apos;C:/windows/fonts/Arial.ttf&apos;, size=40)</span><br><span class="line">    width, height = image.size</span><br><span class="line">    draw.text((width/2-90, height/2-20), str, font=myfont, fill=&quot;#ff0000&quot;)</span><br><span class="line">    image.save(&apos;result.jpg&apos;, &apos;png&apos;)</span><br><span class="line"></span><br><span class="line">en = getLetters()</span><br><span class="line">dealImage(en)</span><br></pre></td></tr></table></figure>
-<h4 id="第0011题"><a href="#第0011题" class="headerlink" title="第0011题"></a>第0011题</h4><p>敏感词文本文件 filtered_words.txt，里面的内容为以下内容，当用户输入敏感词语时，则打印出 Freedom，否则打印出 Human Rights。<br>北京<br>程序员<br>公务员<br>领导<br>牛比<br>牛逼<br>你娘<br>你妈<br>love<br>sex<br>jiangge</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">user_input = input(&quot;请输入一个词语：&quot;)</span><br><span class="line">with open(&apos;filtered_words.txt&apos;) as fr:</span><br><span class="line">    words = fr.readlines()</span><br><span class="line">    count = 0</span><br><span class="line">    for word in words:</span><br><span class="line">        word = word.strip()</span><br><span class="line">        if user_input == word:</span><br><span class="line">            print(&quot;Freedom&quot;)</span><br><span class="line">            count += 1</span><br><span class="line">    if count == 0:</span><br><span class="line">        print(&quot;Human Rights&quot;)</span><br></pre></td></tr></table></figure>
-<h4 id="第0012题"><a href="#第0012题" class="headerlink" title="第0012题"></a>第0012题</h4><p>敏感词文本文件 filtered_words.txt，里面的内容 和 0011题一样，当用户输入敏感词语，则用 星号 * 替换，例如当用户输入「北京是个好城市」，则变成「**是个好城市」。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">user_input = input(&quot;请输入一个词语：&quot;)</span><br><span class="line">with open(&apos;filtered_words.txt&apos;) as fr:</span><br><span class="line">    words = fr.readlines()</span><br><span class="line">    for word in words:</span><br><span class="line">        word = word.strip()</span><br><span class="line">        if re.search(word, user_input):</span><br><span class="line">            result = re.sub(word, &quot;*&quot;*len(word), user_input)</span><br><span class="line">            print(result)</span><br></pre></td></tr></table></figure>
-<h4 id="实验楼项目1"><a href="#实验楼项目1" class="headerlink" title="实验楼项目1"></a>实验楼项目1</h4><p>要求：<br>本实验用 50 行 Python 代码完成图片转字符画小工具。通过本实验将学习到 Linux 命令行操作，Python 基础，pillow 库的使用，argparse 库的使用。</p>
-<p>实验知识点<br>本节实验中我们将实践以下知识：<br>Linux 命令行操作<br>Python 基础<br>pillow 库的使用<br>argparse 库的使用（参考教程）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">from PIL import Image</span><br><span class="line">import argparse</span><br><span class="line"></span><br><span class="line">parser = argparse.ArgumentParser()</span><br><span class="line">parser.add_argument(&apos;file&apos;)</span><br><span class="line">parser.add_argument(&apos;-o&apos;, &apos;--output&apos;)</span><br><span class="line">parser.add_argument(&apos;--width&apos;, type = int, default = 80)</span><br><span class="line">parser.add_argument(&apos;--height&apos;, type = int, default = 80)</span><br><span class="line">args = parser.parse_args()</span><br><span class="line">IMG = args.file</span><br><span class="line">WIDTH = args.width</span><br><span class="line">HEIGHT = args.height</span><br><span class="line">OUTPUT = args.output</span><br><span class="line"></span><br><span class="line">#字符画是一系列字符的组合，我们可以把字符看作是比较大块的像素，一个字符能表现一种颜色（暂且这么理解吧），字符的种类越多，可以表现的颜色也越多，图片也会更有层次感。</span><br><span class="line"></span><br><span class="line">ascii_char = list(&quot;$@B%8&amp;WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1&#123;&#125;[]?-_+~&lt;&gt;i!lI;:,\&quot;^`&apos;. &quot;)</span><br><span class="line"></span><br><span class="line">def get_char(r,g,b,alpha = 256):</span><br><span class="line">    if alpha == 0:</span><br><span class="line">        return &apos; &apos;</span><br><span class="line">    length = len(ascii_char)</span><br><span class="line">    #灰度值计算公式，因为人眼对RGB颜色的感知并不相同，所以转换的时候需要给予不同的权重。事实上这个原理普遍应用于计算机图像处理系统</span><br><span class="line">    gray = int(0.2126 * r + 0.7152 * g + 0.0722 * b)</span><br><span class="line">    unit = (256.0 + 1)/length</span><br><span class="line">    return ascii_char[int(gray/unit)]</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    im = Image.open(IMG)</span><br><span class="line">    #PIL.Image.NEAREST:低质量 Image.ANTIALIAS:高质量</span><br><span class="line">    im = im.resize((WIDTH,HEIGHT), Image.NEAREST)</span><br><span class="line">    txt = &quot;&quot;</span><br><span class="line">    for i in range(HEIGHT):</span><br><span class="line">        for j in range(WIDTH):</span><br><span class="line">            txt += get_char(*im.getpixel((j,i)))</span><br><span class="line">        txt += &apos;\n&apos;</span><br><span class="line"></span><br><span class="line">    print(txt)</span><br><span class="line"></span><br><span class="line">    if OUTPUT:</span><br><span class="line">        with open(OUTPUT,&apos;w&apos;) as f:</span><br><span class="line">            f.write(txt)</span><br><span class="line">    else:</span><br><span class="line">        with open(&quot;output.txt&quot;,&apos;w&apos;) as f:</span><br><span class="line">            f.write(txt)</span><br></pre></td></tr></table></figure>
-<h4 id="今日总结"><a href="#今日总结" class="headerlink" title="今日总结"></a>今日总结</h4><ol>
-<li>学到了灰度值公式 </li>
-<li>argparse库用来对命令行进行解析</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://jyue0812.github.io/2018/04/23/2018-04-22/" data-id="cjgbztdog0002pcqxv6rmd28u" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-2018-04-21" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/04/23/2018-04-21/" class="article-date">
-  <time datetime="2018-04-23T00:53:19.634Z" itemprop="datePublished">2018-04-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>2018年4月21日</p>
-<h4 id="第0009题"><a href="#第0009题" class="headerlink" title="第0009题"></a>第0009题</h4><p>一个HTML文件，找出里面的链接。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">import urllib.request</span><br><span class="line">from lxml import etree</span><br><span class="line">import ssl</span><br><span class="line"></span><br><span class="line">def spider():</span><br><span class="line">    url = &quot;https://pypi.org/project/lxml/&quot;</span><br><span class="line">    headers = &#123;&quot;User-Agent&quot; : &quot;Mozilla/5.0 (Windows NT 6.1; WOW64)&quot;&#125;</span><br><span class="line">    request = urllib.request.Request(url, headers=headers)</span><br><span class="line">    context = ssl._create_unverified_context()</span><br><span class="line">    ssl._create_default_https_context = ssl._create_unverified_context()</span><br><span class="line">    response = urllib.request.urlopen(request, context=context)</span><br><span class="line">    content = response.read()</span><br><span class="line">    return content.decode(&apos;utf-8&apos;)</span><br><span class="line"></span><br><span class="line">html = spider()</span><br><span class="line"># print(html)</span><br><span class="line">html = etree.HTML(html)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">links = html.xpath(&quot;//a/@href&quot;)</span><br><span class="line">links2 = html.xpath(&quot;//img/@src&quot;)</span><br><span class="line">links3 = html.xpath(&quot;//link/@href&quot;)</span><br><span class="line">links4 = html.xpath(&quot;//meta/@content&quot;)</span><br><span class="line">links5 = html.xpath(&quot;//script/@src&quot;)</span><br><span class="line">new_links = links + links2 + links3 + links4 +links5</span><br><span class="line"></span><br><span class="line">count = 0</span><br><span class="line">result = []</span><br><span class="line">for l in new_links:</span><br><span class="line">    if str(l).startswith(&quot;https&quot;):</span><br><span class="line">        result.append(l)</span><br><span class="line"></span><br><span class="line">print(result, len(result))</span><br></pre></td></tr></table></figure></p>
-<h4 id="今日总结"><a href="#今日总结" class="headerlink" title="今日总结"></a>今日总结</h4><ol>
-<li>在苹果笔记本配置不熟练花了很久</li>
-<li>今天的题目用的方法很死板有时间要优化一下</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://jyue0812.github.io/2018/04/23/2018-04-21/" data-id="cjgbztdoi0003pcqx8c9kqsw4" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -583,23 +646,23 @@ wget 地址
       <ul>
         
           <li>
+            <a href="/blog/2018/05/11/samba/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/11/Ubuntu/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/11/centos7__5/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/11/nginx配置详解/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/05/10/centos7__4/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/10/centos6.8/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/09/centos7__3/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/09/Git/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/08/python3.6编译安装/">(no title)</a>
           </li>
         
       </ul>

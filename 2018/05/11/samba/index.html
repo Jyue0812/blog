@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ZY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="samba简介samba主要运用与windows电脑与linux主机之间进行文件共享 软硬件环境linux 主机s1一台，关闭selinux和防火墙，192.168.199.236 windows主机 c1一台，192.168.199.2 搭建之前：关闭防火墙和selinux    service iptables stop    setenforce 0 操作步骤 在s1上面安装samba服务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZY">
+<meta property="og:url" content="https://jyue0812.github.io/2018/05/11/samba/index.html">
+<meta property="og:site_name" content="ZY">
+<meta property="og:description" content="samba简介samba主要运用与windows电脑与linux主机之间进行文件共享 软硬件环境linux 主机s1一台，关闭selinux和防火墙，192.168.199.236 windows主机 c1一台，192.168.199.2 搭建之前：关闭防火墙和selinux    service iptables stop    setenforce 0 操作步骤 在s1上面安装samba服务">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-04-13T01:15:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ZY">
+<meta name="twitter:description" content="samba简介samba主要运用与windows电脑与linux主机之间进行文件共享 软硬件环境linux 主机s1一台，关闭selinux和防火墙，192.168.199.236 windows主机 c1一台，192.168.199.2 搭建之前：关闭防火墙和selinux    service iptables stop    setenforce 0 操作步骤 在s1上面安装samba服务">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="ZY" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">ZY</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jyue0812.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-samba" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/11/samba/" class="article-date">
+  <time datetime="2018-05-11T01:00:46.743Z" itemprop="datePublished">2018-05-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="samba"><a href="#samba" class="headerlink" title="samba"></a>samba</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>samba主要运用与windows电脑与linux主机之间进行文件共享</p>
+<h2 id="软硬件环境"><a href="#软硬件环境" class="headerlink" title="软硬件环境"></a>软硬件环境</h2><p>linux 主机s1一台，关闭selinux和防火墙，192.168.199.236</p>
+<p>windows主机 c1一台，192.168.199.2</p>
+<p>搭建之前：关闭防火墙和selinux<br>    service iptables stop<br>    setenforce 0</p>
+<h2 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h2><ol>
+<li><p>在s1上面安装samba服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y samba samba-client	#安装samba服务端与客户端</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编辑samba的配置文件，/etc/samba/smb.conf</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[global]</span>					<span class="comment">#全局的配置</span></span><br><span class="line">        workgroup = MYGROUP	#window里面的工作组，默认是WORKGROUP</span><br><span class="line">        server string = Samba Server Version %v</span><br><span class="line">        security = user</span><br><span class="line">        passdb backend = tdbsam</span><br><span class="line">        load printers = yes</span><br><span class="line">        cups options = raw</span><br><span class="line"><span class="section">[homes]</span>	<span class="comment">#模块的配置</span></span><br><span class="line">        comment = Home Directories</span><br><span class="line">        browseable = no</span><br><span class="line">        writable = yes</span><br><span class="line"><span class="section">[printers]</span>	<span class="comment">#模块的配置</span></span><br><span class="line">        comment = All Printers</span><br><span class="line">        path = /var/spool/samba</span><br><span class="line">        browseable = no</span><br><span class="line">        guest ok = no</span><br><span class="line">        writable = no</span><br><span class="line">        printable = yes</span><br></pre></td></tr></table></figure>
+<p>[global] 定义全局的配置，workgroup用来定义工作组，相信如果你安装过windows的系统，你会对这个workgroup不陌生。一般情况下，需要我们把这里的MYGROUP改成WORKGROUP（windows默认的工作组名字）。</p>
+<p>security = user #这里指定samba的安全等级。关于安全等级有四种：</p>
+<p>share：用户不需要账户及密码即可登录samba服务器</p>
+<p>user：由提供服务的samba服务器负责检查账户及密码（默认）</p>
+<p>server：检查账户及密码的工作由另一台windows或samba服务器负责</p>
+<p>domain：指定windows域控制服务器来验证用户的账户及密码。</p>
+<p>passdb backend = tdbsam # passdb backend（用户后台），samba有三种用户后台：smbpasswd, tdbsam和ldapsam.</p>
+<p>smbpasswd：该方式是使用smb工具smbpasswd给系统用户（真实用户或者虚拟用户）设置一个Samba密码，客户端就用此密码访问Samba资源。smbpasswd在/etc/samba中，有时需要手工创建该文件。</p>
+<p>tdbsam：使用数据库文件创建用户数据库。数据库文件叫passdb.tdb，在/etc/samba中。passdb.tdb用户数据库可使用 <code>smbpasswd -a</code> 创建Samba用户，要创建的Samba用户必须先是系统用户。也可使用pdbedit创建Samba账户。pdbedit参数很多，列出几个主要的：</p>
+<p>pdbedit -a username：新建Samba账户。</p>
+<p>pdbedit -x username：删除Samba账户。</p>
+<p>pdbedit -L：列出Samba用户列表，读取passdb.tdb数据库文件。</p>
+<p>pdbedit -Lv：列出Samba用户列表详细信息。</p>
+<p>pdbedit -c “[D]” -u username：暂停该Samba用户账号。</p>
+<p>pdbedit -c “[]” -u username：恢复该Samba用户账号。</p>
+<p>ldapsam：基于LDAP账户管理方式验证用户。首先要建立LDAP服务，设置 “passdb backend = ldapsam:ldap://LDAP Server”</p>
+<p>load printers 和 cups options 两个参数用来设置打印机相关。</p>
+<p>除了这些参数外，还有几个参数需要你了解：</p>
+<p>netbios name = MYSERVER # 设置出现在网上邻居中的主机名</p>
+<p>hosts allow = 127. 192.168.12. 192.168.13. # 用来设置允许的主机，如果在前面加 ”;” 则表示允许所有主机</p>
+<p>log file = /var/log/samba/%m.log #定义samba的日志，这里的%m是上面的netbios name</p>
+<p>max log size = 50 # 指定日志的最大容量，单位是K</p>
+<p>[homes] 该部分内容共享用户自己的家目录，也就是说，当用户登录到samba服务器上时实际上是进入到了该用户的家目录，用户登陆后，共享名不是homes而是用户自己的标识符，对于单纯的文件共享的环境来说，这部分可以注视掉。</p>
+<p>[printers] 该部分内容设置打印机共享。</p>
+</li>
+</ol>
+<h2 id="samba实践"><a href="#samba实践" class="headerlink" title="samba实践"></a>samba实践</h2><ol>
+<li><p><strong>共享一个目录，任何人都可以访问，即不用输入密码即可访问，要求只读</strong></p>
+<p>修改全局的设置<br>vim /etc/samba/smb.conf</p>
+</li>
+</ol>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[global]</span></span><br><span class="line"><span class="attr">WORKGROUP</span> = WORKGROUP</span><br><span class="line"><span class="attr">security</span> = share</span><br></pre></td></tr></table></figure>
+<p>   然后在配置文件的末尾添加一行</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[share]</span><span class="comment">#文件夹的名字</span></span><br><span class="line">        comment = share all</span><br><span class="line">        path = /var/www/html</span><br><span class="line">        browseable = yes</span><br><span class="line">        public = yes</span><br><span class="line">        writable = no</span><br></pre></td></tr></table></figure>
+<p>   启动samba共享服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/smb start</span><br><span class="line"></span><br><span class="line">service smb start</span><br><span class="line"></span><br><span class="line">testparm	#测试配置文件</span><br></pre></td></tr></table></figure>
+<p>   在windows主机c1上面打开浏览器或者资源管理器地址栏中输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file://10.11.58.179/share	#可查看</span><br><span class="line"></span><br><span class="line">liunx 访问smbclient</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p><strong>共享一个目录，使用用户名和密码登录后才可以访问，要求可以读写</strong></p>
+<p>修改全局配置文件</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[global]</span></span><br><span class="line">        workgroup = WORKGROUP</span><br><span class="line">        server string = Samba Server Version %v</span><br><span class="line">        security = user</span><br><span class="line">        passdb backend = tdbsam</span><br><span class="line">        load printers = yes</span><br><span class="line">        cups options = raw</span><br></pre></td></tr></table></figure>
+<p>添加一个新的共享设置</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[myshare]</span></span><br><span class="line">        comment = share for users</span><br><span class="line">        path = /var/www/html</span><br><span class="line">        browseable = yes </span><br><span class="line">        writable = yes</span><br><span class="line">        public = no</span><br></pre></td></tr></table></figure>
+<p>保存配置文件，修改共享目录权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /samba</span><br><span class="line">chmod 777 /samba</span><br></pre></td></tr></table></figure>
+<p>然后添加用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">useradd user1	#创建测试用户</span><br><span class="line">useradd user2	#创建测试用户</span><br><span class="line"></span><br><span class="line">pdbedit -a user1	#添加用户为samba的用户</span><br><span class="line">pdbedit -a user2	</span><br><span class="line"></span><br><span class="line">pdbedit -L	#列出所有的samba用户</span><br><span class="line"></span><br><span class="line">service smb restart	#重启samba服务</span><br></pre></td></tr></table></figure>
+<p>在windows主机上面打开浏览器或者资源管理器进行查看</p>
+</li>
+<li><p><strong>使用linux访问samba服务器</strong></p>
+<p>在另一台的linux的客户端c2主机上面进行操作</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">yum install -y samba-client	#安装samba客户端</span><br><span class="line"></span><br><span class="line">smbclient //IP/共享名 -U 用户名</span><br><span class="line">smbclient //10.11.53.133/myshare -U user1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>常用命令，使用help + 命令进行查看命令用法</span><br><span class="line">cd, ls, rm, pwd, tar, mkdir, chown, get, put</span><br><span class="line"><span class="meta">#</span>手动进行挂载</span><br><span class="line">mount -t cifs //10.11.53.133/myshare /mnt/smb -o username=user1,password=123456</span><br><span class="line"><span class="meta">#</span>在/etc/fstab上面进行挂载</span><br><span class="line">//10.11.53.133/myshare /mnt/smb cifs username=user1,password=123456 0 0</span><br><span class="line"></span><br><span class="line">file://10.11.53.133</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="linux挂载windows的共享目录"><a href="#linux挂载windows的共享目录" class="headerlink" title="linux挂载windows的共享目录"></a>linux挂载windows的共享目录</h2><ol>
+<li><p>要在linux系统执行以下命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y cifs-utils	#必须要安装这个组件，才可以完美支持</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用sbmclient来进行查看</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smbclient //192.168.2.103/share -U ruidong</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用mount进行挂载</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -t cifs //192.168.2.103/myshare /mnt/smb -o username=ruidong,password=rd920128</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/05/11/samba/" data-id="cjh19ad5p0003hwqx5c1dkt7x" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2018/05/11/Ubuntu/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/05/11/samba/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/11/Ubuntu/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/11/centos7__5/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/11/nginx配置详解/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/10/centos7__4/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 ZY<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

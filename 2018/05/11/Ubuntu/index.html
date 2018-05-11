@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ZY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="建议安装VMware Tools 12#教程https://jingyan.baidu.com/article/c275f6ba07e269e33d756714.html 改变分辨率命令 12345#打印显示器支持哪些分辨率xrandr#设置屏幕分辨率为1360x768，这是一次性命令，下次开机就没有了xrandr -s  1360x768_60.02#怎么解决，在系统设置的显示栏目里面重新设置并">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZY">
+<meta property="og:url" content="https://jyue0812.github.io/2018/05/11/Ubuntu/index.html">
+<meta property="og:site_name" content="ZY">
+<meta property="og:description" content="建议安装VMware Tools 12#教程https://jingyan.baidu.com/article/c275f6ba07e269e33d756714.html 改变分辨率命令 12345#打印显示器支持哪些分辨率xrandr#设置屏幕分辨率为1360x768，这是一次性命令，下次开机就没有了xrandr -s  1360x768_60.02#怎么解决，在系统设置的显示栏目里面重新设置并">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-11T01:04:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ZY">
+<meta name="twitter:description" content="建议安装VMware Tools 12#教程https://jingyan.baidu.com/article/c275f6ba07e269e33d756714.html 改变分辨率命令 12345#打印显示器支持哪些分辨率xrandr#设置屏幕分辨率为1360x768，这是一次性命令，下次开机就没有了xrandr -s  1360x768_60.02#怎么解决，在系统设置的显示栏目里面重新设置并">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="ZY" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">ZY</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jyue0812.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Ubuntu" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/11/Ubuntu/" class="article-date">
+  <time datetime="2018-05-11T01:00:46.743Z" itemprop="datePublished">2018-05-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>建议安装VMware Tools</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#教程</span></span><br><span class="line">https://jingyan.baidu.com/article/c275f6ba07e269e33d756714.html</span><br></pre></td></tr></table></figure>
+<p>改变分辨率命令</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#打印显示器支持哪些分辨率</span></span><br><span class="line">xrandr</span><br><span class="line"><span class="comment">#设置屏幕分辨率为1360x768，这是一次性命令，下次开机就没有了</span></span><br><span class="line">xrandr -s  <span class="number">1360</span>x768_60<span class="number">.02</span></span><br><span class="line"><span class="comment">#怎么解决，在系统设置的显示栏目里面重新设置并应用</span></span><br></pre></td></tr></table></figure>
+<p>使用管理员权限</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#命令</span></span><br><span class="line">sudo su </span><br><span class="line"><span class="comment">#输入密码的密码是自己的（在root没用设置密码的时候，如果root用户设置过密码以后我们需要使用root用户的密码）</span></span><br></pre></td></tr></table></figure>
+<p>Ubuntu16.04 系统错误报告屏蔽</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo rm /var/crash/*</span><br><span class="line">sudo gedit /etc/default/apport</span><br><span class="line"></span><br><span class="line">将enabled设置为<span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>ubuntu使用的apt而不是yum</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装vim</span></span><br><span class="line">apt -y install vim</span><br></pre></td></tr></table></figure>
+<p>Ubuntu16.04软件中心闪退</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get dist-upgrade</span><br><span class="line">sudo apt-get install --reinstall software-center</span><br></pre></td></tr></table></figure>
+<p>apt-get安装源替换清华大学的源</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#1、原文件重命名备份</span></span><br><span class="line">sudo mv /etc/apt/sources.list /etc/apt/source.list.back</span><br><span class="line"></span><br><span class="line"><span class="comment">#2、编辑源列表文件</span></span><br><span class="line">sudo gedit /etc/apt/sources.list</span><br><span class="line"></span><br><span class="line"><span class="comment">#3、用下面的文本作为内容</span></span><br><span class="line"></span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial universe</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates universe</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial multiverse</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates multiverse</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security universe</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security multiverse</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">4</span>、更新</span><br><span class="line"></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
+<p>ubuntu 重启网卡方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">查看网卡信息： ifconfig</span><br><span class="line">设定一个网卡IP：ifconfig eth1 <span class="number">192.168</span><span class="number">.1</span><span class="number">.10</span> netmask <span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span></span><br><span class="line">重启网卡使设定生效：sudo /etc/init.d/networking restart</span><br><span class="line">用ubuntu的系统——&gt;系统管理——&gt;网络的网络设置</span><br><span class="line">关闭网卡 ifdown eth0</span><br><span class="line">开启网卡 ifup eth0</span><br><span class="line">重启网卡，优点是可以指定网卡，不影响其他网络接口</span><br></pre></td></tr></table></figure>
+<p>ubuntu中开启、关闭防火墙</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、关闭ubuntu的防火墙 </span><br><span class="line">ufw disable</span><br><span class="line">开启防火墙</span><br><span class="line">ufw enable</span><br></pre></td></tr></table></figure>
+<p>配置ubuntu ssh远程登录</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1.</span>默认使用ubuntu用户登录，密码为服务器配置时设置的密码，可在重置密码中修改</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">2.</span>修改 root 密码</span><br><span class="line"></span><br><span class="line">[plain] view plain copy</span><br><span class="line">sudo passwd root  </span><br><span class="line"><span class="number">3.</span>修改配置文件</span><br><span class="line"></span><br><span class="line">[plain] view plain copy</span><br><span class="line">sudo gedit /etc/ssh/sshd_config  </span><br><span class="line">找到下面相关配置：</span><br><span class="line"></span><br><span class="line">[plain] view plain copy</span><br><span class="line"><span class="comment"># Authentication:  </span></span><br><span class="line">LoginGraceTime <span class="number">120</span>  </span><br><span class="line">PermitRootLogin prohibit-password  </span><br><span class="line">StrictModes yes  </span><br><span class="line">更改为：</span><br><span class="line"></span><br><span class="line">[plain] view plain copy</span><br><span class="line"><span class="comment"># Authentication:  </span></span><br><span class="line">LoginGraceTime <span class="number">120</span>  </span><br><span class="line"><span class="comment">#PermitRootLogin prohibit-password  </span></span><br><span class="line">PermitRootLogin yes  </span><br><span class="line">StrictModes yes  </span><br><span class="line"><span class="number">4.</span>重启ssh</span><br><span class="line"></span><br><span class="line">[plain] view plain copy</span><br><span class="line">sudo service ssh restart</span><br></pre></td></tr></table></figure>
+<p>安装JDK</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://blog.csdn.net/pucao_cug/article/details/68948639</span><br><span class="line">https://www.itbulu.com/python-pycharm.html</span><br></pre></td></tr></table></figure>
+<p>安装pycharm</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://jingyan.baidu.com/article/60ccbceb4e3b0e64cab19733.html</span><br></pre></td></tr></table></figure>
+<p>解决the system is running in low-graphics mode问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">打不开图形化，那么就进入命令行</span><br><span class="line">ctrl+alt+F1</span><br><span class="line">输入账号密码进入</span><br><span class="line"></span><br><span class="line">cd /etc/X11    </span><br><span class="line">sudo cp xorg.conf.failsafe xorg.conf   </span><br><span class="line">sudo reboot  </span><br><span class="line"></span><br><span class="line">现在可以进入图形化界面</span><br><span class="line"></span><br><span class="line">打开终端，输入：</span><br><span class="line">sudo apt-get install gdm </span><br><span class="line"></span><br><span class="line">gdm是图形化管理工具，在安装的时候学则gdm3</span><br><span class="line"></span><br><span class="line">rm -rf /etc/X11/xorg.conf</span><br><span class="line"></span><br><span class="line">sudo reboot</span><br></pre></td></tr></table></figure>
+<p>apt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">apt-cache search package 搜索软件包</span><br><span class="line"></span><br><span class="line">apt-cache show package  获取包的相关信息，如说明、大小、版本等</span><br><span class="line"></span><br><span class="line">sudo apt-get install package 安装包</span><br><span class="line"></span><br><span class="line">sudo apt-get install package --reinstall   重新安装包</span><br><span class="line"></span><br><span class="line">sudo apt-get -f install   修复安装</span><br><span class="line"></span><br><span class="line">sudo apt-get remove package 删除包</span><br><span class="line"></span><br><span class="line">sudo apt-get remove package --purge 删除包，包括配置文件等</span><br><span class="line"></span><br><span class="line">sudo apt-get update  更新源</span><br><span class="line"></span><br><span class="line">sudo apt-get upgrade 更新已安装的包</span><br><span class="line"></span><br><span class="line">sudo apt-get dist-upgrade 升级系统</span><br><span class="line"></span><br><span class="line">apt-cache depends package 了解使用该包依赖那些包</span><br><span class="line"></span><br><span class="line">apt-cache rdepends package 查看该包被哪些包依赖</span><br><span class="line"></span><br><span class="line">sudo apt-get build-dep package 安装相关的编译环境</span><br><span class="line"></span><br><span class="line">apt-get source package  下载该包的源代码</span><br><span class="line"></span><br><span class="line">sudo apt-get clean &amp;&amp; sudo apt-get autoclean 清理无用的包</span><br><span class="line"></span><br><span class="line">sudo apt-get check 检查是否有损坏的依赖</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/05/11/Ubuntu/" data-id="cjh19ad590000hwqxl2l6ai9r" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2018/05/11/samba/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2018/05/11/centos7__5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/05/11/samba/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/11/Ubuntu/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/11/centos7__5/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/11/nginx配置详解/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/10/centos7__4/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 ZY<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
