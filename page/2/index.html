@@ -62,6 +62,75 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-2018-04-19" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/04/19/2018-04-19/" class="article-date">
+  <time datetime="2018-04-19T09:51:12.845Z" itemprop="datePublished">2018-04-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>2018年4月19日</p>
+<h4 id="第0007题"><a href="#第0007题" class="headerlink" title="第0007题"></a>第0007题</h4><p>有个目录，里面是你自己写过的程序，统计一下你写过多少行代码。包括空行和注释，但是要分别列出来。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import glob</span><br><span class="line"></span><br><span class="line">path = glob.glob(&apos;d://exercises/banksys/*.py&apos;)</span><br><span class="line">for p in path:</span><br><span class="line">    with open(p, &apos;r&apos;, encoding=&quot;utf-8&quot;) as fr:</span><br><span class="line">        frs = fr.readlines()</span><br><span class="line">        count_space = 0</span><br><span class="line">        count_note = 0</span><br><span class="line">        for f in frs:</span><br><span class="line">            if f.strip().startswith(&quot;#&quot;):</span><br><span class="line">                count_note += 1</span><br><span class="line">            elif f.isspace():</span><br><span class="line">                count_space += 1</span><br><span class="line">    filename = p[22:]</span><br><span class="line">    print(&apos;文件%s共有%s行代码，其中%s行是空白行，其中%s行是注释&apos; %(filename, len(frs), count_space,count_note))</span><br></pre></td></tr></table></figure>
+<h4 id="第0008题"><a href="#第0008题" class="headerlink" title="第0008题"></a>第0008题</h4><p> 一个HTML文件，找出里面的正文。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">import urllib.request</span><br><span class="line"></span><br><span class="line">#爬取静态网页的源码</span><br><span class="line">def spider():</span><br><span class="line">    url = &quot;https://pypi.org/project/lxml/&quot;</span><br><span class="line">    headers = &#123;&quot;User-Agent&quot; : &quot;Mozilla/5.0 (Windows NT 6.1; WOW64)&quot;&#125;</span><br><span class="line">    request = urllib.request.Request(url, headers=headers)</span><br><span class="line">    response = urllib.request.urlopen(request)</span><br><span class="line">    content = response.read()</span><br><span class="line">    return content.decode(&apos;utf-8&apos;)</span><br><span class="line">html = spider()</span><br><span class="line"></span><br><span class="line">#解析文件</span><br><span class="line">def parse():</span><br><span class="line">    pattern = re.compile(r&apos;&lt;div\sclass=&quot;project-description&quot;&gt;(.*?)&lt;/div&gt;&apos;, re.S)</span><br><span class="line">    html_list = pattern.findall(html)</span><br><span class="line">    for hl in html_list:</span><br><span class="line">        write(hl.strip())</span><br><span class="line">#正文写入txt文件</span><br><span class="line">def write(item):</span><br><span class="line">    with open(&apos;d://code/zhengwen.txt&apos;, &apos;a&apos;) as f:</span><br><span class="line">        f.write(item)</span><br><span class="line"></span><br><span class="line">parse()</span><br></pre></td></tr></table></figure>
+<h4 id="今日总结"><a href="#今日总结" class="headerlink" title="今日总结"></a>今日总结</h4><ol>
+<li>上课学习网络编程的tcp，udp，socket写客户端，服务端</li>
+<li>课后在学爬虫</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/04/19/2018-04-19/" data-id="cjg6ckdb30000skqxl2qp0xxf" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2018-04-18" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/04/18/2018-04-18/" class="article-date">
+  <time datetime="2018-04-18T05:13:29.609Z" itemprop="datePublished">2018-04-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>2018年4月18日</p>
+<h4 id="第0006题"><a href="#第0006题" class="headerlink" title="第0006题"></a>第0006题</h4><p>你有一个目录，放了你一个月的日记，都是 txt，为了避免分词的问题，假设内容都是英文，请统计出你认为每篇日记最重要的词。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#读取目录下所有txt文件</span><br><span class="line">import glob</span><br><span class="line">path = glob.glob(&apos;mydiary/*.txt&apos;)</span><br><span class="line"></span><br><span class="line">#打开文章</span><br><span class="line">def openfile(path):</span><br><span class="line">    for p in path:</span><br><span class="line">        with open(p, &apos;r&apos;) as fr:</span><br><span class="line">            passage = fr.read().split(&apos; &apos;)</span><br><span class="line">            diary_name = str(p).lstrip(&apos;mydiary&apos;)[1:-4]</span><br><span class="line">        handle_passage(passage, diary_name)</span><br><span class="line"></span><br><span class="line">#对文章进行处理</span><br><span class="line">dic = &#123;&#125;</span><br><span class="line">def handle_passage(passage, diary_name):</span><br><span class="line">    for word2 in passage:</span><br><span class="line">        if word2 not in dic:</span><br><span class="line">            dic[word2] = 1</span><br><span class="line">        else:</span><br><span class="line">            dic[word2] += 1</span><br><span class="line"></span><br><span class="line">    # 对字典的value排序</span><br><span class="line">    dict = sorted(dic.items(), key=lambda d: d[1], reverse=True)</span><br><span class="line">    print(&apos;日记%s最重要的词是%s&apos; %(diary_name, dict[0][0]))</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">     openfile(path)</span><br></pre></td></tr></table></figure>
+<h4 id="今日总结"><a href="#今日总结" class="headerlink" title="今日总结"></a>今日总结</h4><ol>
+<li>课上学习正则表达式</li>
+<li>学爬虫，用爬虫写爬去内涵段子的小练习 链接：<a href="https://github.com/Jyue0812/exercises" target="_blank" rel="noopener">https://github.com/Jyue0812/exercises</a></li>
+<li>练习题中学会了对字典的key或value值排序，方法如下：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sorted(dic.iteritems(), key=lambda d:d[1], reverse = False )</span><br><span class="line"></span><br><span class="line">#1. 把dic.iteritems()里的元祖传进来</span><br><span class="line">#2. 如果想按照value来进行排序   ==》   key=lambda d:d[1]就可以了</span><br><span class="line">#3. 如果想按照key来进行排序   ==》   key=lambda d:d[0]就可以了</span><br><span class="line">#4. reverse = False(True) 是指是否打开反方向排序</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/04/18/2018-04-18/" data-id="cjg4n7y6f00006kqxpl95tzem" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-2018-04-17" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/04/17/2018-04-17/" class="article-date">
@@ -247,6 +316,14 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/05/10/centos7__4/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/10/centos6.8/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/05/09/centos7__3/">(no title)</a>
           </li>
         
@@ -256,14 +333,6 @@
         
           <li>
             <a href="/blog/2018/05/08/python3.6编译安装/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/07/centos7__1/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/04/28/python基础复习/">(no title)</a>
           </li>
         
       </ul>
