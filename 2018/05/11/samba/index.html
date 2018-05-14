@@ -138,7 +138,7 @@
 </li>
 <li><p><strong>使用linux访问samba服务器</strong></p>
 <p>在另一台的linux的客户端c2主机上面进行操作</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">yum install -y samba-client	#安装samba客户端</span><br><span class="line"></span><br><span class="line">smbclient //IP/共享名 -U 用户名</span><br><span class="line">smbclient //10.11.53.133/myshare -U user1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>常用命令，使用help + 命令进行查看命令用法</span><br><span class="line">cd, ls, rm, pwd, tar, mkdir, chown, get, put</span><br><span class="line"><span class="meta">#</span>手动进行挂载</span><br><span class="line">mount -t cifs //10.11.53.133/myshare /mnt/smb -o username=user1,password=123456</span><br><span class="line"><span class="meta">#</span>在/etc/fstab上面进行挂载</span><br><span class="line">//10.11.53.133/myshare /mnt/smb cifs username=user1,password=123456 0 0</span><br><span class="line"></span><br><span class="line">file://10.11.53.133</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">yum install -y samba-client	#安装samba客户端</span><br><span class="line"></span><br><span class="line">smbclient //IP/共享名 -U 用户名</span><br><span class="line">smbclient //10.11.53.133/myshare -U user1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">常用命令，使用<span class="built_in">help</span> + 命令进行查看命令用法</span></span><br><span class="line">cd, ls, rm, pwd, tar, mkdir, chown, get, put</span><br><span class="line"><span class="meta">#</span><span class="bash">手动进行挂载</span></span><br><span class="line">mount -t cifs //10.11.53.133/myshare /mnt/smb -o username=user1,password=123456</span><br><span class="line"><span class="meta">#</span><span class="bash">在/etc/fstab上面进行挂载</span></span><br><span class="line">//10.11.53.133/myshare /mnt/smb cifs username=user1,password=123456 0 0</span><br><span class="line"></span><br><span class="line">file://10.11.53.133</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <h2 id="linux挂载windows的共享目录"><a href="#linux挂载windows的共享目录" class="headerlink" title="linux挂载windows的共享目录"></a>linux挂载windows的共享目录</h2><ol>
@@ -155,7 +155,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jyue0812.github.io/2018/05/11/samba/" data-id="cjh19ad5p0003hwqx5c1dkt7x" class="article-share-link">Share</a>
+      <a data-url="https://jyue0812.github.io/2018/05/11/samba/" data-id="cjh5njvqb000jzsqxn85guapn" class="article-share-link">Share</a>
       
       
     </footer>
@@ -164,8 +164,17 @@
     
 <nav id="article-nav">
   
+    <a href="/blog/2018/05/11/Ubuntu/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
   
-    <a href="/blog/2018/05/11/Ubuntu/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/blog/2018/05/11/nginx配置详解/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title"></div>
     </a>
@@ -204,19 +213,19 @@
       <ul>
         
           <li>
-            <a href="/blog/2018/05/11/samba/">(no title)</a>
-          </li>
-        
-          <li>
             <a href="/blog/2018/05/11/Ubuntu/">(no title)</a>
           </li>
         
           <li>
-            <a href="/blog/2018/05/11/centos7__5/">(no title)</a>
+            <a href="/blog/2018/05/11/samba/">(no title)</a>
           </li>
         
           <li>
             <a href="/blog/2018/05/11/nginx配置详解/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/11/centos7__5/">(no title)</a>
           </li>
         
           <li>
