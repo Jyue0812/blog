@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ZY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#第十二章  ##【8】对序列的文件操作:泡菜（pickle） 文件的写入只能写入普通的字符，对于list、tuple、dict、set这些类型无法写入，所以只能使用二进制写入，但是‘wb’使用了以后一直在报错TypeError: write() argument must be str, not tuple 那怎么办： python给我们提供了pickle模块,它几乎可以把所有python的对象">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZY">
+<meta property="og:url" content="https://jyue0812.github.io/2018/05/21/python基础8/index.html">
+<meta property="og:site_name" content="ZY">
+<meta property="og:description" content="#第十二章  ##【8】对序列的文件操作:泡菜（pickle） 文件的写入只能写入普通的字符，对于list、tuple、dict、set这些类型无法写入，所以只能使用二进制写入，但是‘wb’使用了以后一直在报错TypeError: write() argument must be str, not tuple 那怎么办： python给我们提供了pickle模块,它几乎可以把所有python的对象">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-01-31T06:08:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ZY">
+<meta name="twitter:description" content="#第十二章  ##【8】对序列的文件操作:泡菜（pickle） 文件的写入只能写入普通的字符，对于list、tuple、dict、set这些类型无法写入，所以只能使用二进制写入，但是‘wb’使用了以后一直在报错TypeError: write() argument must be str, not tuple 那怎么办： python给我们提供了pickle模块,它几乎可以把所有python的对象">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="ZY" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">ZY</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jyue0812.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python基础8" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/21/python基础8/" class="article-date">
+  <time datetime="2018-05-21T01:01:40.804Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#第十二章</p>
+<hr>
+<p>##【8】对序列的文件操作:泡菜（pickle）</p>
+<p>文件的写入只能写入普通的字符，对于list、tuple、dict、set这些类型无法写入，所以只能使用二进制写入，但是‘wb’使用了以后一直在报错<code>TypeError: write() argument must be str, not tuple</code></p>
+<p>那怎么办：</p>
+<p>python给我们提供了pickle模块,它几乎可以把所有python的对象转化为二进制的形式存放，这个过程称为picking，那么二进制转换为对象就是unpicking.</p>
+<p>python的pickle模块实现了基本的数据序列和反序列化。通过pickle模块的序列化操作我们能够将程序中运行的对象信息保存到文件中去，永久存储；通过pickle模块的反序列化操作，我们能够从文件中创建上一次程序保存的对象。</p>
+<p>基本接口：</p>
+<p>pickle.dump(obj, file, [,protocol])</p>
+<p>注解：将对象obj保存到文件file中去。　　　　　</p>
+<p>protocol为序列化使用的协议版本，0：ASCII协议，所序列化的对象使用可打印的ASCII码表示；1：老式的二进制协议；2：2.3版本引入的新二进制协议，较以前的更高效。其中协议0和1兼容老版本的python。protocol默认值为0。</p>
+<p>file：对象保存到的类文件对象。file必须有write()接口， file可以是一个以’w’方式打开的文件或者一个StringIO对象或者其他任何实现write()接口的对象。如果protocol&gt;=1，文件对象需要是二进制模式打开的。</p>
+<p>pickle.load(file)</p>
+<p>注解：从file中读取一个字符串，并将它重构为原来的python对象。</p>
+<p>file:类文件对象，有read()和readline()接口。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> pickle   <span class="comment">#引入数据持久性模块</span></span><br><span class="line"></span><br><span class="line">myList = (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="string">"sunck is a good man"</span>)</span><br><span class="line">path = <span class="string">r"C:\Users\xlg\Desktop\Python-1704\day08\1-文件读写\file6.txt"</span></span><br><span class="line">f = open(path, <span class="string">"wb"</span>)</span><br><span class="line">pickle.dump(myList, f)</span><br><span class="line">f.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#读取</span></span><br><span class="line">f1 = open(path, <span class="string">"rb"</span>)</span><br><span class="line">tempList= pickle.load(f1)</span><br><span class="line">print(tempList)</span><br><span class="line">f1.close()</span><br></pre></td></tr></table></figure>
+<p>###【9】编码和解码</p>
+<p>如果中文字符在写入文件的时候没有设置<code>utf-8</code>或者<code>gbk</code>、<code>gb2312</code>等中文字符集，那么读取的时候就是2进制的。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">path = <span class="string">'wdemo.txt'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(path, <span class="string">"wb"</span>) <span class="keyword">as</span> f1:</span><br><span class="line">    str = <span class="string">"你好上海，你好千锋"</span></span><br><span class="line">    f1.write(str.encode(<span class="string">"utf-8"</span>)) </span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(path, <span class="string">"rb"</span>) <span class="keyword">as</span> f2:</span><br><span class="line">    data = f2.read()</span><br><span class="line">    print(data)</span><br><span class="line">    print(type(data))</span><br><span class="line">    newData = data.decode(<span class="string">"utf-8"</span>)</span><br><span class="line">    print(newData)</span><br><span class="line">    print(type(newData))</span><br></pre></td></tr></table></figure></p>
+<p>###【10】文件系统（os模块）</p>
+<p>接下来我们讲一个Python里面十分有用的模块，什么是模块？其实我们每一个.py的文件都是一个模块。python自身带有非常多使用的模块，在日常编程中，如果能够熟练地掌握它们，将事半功倍。</p>
+<p>首先要介绍的高大上的OS模块，OS就是Operating System的缩写，意思是操作系统。很多的文件系统的访问都是通过OS模块来实现的。我们所知道的windows、Mac OS、UNIX、Linux等,对于这些系统的底层实现起来也是不一样的，因此你就需要考虑用到哪个模块了。</p>
+<p>但是python是跨平台的语言，也就是说，同样的源码在不同的操作系统不需要修改同样可以实现。有了OS模块，不需要关心什么操作系统下使用什么模块，OS会帮你选择正确的模块并调用。</p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>使用方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>os.getcwd()</td>
+<td>获得当前工作目录</td>
+</tr>
+<tr>
+<td>os.curdir</td>
+<td>返回当前目录（’.’)</td>
+</tr>
+<tr>
+<td>os.environ</td>
+<td>获取当前环境变量</td>
+</tr>
+<tr>
+<td>os.environ.get(path)</td>
+<td>获取指定的环境变量</td>
+</tr>
+<tr>
+<td>os.listdir(path)：</td>
+<td>列出dirname下的目录和文件</td>
+</tr>
+<tr>
+<td>os.mkdir(path):</td>
+<td>创建单层目录，如果目录已经存在抛出异常</td>
+</tr>
+<tr>
+<td>os.makedirs(.path)</td>
+<td>递归创建多级目录，如果目录已经存在抛出异常（E:\a\b和E:\a\c不会冲突)</td>
+</tr>
+<tr>
+<td>os.remove(path)</td>
+<td>删除文件</td>
+</tr>
+<tr>
+<td>os.rmdir(path)</td>
+<td>删除单层目录，如果目录非空则抛出异常</td>
+</tr>
+<tr>
+<td>os.removedirs(path)</td>
+<td>递归删除目录，从子目录到父目录逐个删除，遇到目录非空则抛出异常</td>
+</tr>
+<tr>
+<td>os.rename(new,old)</td>
+<td>将文件的old重命名为new</td>
+</tr>
+<tr>
+<td>os.system(command)</td>
+<td>运行系统的shell命令</td>
+</tr>
+<tr>
+<td>以下是：</td>
+<td>支持路径操作中常用到的一些定义支持所有平台</td>
+</tr>
+<tr>
+<td>os.curdir</td>
+<td>指代当前目录（’.’）</td>
+</tr>
+<tr>
+<td>os.pardir</td>
+<td>指代上一级目录(‘..’)</td>
+</tr>
+<tr>
+<td>os.sep</td>
+<td>输出操作系统特定的路径分隔符（windons下是\，linux下是/）</td>
+</tr>
+<tr>
+<td>os.linesp</td>
+<td>当前平台使用的终止符（（windons下是\r\n，linux下是\n）</td>
+</tr>
+<tr>
+<td>os.name</td>
+<td>指定当前的操作系统（包括’posix’,’nt’,’mac’,’os2’,’ce’,’java’)</td>
+</tr>
+</tbody>
+</table>
+<p>####1.getcwd()<br>得当前工作目录  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">print(os.getcwd())</span><br><span class="line"></span><br><span class="line"><span class="comment">#C:\\Python36</span></span><br></pre></td></tr></table></figure>
+<p>####2.chdir()<br>改变工作目录</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.chdir(<span class="string">'C:\\Python27'</span>)</span><br><span class="line">print(os.getcwd())</span><br><span class="line"></span><br><span class="line"><span class="comment">#C:\\Python27</span></span><br></pre></td></tr></table></figure>
+<p>####3、system()<br>运行系统命令</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">'clear'</span>)  <span class="comment">#清理命令行屏幕上的所有过去输入的信息</span></span><br></pre></td></tr></table></figure>
+<p>####4、walk()<br>非常有用的函数，可以用来指定遍历指定路径下的所有子目录，并返回一个三元祖的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> os.walk(<span class="string">'/Users/ruidong/www'</span>):</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+<p>####5.os.path模块<br>这是另一个强大的模块，它可以完成一些路径操作。</p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>使用方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>os.path.abspath(path)</td>
+<td>#返回绝对路径</td>
+</tr>
+<tr>
+<td>os.path.basename(path)</td>
+<td>#返回文件名</td>
+</tr>
+<tr>
+<td>os.path.dirname(path)</td>
+<td>#返回文件路径</td>
+</tr>
+<tr>
+<td>os.path.join(path1[, path2[, …]])</td>
+<td>#把目录和文件名合成一个路径</td>
+</tr>
+<tr>
+<td>os.path.split(path)</td>
+<td>#把路径分割成dirname和basename，返回一个元组</td>
+</tr>
+<tr>
+<td>os.path.splitext(path)</td>
+<td>#分割路径，返回路径名和文件扩展名的元组</td>
+</tr>
+<tr>
+<td>os.path.getsize(path)</td>
+<td>#返回文件大小，如果文件不存在就返回错误</td>
+</tr>
+<tr>
+<td>os.path.getatime(path)</td>
+<td>#返回最后一次访问的时间。</td>
+</tr>
+<tr>
+<td>os.path.getctime(path)</td>
+<td>#返回文件的创建时间</td>
+</tr>
+<tr>
+<td>os.path.getmtime(path)</td>
+<td>#返回在此path下最后一次修改的时间。</td>
+</tr>
+<tr>
+<td>以下函数返回的是</td>
+<td>True或False</td>
+</tr>
+<tr>
+<td>os.path.exists(path)</td>
+<td>#路径存在则返回True,否则回False</td>
+</tr>
+<tr>
+<td>os.path.samefile(path1, path2)</td>
+<td>#判断两个变量是不是指向同一个文件</td>
+</tr>
+<tr>
+<td>os.path.isabs(path)</td>
+<td>#判断指定路径是否是绝对路径</td>
+</tr>
+<tr>
+<td>os.path.isdir(path)</td>
+<td>#判断指定路径是否存在且是个目录</td>
+</tr>
+<tr>
+<td>os.path.isfile(path)</td>
+<td>#判断指定路径是否存在且是个文件</td>
+</tr>
+<tr>
+<td>os.path.islink(path)</td>
+<td>#判断指定路径是否存在且是一个符号链接</td>
+</tr>
+<tr>
+<td>os.path.ismount(path)</td>
+<td>#判断指定目录是否存在且是个挂载点</td>
+</tr>
+</tbody>
+</table>
+<p>#####os.path.join（）</p>
+<p>这里的join和BIF里面的join不是一回事，它是将路径名和文件名组合成一个完整的路径。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">_path = <span class="string">r'/Users/ruidong/www'</span></span><br><span class="line"></span><br><span class="line">_file = <span class="string">r'demo.txt'</span></span><br><span class="line"></span><br><span class="line">final_path = os.path.join(_path,_file)</span><br><span class="line"></span><br><span class="line">print(final_path)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#/Users/ruidong/www/demo.txt</span></span><br></pre></td></tr></table></figure>
+<p>####split()和splitext()<br>split()和splitext()函数都用于分割路劲，split()函数分割路径和文件名，而splitext()用于分割文件名和后缀名。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">_path = <span class="string">r'/Users/ruidong/www/demo.txt'</span></span><br><span class="line"></span><br><span class="line">print(os.path.split(_path))</span><br><span class="line">print(os.path.splitext(_path))</span><br><span class="line"></span><br><span class="line"><span class="comment">#('/Users/ruidong/www', 'demo.txt')</span></span><br><span class="line"><span class="comment">#('/Users/ruidong/www/demo', '.txt')</span></span><br></pre></td></tr></table></figure>
+<p>###【11】栈和队列</p>
+<p>collections是Python内建的一个集合模块，提供了许多有用的集合类。</p>
+<p>使用list存储数据时，按索引访问元素很快，但是插入和删除元素就很慢了，因为list是线性存储，数据量大的时候，插入和删除效率很低。</p>
+<p>deque是为了高效实现插入和删除操作的双向列表，适合用于队列和栈：</p>
+<p>####栈</p>
+<p>栈（stack）又名堆栈，它是一种运算受限的线性表。其限制是仅允许在表的一端进行插入和删除运算。这一端被称为栈顶，相对地，把另一端称为栈底。向一个栈插入新元素又称作进栈、入栈或压栈，它是把新元素放到栈顶元素的上面，使之成为新的栈顶元素；从一个栈删除元素又称作出栈或退栈，它是把栈顶元素删除掉，使其相邻的元素成为新的栈顶元素。</p>
+<p>栈的原则就是先进后出</p>
+<image src="images/stack.jpg">
+
+<p>我们用一个列表来模拟压栈：</p>
+<p>我们列表的最后一个元素就是栈顶</p>
+<p>第一个元素就是栈底</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#用队列集合模拟栈运行</span></span><br><span class="line"><span class="keyword">import</span> collections</span><br><span class="line"><span class="comment">#创建一个队列 ,用于模拟栈的运行</span></span><br><span class="line">queue = collections.deque()</span><br><span class="line">print(queue)</span><br><span class="line"></span><br><span class="line"><span class="comment">#进栈(存数据)</span></span><br><span class="line">queue.append(<span class="string">"A"</span>)</span><br><span class="line">print(queue)</span><br><span class="line">queue.append(<span class="string">"B"</span>)</span><br><span class="line">print(queue)</span><br><span class="line">queue.append(<span class="string">"C"</span>)</span><br><span class="line">print(queue)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#出栈(取数据)</span></span><br><span class="line">res1 = queue.pop()</span><br><span class="line">print(<span class="string">"res1 ="</span>, res1)</span><br><span class="line">print(queue)</span><br><span class="line">res2 = queue.pop()</span><br><span class="line">print(<span class="string">"res2 ="</span>, res2)</span><br><span class="line">print(queue)</span><br><span class="line">res3 = queue.pop()</span><br><span class="line">print(<span class="string">"res3 ="</span>, res3)</span><br><span class="line">print(queue)</span><br></pre></td></tr></table></figure>
+<p>####队列</p>
+<p>队列是一种特殊的线性表，特殊之处在于它只允许在表的前端（front）进行删除操作，而在表的后端（rear）进行插入操作，和栈一样，队列是一种操作受限制的线性表。进行插入操作的端称为队尾，进行删除操作的端称为队头。</p>
+<p>它的原则是先进先出</p>
+<image src="images/deque.png">
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> collections</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建一个队列</span></span><br><span class="line">queue = collections.deque()</span><br><span class="line">print(queue)</span><br><span class="line"></span><br><span class="line"><span class="comment">#进队(存数据)</span></span><br><span class="line">queue.append(<span class="string">"A"</span>)</span><br><span class="line">print(queue)</span><br><span class="line">queue.append(<span class="string">"B"</span>)</span><br><span class="line">print(queue)</span><br><span class="line">queue.append(<span class="string">"C"</span>)</span><br><span class="line">print(queue)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#出队(取数据)</span></span><br><span class="line">res1 = queue.popleft()</span><br><span class="line">print(<span class="string">"res1 ="</span>, res1)</span><br><span class="line">print(queue)</span><br><span class="line">res2 = queue.popleft()</span><br><span class="line">print(<span class="string">"res2 ="</span>, res2)</span><br><span class="line">print(queue)</span><br><span class="line">res3 = queue.popleft()</span><br><span class="line">print(<span class="string">"res3 ="</span>, res3)</span><br><span class="line">print(queue)</span><br></pre></td></tr></table></figure>
+<p>我们的栈和队列了其实就是学习一种思想，包裹之前的递归都是一中程序的思想</p>
+<p>####课堂小案例，结合文件</p>
+<p>遍历目录</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getALlDir</span><span class="params">(path,sp = <span class="string">'  '</span>)</span>:</span></span><br><span class="line">    filesList = os.listdir(path)</span><br><span class="line">    sp += <span class="string">'  '</span></span><br><span class="line">    <span class="keyword">for</span> fileName <span class="keyword">in</span> filesList:</span><br><span class="line">        filesAbsPath = os.path.join(path, fileName)</span><br><span class="line">        <span class="keyword">if</span> os.path.isdir(filesAbsPath):</span><br><span class="line">            print(sp + <span class="string">'目录：'</span>,fileName)</span><br><span class="line">            getALlDir(filesAbsPath,sp)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(sp + <span class="string">'文件：'</span>,fileName)</span><br><span class="line"></span><br><span class="line">getALlDir(<span class="string">r'/Users/ruidong/PycharmProjects'</span>)</span><br></pre></td></tr></table></figure>
+<p>##第十三章</p>
+<p>###【1】时间可以改变一切：time模块</p>
+<hr>
+<p>在我们平常的代码中，经常需要和时间打交道。在Python中，与时间处理相关的模块有：time、datetime以及calendar。学会计算时间，对程序的调优非常重要，可以在程序中狂打时间戳，来具体判断程序中哪一块耗时最多，从而找到程序调优的重心处。这里先来讲一个time模块。<br>在开始前，先说明几点：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、在Python中，通常有这几种方式表示时间：时间戳、格式化的时间字符串、元组（struct_time 共九种元素）。由于Python的time模块主要是调用C库实现的，所以在不同的平台可能会有所不同。</span><br><span class="line"><span class="number">2</span>、时间戳（timestamp）的方式：时间戳表示是从<span class="number">1970</span>年<span class="number">1</span>月<span class="number">1</span>号 <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>开始到现在按秒计算的偏移量。查看一下type(time.time())的返回值类型，可以看出是float类型。返回时间戳的函数主要有time()、clock()等。</span><br><span class="line"><span class="number">3</span>、UTC（世界协调时），就是格林威治天文时间，也是世界标准时间。在中国为UTC+<span class="number">8</span>。DST(夏令时)：是一种节约能源而人为规定时间制度，在夏季调快<span class="number">1</span>个小时。</span><br><span class="line"><span class="number">4</span>、元组方式：struct_time元组共有<span class="number">9</span>个元素，返回struct_time的函数主要有gmtime()，localtime()，strptime()。</span><br></pre></td></tr></table></figure>
+<p>使用该模块中的函数时，必须先引入该模块（import time） </p>
+<p>####1、时间戳<br>python中的时间戳是以秒为单位的，它是一个浮点类型的数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment">#时间戳</span></span><br><span class="line">print(time.time())</span><br><span class="line"><span class="comment">#毫秒时间戳，</span></span><br><span class="line">print(time.time() * <span class="number">1000</span>)</span><br><span class="line"><span class="comment">#毫秒时间戳取整</span></span><br><span class="line">print(int(time.time() * <span class="number">1000</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#1510884320.13084</span></span><br><span class="line"><span class="comment">#1510884320130.936</span></span><br><span class="line"><span class="comment">#1510884320130</span></span><br></pre></td></tr></table></figure>
+<p>####2、struct_time元祖结构格式<br>time.localtime(secs)<br>将一个时间戳转换为当前时区的struct_time，即时间数组格式的时间</p>
+<p>如果secs参数未提供，则以当前时间为准（即会默认调用time.time()）。 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#没有传入参数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">print(time.localtime())</span><br><span class="line"></span><br><span class="line"><span class="comment">#time.struct_time(tm_year=2017, tm_mon=11, tm_mday=17, tm_hour=10, tm_min=14, tm_sec=2, tm_wday=4, tm_yday=321, tm_isdst=0)</span></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line"><span class="comment">#传入参数的</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">out_time = time.time() - (<span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">365</span> *<span class="number">2</span>)</span><br><span class="line">print(int(out_time))</span><br><span class="line">print(time.localtime(<span class="number">1447812614</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#1447812789</span></span><br><span class="line"><span class="comment">#time.struct_time(tm_year=2015, tm_mon=11, tm_mday=18, tm_hour=10, tm_min=10, tm_sec=14, tm_wday=2, tm_yday=322, tm_isdst=0)</span></span><br></pre></td></tr></table></figure>
+<p>####3、将一个时间戳转换为UTC时区的struct_time </p>
+<p>time.gmtime([secs]) </p>
+<p>time.gmtime() 函数将一个时间戳转换为UTC时区（0时区）的struct_time，可选的参数sec表示从1970-1-1 00:00:00以来的秒数。其默认值为time.time()，函数返回time.struct_time类型的对象。（struct_time是在time模块中定义的表示时间的对象）。<br>如果secs参数未提供，则以当前时间为准。 </p>
+<p>sec – 转换为time.struct_time类型的对象的秒数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#注意它是0时区，就是说比我们的时间少了8个小时</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">print(time.gmtime())</span><br><span class="line"></span><br><span class="line"><span class="comment">#time.struct_time(tm_year=2017, tm_mon=11, tm_mday=17, tm_hour=2, tm_min=18, tm_sec=12, tm_wday=4, tm_yday=321, tm_isdst=0)</span></span><br></pre></td></tr></table></figure>
+<p>####4、time.mktime(t)：将一个struct_time转化为时间戳 </p>
+<p>time.mktime(t) 函数执行与gmtime(), localtime()相反的操作，它接收struct_time对象作为参数,返回用秒数表示时间的浮点数。<br>如果输入的值不是一个合法的时间，将触发 OverflowError 或 ValueError。<br>参数：</p>
+<p>t – 结构化的时间或者完整的9位元组元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">print(time.mktime(time.localtime()))</span><br><span class="line"></span><br><span class="line"><span class="comment">#1510885313.0</span></span><br></pre></td></tr></table></figure>
+<p>####5、让程序睡一会</p>
+<p>time.sleep(secs)：线程推迟指定的时间运行<br>线程睡眠指定时间，单位为妙。</p>
+<p>secs：为数值类型的整数或浮点数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">6</span>):</span><br><span class="line">    print(i)</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#5秒以后触发</span></span><br><span class="line">print(<span class="string">"节日快乐"</span>)</span><br></pre></td></tr></table></figure>
+<p>####6、time.clock()<br>这个函数， 函数以浮点数计算的秒数返回当前的CPU时间。用来衡量不同程序的耗时，比time.time()更有用。在不同的系统上含义不同。在NUix系统上，它返回的是“进程时间”，它是用妙表示的浮点数（时间戳）。而在Windows中，第一次调用，返回的是进程运行时实际时间。而第二次之后的调用是自第一次调用以后到现在的运行时间。<br>返回值<br>该函数有两个功能：</p>
+<p>（1）在第一次调用的时候，返回的是程序运行的实际时间；<br>（2）第二次之后的调用，返回的是自第一次调用后,到这次调用的时间间隔在win32系统下，这个函数返回的是真实时间（wall time），而在Unix/Linux下返回的是CPU时间。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">print(time.clock())</span><br><span class="line">print(time.clock())</span><br><span class="line"></span><br><span class="line"><span class="comment">#0.066535</span></span><br><span class="line"><span class="comment">#0.0666</span></span><br></pre></td></tr></table></figure>
+<p>####7、time.asctime( [t] )<br>把一个表示时间的元组或者struct_time表示为 ‘Sun Aug 23 14:31:59 2015’ 这种形式。如果没有给参数，会将time.localtime()作为参数传入。<br>参数：</p>
+<p>t – 9个元素的元组或者通过函数 gmtime() 或 localtime() 返回的时间值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">local = time.localtime()</span><br><span class="line">asc = time.asctime(local)</span><br><span class="line"></span><br><span class="line">print(asc)</span><br><span class="line"></span><br><span class="line">Fri Nov <span class="number">17</span> <span class="number">10</span>:<span class="number">41</span>:<span class="number">46</span> <span class="number">2017</span></span><br></pre></td></tr></table></figure>
+<p>####8、time.ctime([secs])<br>把一个时间戳（按秒计算的浮点数）转化为time.asctime()的形式。如果未指定参数，将会默认使用time.time()作为参数。它的作用相当于time.asctime(time.localtime(secs))<br>参数：</p>
+<p>secs – 要转换为字符串时间的秒数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">print(time.ctime())</span><br><span class="line"></span><br><span class="line"><span class="comment">#Fri Nov 17 10:44:43 2017</span></span><br></pre></td></tr></table></figure>
+<p>####9、格式化时间<br>time.strftime( format [, t] ) </p>
+<p>返回字符串表示的当地时间。 </p>
+<p>把一个代表时间的元组或者struct_time（如由time.localtime()和time.gmtime()返回）转化为格式化的时间字符串，格式由参数format决定。如果未指定，将传入time.localtime()。如果元组中任何一个元素越界，就会抛出ValueError的异常。函数返回的是一个可读表示的本地时间的字符串。<br>参数：</p>
+<p>format：格式化字符串</p>
+<p>t ：可选的参数是一个struct_time对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">%a  本地星期名称的简写（如星期四为Thu）      </span><br><span class="line">%A  本地星期名称的全称（如星期四为Thursday）      </span><br><span class="line">%b  本地月份名称的简写（如八月份为agu）    </span><br><span class="line">%B  本地月份名称的全称（如八月份为august）       </span><br><span class="line">%c  本地相应的日期和时间的字符串表示（如：<span class="number">15</span>/<span class="number">08</span>/<span class="number">27</span> <span class="number">10</span>:<span class="number">20</span>:<span class="number">06</span>）       </span><br><span class="line">%d  一个月中的第几天（<span class="number">01</span> - <span class="number">31</span>）  </span><br><span class="line">%f  微秒（范围<span class="number">0.999999</span>）    </span><br><span class="line">%H  一天中的第几个小时（<span class="number">24</span>小时制，<span class="number">00</span> - <span class="number">23</span>）       </span><br><span class="line">%I  第几个小时（<span class="number">12</span>小时制，<span class="number">0</span> - <span class="number">11</span>）       </span><br><span class="line">%j  一年中的第几天（<span class="number">001</span> - <span class="number">366</span>）     </span><br><span class="line">%m  月份（<span class="number">01</span> - <span class="number">12</span>）    </span><br><span class="line">%M  分钟数（<span class="number">00</span> - <span class="number">59</span>）       </span><br><span class="line">%p  本地am或者pm的相应符      </span><br><span class="line">%S  秒（<span class="number">00</span> - <span class="number">61</span>）    </span><br><span class="line">%U  一年中的星期数。（<span class="number">00</span> - <span class="number">53</span>星期天是一个星期的开始。）第一个星期天之    前的所有天数都放在第<span class="number">0</span>周。     </span><br><span class="line">%w  一个星期中的第几天（<span class="number">0</span> - <span class="number">6</span>，<span class="number">0</span>是星期天）    </span><br><span class="line">%W  和%U基本相同，不同的是%W以星期一为一个星期的开始。    </span><br><span class="line">%x  本地相应日期字符串（如<span class="number">15</span>/<span class="number">08</span>/<span class="number">01</span>）     </span><br><span class="line">%X  本地相应时间字符串（如<span class="number">08</span>:<span class="number">08</span>:<span class="number">10</span>）     </span><br><span class="line">%y  去掉世纪的年份（<span class="number">00</span> - <span class="number">99</span>）两个数字表示的年份       </span><br><span class="line">%Y  完整的年份（<span class="number">4</span>个数字表示年份）</span><br><span class="line">%z  与UTC时间的间隔（如果是本地时间，返回空字符串）</span><br><span class="line">%Z  时区的名字（如果是本地时间，返回空字符串）       </span><br><span class="line">%%  ‘%’字符</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">local_time = time.localtime()</span><br><span class="line"></span><br><span class="line">format_time = time.strftime(<span class="string">'%Y年%m月%d日 %H：%M：%S'</span>,local_time)</span><br><span class="line"></span><br><span class="line">print(format_time)</span><br><span class="line"><span class="comment">#注意月份是小m（%m），分钟是大M（%M）。年是大写</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#2017年11月17日 10：51：10</span></span><br></pre></td></tr></table></figure>
+<p>你也可以玩拼接</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">local_time = time.localtime()</span><br><span class="line"></span><br><span class="line">print(str(local_time.tm_year) + <span class="string">"年"</span> + str(local_time.tm_mon) + <span class="string">"月"</span> + str(local_time.tm_mday) + <span class="string">"日"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#2017年11月17日</span></span><br></pre></td></tr></table></figure>
+<p>获取当前时间的时分秒</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">local_time = time.localtime()</span><br><span class="line"></span><br><span class="line">print(time.strftime(<span class="string">'%H:%M:%S'</span>,local_time))</span><br><span class="line"></span><br><span class="line"><span class="comment">#10:55:44</span></span><br></pre></td></tr></table></figure>
+<p>获取当前时间的格式化时间</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">t = time.localtime()</span><br><span class="line"></span><br><span class="line">print(time.strftime(<span class="string">'%F %T'</span>,t)) <span class="comment">#简写</span></span><br><span class="line">print(time.strftime(<span class="string">'%Y-%m-%d %H:%M:%S %p'</span>,t)) <span class="comment"># am 还是 pm</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#2017-11-17 11:23:57</span></span><br><span class="line"><span class="comment">#2017-11-17 11:23:57 AM</span></span><br></pre></td></tr></table></figure>
+<p>####10、将格式字符串转化成struct_time.</p>
+<p>time.strptime(string[,format]) </p>
+<p>该函数是time.strftime()函数的逆操作。time strptime() 函数根据指定的格式把一个时间字符串解析为时间元组。所以函数返回的是struct_time对象。<br>参数：</p>
+<p>string ：时间字符串<br>format：格式化字符串</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> time,datetime</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建一个时间字符串变量stime</span></span><br><span class="line">stime = <span class="string">"2015-08-24 13:01:30"</span></span><br><span class="line"></span><br><span class="line">formattime = time.strptime(stime,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line"></span><br><span class="line">print(formattime)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#遍历返回的时间元组序列</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> formattime :</span><br><span class="line">    print(i,end=<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#time.struct_time(tm_year=2015, tm_mon=8, tm_mday=24, tm_hour=13, tm_min=1, tm_sec=30, tm_wday=0, tm_yday=236, tm_isdst=-1)</span></span><br><span class="line"><span class="comment">#2015 8 24 13 1 30 0 236 -1</span></span><br></pre></td></tr></table></figure>
+<font color="red">注意:在使用strptime()函数将一个指定格式的时间字符串转化成元组时，参数format的格式必须和string的格式保持一致，如果string中日期间使用“-”分隔，format中也必须使用“-”分隔，时间中使用冒号“:”分隔，后面也必须使用冒号分隔，否则会报格式不匹配的错误。</font>
+
+<p>###【2】学会操控时间：datetime模块</p>
+<hr>
+<p> Python提供了多个内置模块用于操作日期时间，像calendar，time，datetime。time模块我在之前的文章已经有所介绍，它提供 的接口与C标准库time.h基本一致。相比于time模块，datetime模块的接口则更直观、更容易调用。今天就来讲讲datetime模块。</p>
+<p> datetime模块定义了两个常量：datetime.MINYEAR和datetime.MAXYEAR，分别表示datetime所能表示的最 小、最大年份。其中，MINYEAR = 1，MAXYEAR = 9999。（对于偶等玩家，这个范围已经足够用矣~~）</p>
+<p>datetime模块定义了下面这几个类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">datetime.date：表示日期的类。常用的属性有year, month, day；</span><br><span class="line">datetime.time：表示时间的类。常用的属性有hour, minute, second, microsecond；</span><br><span class="line">datetime.datetime：表示日期时间。</span><br><span class="line">datetime.timedelta：表示时间间隔，即两个时间点之间的长度。</span><br><span class="line">datetime.tzinfo：与时区有关的相关信息。（这里不详细充分讨论该类，感兴趣的童鞋可以参考python手册）</span><br></pre></td></tr></table></figure>
+<p>今天我们讲讲datetime的基本的几种方法：</p>
+<p>####1. 获取当前datetime</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">print(datetime.datetime.now())</span><br><span class="line"></span><br><span class="line"><span class="comment">#2017-11-17 14:42:01.175940</span></span><br></pre></td></tr></table></figure>
+<p>####2. 获取当天date</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">print(datetime.date.today())</span><br><span class="line"></span><br><span class="line"><span class="comment">#2017-11-17</span></span><br></pre></td></tr></table></figure>
+<p>####3. 获取明天/前N天 /或者昨天<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line">print(datetime.date.today())</span><br><span class="line">print(datetime.date.today() + datetime.timedelta(days=<span class="number">1</span>))</span><br><span class="line">print(datetime.date.today() + datetime.timedelta(days=<span class="number">-1</span>))</span><br><span class="line">print(datetime.date.today() - datetime.timedelta(days=<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#2017-11-17</span></span><br><span class="line"><span class="comment">#2017-11-18</span></span><br><span class="line"><span class="comment">#2017-11-16</span></span><br></pre></td></tr></table></figure></p>
+<p>####4、获取当天开始和结束时间(00:00:00 23:59:59)<br>datetime.combine(date, time)：根据date和time，创建一个datetime对象；</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">print(datetime.datetime.combine(datetime.date.today(), datetime.time.min))</span><br><span class="line">print(datetime.datetime.combine(datetime.date.today(), datetime.time.max))</span><br><span class="line">print((str(datetime.datetime.combine(datetime.date.today(), datetime.time.max)).split(<span class="string">'.'</span>))[<span class="number">0</span>])  <span class="comment">#转换成str类型的舍去毫秒值</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#2017-11-17 00:00:00</span></span><br><span class="line"><span class="comment">#2017-11-17 23:59:59.999999</span></span><br><span class="line"><span class="comment">#2017-11-17 23:59:59</span></span><br></pre></td></tr></table></figure>
+<p>####5. 获取两个datetime的时间差</p>
+<p>total_seconds()把两时间集转换成总秒数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print((datetime.datetime(<span class="number">2018</span>,<span class="number">1</span>,<span class="number">13</span>,<span class="number">12</span>,<span class="number">0</span>,<span class="number">0</span>) - datetime.datetime.now()).total_seconds())</span><br><span class="line"></span><br><span class="line"><span class="comment">#4912373.883664</span></span><br></pre></td></tr></table></figure>
+<p>####6.关系转换 </p>
+<p>#####datetime =&gt; string </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">date_to_str = datetime.datetime.now().strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line"></span><br><span class="line">print(date_to_str,type(date_to_str))</span><br><span class="line"></span><br><span class="line"><span class="comment">#22014-12-31 18:20:10 &lt;class 'datetime.datetime'&gt;</span></span><br></pre></td></tr></table></figure>
+<p>#####string =&gt; datetime</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">str_to_date = datetime.datetime.strptime(<span class="string">"2014-12-31 18:20:10"</span>, <span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line"></span><br><span class="line">print(str_to_date,type(str_to_date))</span><br><span class="line"></span><br><span class="line"><span class="comment">#2014-12-31 18:20:10 &lt;class 'datetime.datetime'&gt;</span></span><br></pre></td></tr></table></figure>
+<p>#####datetime =&gt; timetuple (time.struct_time格式)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">date_to_timetuple = datetime.datetime.now().timetuple()</span><br><span class="line"></span><br><span class="line">print(date_to_timetuple,type(date_to_timetuple))</span><br><span class="line"></span><br><span class="line"><span class="comment">#time.struct_time(tm_year=2017, tm_mon=11, tm_mday=17, tm_hour=16, tm_min=31, tm_sec=2, tm_wday=4, tm_yday=321, tm_isdst=-1) &lt;class 'time.struct_time'&gt;</span></span><br></pre></td></tr></table></figure>
+<p>#####timetuple  =&gt; datetime</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> datetime,time</span><br><span class="line">now = time.localtime() <span class="comment">#struct_time类型</span></span><br><span class="line">print(now)</span><br><span class="line">now = time.strftime(<span class="string">"%F %T"</span>,ls)  <span class="comment">#先转成timestamp时间格式,转成字符串</span></span><br><span class="line">print(now,type(now))</span><br><span class="line">now = datetime.datetime.strptime(now, <span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line">print(now,type(now))</span><br></pre></td></tr></table></figure>
+<p>#####datetime =&gt; timestamp </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> datetime,time</span><br><span class="line"></span><br><span class="line">now = datetime.datetime.now()</span><br><span class="line">timestamp = time.mktime(now.timetuple())</span><br><span class="line">print(timestamp,type(timestamp))</span><br><span class="line"></span><br><span class="line"><span class="comment">#1510908711.0 &lt;class 'float'&gt;</span></span><br></pre></td></tr></table></figure>
+<p>#####timestamp =&gt; datetime</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">datetime = datetime.datetime.fromtimestamp(<span class="number">1421077403.0</span>)</span><br><span class="line">print(datetime,type(datetime))</span><br><span class="line"></span><br><span class="line"><span class="comment">#2015-01-12 23:43:23 &lt;class 'datetime.datetime'&gt;</span></span><br></pre></td></tr></table></figure>
+<p>####7. 获取本周/本月/上月最后一天 和第一天</p>
+<p>本周</p>
+<p>date.weekday()：返回weekday，如果是星期一，返回0；如果是星期2，返回1，以此类推；</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">today = datetime.date.today()</span><br><span class="line">print(today)</span><br><span class="line"></span><br><span class="line">one = today - datetime.timedelta(today.weekday())</span><br><span class="line">print(one)  <span class="comment">#本周第一天</span></span><br><span class="line"></span><br><span class="line">two = today + datetime.timedelta(<span class="number">6</span>-today.weekday())</span><br><span class="line">print(two)  <span class="comment">#本周最后一天</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#2017-11-17</span></span><br><span class="line"><span class="comment">#2017-11-13</span></span><br><span class="line"><span class="comment">#2017-11-19</span></span><br></pre></td></tr></table></figure>
+<p>本月</p>
+<p>cale是python的日历模块</p>
+<p>calendar.monthrange(year,month) </p>
+<p>返回两个整数。第一个是该月的星期几的日期码，第二个是该月的日期码。日从0（星期一）到6（星期日）;月从1到12。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> calendar,datetime</span><br><span class="line">today = datetime.date.today()</span><br><span class="line">_,last_day_num = calendar.monthrange(today.year,today.month)</span><br><span class="line">print(last_day_num)</span><br><span class="line">last_day = datetime.date(today.year, today.month,last_day_num)</span><br><span class="line">print(last_day)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#_,取可迭代序列的最后一个值，但是不能取中间的，舍弃如果是三个那么就是_,_,</span></span><br><span class="line"><span class="comment">#30</span></span><br><span class="line"><span class="comment">#2017-11-30</span></span><br></pre></td></tr></table></figure>
+<p>获取上个月的最后一天</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">today = datetime.date.today()</span><br><span class="line">print(today)</span><br><span class="line">first = datetime.date(day=<span class="number">1</span>, month=today.month, year=today.year)</span><br><span class="line">print(first)</span><br><span class="line">lastMonth = first - datetime.timedelta(days=<span class="number">1</span>)</span><br><span class="line">print(lastMonth)</span><br><span class="line"></span><br><span class="line"><span class="comment">#2017-11-17</span></span><br><span class="line"><span class="comment">#2017-11-01</span></span><br><span class="line"><span class="comment">#2017-10-31</span></span><br></pre></td></tr></table></figure>
+<p>上个月的最好一天（跨年）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> datetime,time</span><br><span class="line"></span><br><span class="line">today = datetime.datetime.strptime(<span class="string">'2017-01-01'</span>,<span class="string">"%Y-%m-%d"</span>)</span><br><span class="line">print(today)</span><br><span class="line">first = datetime.date(day=<span class="number">1</span>, month=today.month, year=today.year)</span><br><span class="line">print(first)</span><br><span class="line">lastMonth = first - datetime.timedelta(days=<span class="number">1</span>)</span><br><span class="line">print(lastMonth)</span><br><span class="line"></span><br><span class="line"><span class="comment">#2017-01-01 00:00:00</span></span><br><span class="line"><span class="comment">#2017-01-01</span></span><br><span class="line"><span class="comment">#2016-12-31</span></span><br></pre></td></tr></table></figure>
+<p>###【3】时间的书籍：calendar（日历模块）<br>——————</p>
+<p>####1、日历<br>ccalendar(year,w=2,l=1,c=6)<br>返回一个多行字符串格式的year年年历，3个月一行，间隔距离为c。 每日宽度间隔为w字符。每行长度为21<em> W+18+2</em> C。l是每星期行数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> calendar</span><br><span class="line">print(calendar.calendar(<span class="number">2017</span>))</span><br></pre></td></tr></table></figure>
+<p>####2、获取每周的开始值<br>firstweekday()<br>返回当前每周起始日期的设置。默认情况下，首次载入caendar模块时返回0，即星期一。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> calendar</span><br><span class="line">print(calendar.firstweekday())</span><br><span class="line"></span><br><span class="line"><span class="comment">#0</span></span><br></pre></td></tr></table></figure>
+<p>####3、判断是否是润年<br>calendar.isleap(year)<br>是闰年返回True，否则为false。</p>
+<font color="red">注意：只能是整数，否则会报错</font>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> calendar</span><br><span class="line">print(calendar.isleap(<span class="number">2020</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#True</span></span><br></pre></td></tr></table></figure>
+<p>####4、返回在两个年数时间轴之间的闰年总数。<br>calendar.leapdays(y1,y2)<br>返回在Y1，Y2两年之间的闰年总数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> calendar</span><br><span class="line">print(calendar.leapdays(<span class="number">-1000</span>,<span class="number">2017</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#732</span></span><br></pre></td></tr></table></figure>
+<p>####5、返回指定月的日历</p>
+<p>calendar.month(year,month,w=2,l=1) </p>
+<p>返回一个多行字符串格式的year年month月日历，两行标题，一周一行。每日宽度间隔为w字符。每行的长度为7* w+6。l是每星期的行数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> calendar</span><br><span class="line">print(calendar.month(<span class="number">2017</span>,<span class="number">11</span>))</span><br></pre></td></tr></table></figure>
+<p>####6、返回指定月的瑞列表</p>
+<p>calendar.monthcalendar(year,month) </p>
+<p>返回一个整数的单层嵌套列表。每个子列表装载代表一个星期的整数。Year年month月外的日期都设为0;范围内的日子都由该月第几日表示，从1开始。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> calendar</span><br><span class="line">print(calendar.monthcalendar(<span class="number">2017</span>,<span class="number">11</span>) )</span><br><span class="line"></span><br><span class="line"><span class="comment">#[[0, 0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11, 12], [13, 14, 15, 16, 17, 18, 19], [20, 21, 22, 23, 24, 25, 26], [27, 28, 29, 30, 0, 0, 0]]</span></span><br></pre></td></tr></table></figure>
+<p>####7、返回指定月的最后一天的星期码和日期码</p>
+<p>calendar.monthrange(year,month) </p>
+<p>返回一个元祖。第一个是该月的星期几的日期码，第二个是该月的最后一天日期码。日从0（星期一）到6（星期日）;月从1到12。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> calendar</span><br><span class="line">time1 = calendar.monthrange(<span class="number">2017</span>,<span class="number">11</span>)</span><br><span class="line">print(time1,type(time1))</span><br><span class="line"></span><br><span class="line"><span class="comment">#(2, 30) &lt;class 'tuple'&gt;</span></span><br></pre></td></tr></table></figure>
+<p>####8、返回指定日期的星期码</p>
+<p>calendar.weekday(year,month,day) </p>
+<p>返回给定日期的日期码。0（星期一）到6（星期日）。月份为 1（一月） 到 12（12月）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> calendar</span><br><span class="line">print(calendar.weekday(<span class="number">2017</span>,<span class="number">11</span>,<span class="number">17</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#4</span></span><br></pre></td></tr></table></figure>
+<p>####9、设置一周里那一天作为第一天</p>
+<p>calendar.setfirstweekday(weekday) </p>
+<p>设置每周的起始日期码。0（星期一）到6（星期日）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> calendar</span><br><span class="line">print(calendar.firstweekday())</span><br><span class="line">calendar.setfirstweekday(calendar.SUNDAY)</span><br><span class="line">print(calendar.firstweekday())</span><br><span class="line"></span><br><span class="line"><span class="comment">#0</span></span><br><span class="line"><span class="comment">#6</span></span><br></pre></td></tr></table></figure>
+<p>####10、将tupletime转成时间戳</p>
+<p>calendar.timegm(tupletime) </p>
+<p>和time.gmtime相反：接受一个时间元组形式，返回该时刻的时间辍（1970纪元后经过的浮点秒数）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> calendar,time</span><br><span class="line"></span><br><span class="line">now = time.localtime()</span><br><span class="line">date = calendar.timegm(now)</span><br><span class="line">print(date)</span><br><span class="line"></span><br><span class="line"><span class="comment">#1510940959</span></span><br></pre></td></tr></table></figure></image></image>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/05/21/python基础8/" data-id="cjhfjx3em000kw4qxpau4rw3d" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2018/05/21/python基础10/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2018/05/21/python基础7/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/05/21/pymysql/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/Mysql主从复制/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/MySQL第五课/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/MySQL第四课/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/python基础17/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 ZY<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

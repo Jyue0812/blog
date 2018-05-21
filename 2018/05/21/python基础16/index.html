@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ZY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#Lesson 19  ##第十七章 ###【1】多任务的原理 现代操作系统(Windows、Mac OS X、Linux、UNIX等)都支持“多任务” 什么叫多任务？？？操作系统同时可以运行多个任务 单核CPU实现多任务原理：操作系统轮流让各个任务交替执行，QQ执行2us，切换到微信，在执行2us，再切换到陌陌，执行2us……。表面是看，每个任务反复执行下去，但是CPU调度执行速度太快了，导致我">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZY">
+<meta property="og:url" content="https://jyue0812.github.io/2018/05/21/python基础16/index.html">
+<meta property="og:site_name" content="ZY">
+<meta property="og:description" content="#Lesson 19  ##第十七章 ###【1】多任务的原理 现代操作系统(Windows、Mac OS X、Linux、UNIX等)都支持“多任务” 什么叫多任务？？？操作系统同时可以运行多个任务 单核CPU实现多任务原理：操作系统轮流让各个任务交替执行，QQ执行2us，切换到微信，在执行2us，再切换到陌陌，执行2us……。表面是看，每个任务反复执行下去，但是CPU调度执行速度太快了，导致我">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-01-31T06:07:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ZY">
+<meta name="twitter:description" content="#Lesson 19  ##第十七章 ###【1】多任务的原理 现代操作系统(Windows、Mac OS X、Linux、UNIX等)都支持“多任务” 什么叫多任务？？？操作系统同时可以运行多个任务 单核CPU实现多任务原理：操作系统轮流让各个任务交替执行，QQ执行2us，切换到微信，在执行2us，再切换到陌陌，执行2us……。表面是看，每个任务反复执行下去，但是CPU调度执行速度太快了，导致我">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="ZY" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">ZY</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jyue0812.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python基础16" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/21/python基础16/" class="article-date">
+  <time datetime="2018-05-21T01:03:26.220Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#Lesson 19</p>
+<hr>
+<p>##第十七章</p>
+<p>###【1】多任务的原理</p>
+<p>现代操作系统(Windows、Mac OS X、Linux、UNIX等)都支持“多任务”</p>
+<p>什么叫多任务？？？<br>操作系统同时可以运行多个任务</p>
+<p>单核CPU实现多任务原理：操作系统轮流让各个任务交替执行，QQ执行2us，切换到微信，在执行2us，再切换到陌陌，执行2us……。表面是看，每个任务反复执行下去，但是CPU调度执行速度太快了，导致我们感觉就行所有任务都在同时执行一样</p>
+<p>多核CPU实现多任务原理：真正的秉性执行多任务只能在多核CPU上实现，但是由于任务数量远远多于CPU的核心数量，所以，操作西永也会自动把很多任务轮流调度到每个核心上执行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">并发：看上去一起执行，任务数多于CPU核心数</span><br><span class="line">并行：真正一起执行，任务数小于等于CPU核心数</span><br></pre></td></tr></table></figure>
+<p>实现多任务的方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、多进程模式 </span><br><span class="line"><span class="number">2</span>、多线程模式  </span><br><span class="line"><span class="number">3</span>、协程模式</span><br><span class="line"><span class="number">4</span>、多进程+多线程模式</span><br></pre></td></tr></table></figure>
+<p>###【2】进程</p>
+<p>对于操作系统而言，一个任务就是一个进程，比如我们在windows下任务管理器中的都是一个一个的进程。</p>
+<p>进程是系统中程序执行和资源分配的基本单位。每个进程都有自己的数据段、代码段、和堆栈段。</p>
+<p>####单任务现象</p>
+<p>我们看一段代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        print(<span class="string">"随便写点啥"</span>)</span><br><span class="line">        sleep(<span class="number">1.2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        print(<span class="string">"在来电啥"</span>)</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 不会执行到run方法，只有上面的while循环结束才可以执行</span></span><br><span class="line">    run()</span><br></pre></td></tr></table></figure>
+<p>####启动进程实现多任务</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">multiprocessing 库</span></span><br><span class="line"><span class="string">跨平台版本的多进程模块，提供了一个Process类来代表一个进程对象</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment">#子进程需要执行的买吗</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(str)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        <span class="comment"># os.getpid()获取当前进程id号</span></span><br><span class="line">        <span class="comment"># os.getppid()获取当前进程的父进程id号</span></span><br><span class="line">        print(<span class="string">"Hal is a %s man--%s--%s"</span>%(str, os.getpid(),os.getppid()))</span><br><span class="line">        sleep(<span class="number">1.2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    print(<span class="string">"主(父)进程启动-%s"</span>%(os.getpid()))</span><br><span class="line">    <span class="comment">#创建子进程</span></span><br><span class="line">    <span class="comment">#target说明进程执行的任务</span></span><br><span class="line">    p = Process(target=run, args=(<span class="string">"nice"</span>,))</span><br><span class="line">    <span class="comment">#启动进程</span></span><br><span class="line">    p.start()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        print(<span class="string">"在来电啥"</span>)</span><br><span class="line">        sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>####父子进程的先后顺序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(str)</span>:</span></span><br><span class="line">    print(<span class="string">"子进程启动"</span>)</span><br><span class="line">    sleep(<span class="number">3</span>)</span><br><span class="line">    print(<span class="string">"子进程结束"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    print(<span class="string">"父进程启动"</span>)</span><br><span class="line"></span><br><span class="line">    p = Process(target=run)</span><br><span class="line">    p.start()</span><br><span class="line"></span><br><span class="line">    <span class="comment">#join父进程的结束不能影响子进程，让父进程等待子进程结束再执行父进程</span></span><br><span class="line">    p.join()</span><br><span class="line">    print(<span class="string">"父进程结束"</span>)</span><br></pre></td></tr></table></figure>
+<p>####全局变量在多个进程中不能共享</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"></span><br><span class="line">num = <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"子进程开始"</span>)</span><br><span class="line">    <span class="comment">#即使使用了global，那还是在函数内部创建了局部变量，因为不在一个进程中。</span></span><br><span class="line">    <span class="keyword">global</span> num <span class="comment"># num = 100</span></span><br><span class="line">    num += <span class="number">1</span></span><br><span class="line">    print(num)</span><br><span class="line">    print(<span class="string">"子进程结束"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    print(<span class="string">"父进程开始"</span>)</span><br><span class="line"></span><br><span class="line">    p = Process(target=run)</span><br><span class="line">    p.start()</span><br><span class="line">    p.join()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 在子进程中欧修改全局变量对父进程中的全局变量没有影响</span></span><br><span class="line">    <span class="comment"># 在创建子进程时对全局变量做了一个备份，父进程中的与子进程中的num是完全不同的两个变量</span></span><br><span class="line">    print(<span class="string">"父进程结束--%d"</span>%num)</span><br></pre></td></tr></table></figure>
+<p>####启动大量子进程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Pool</span><br><span class="line"><span class="keyword">import</span> os, time, random</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(name)</span>:</span></span><br><span class="line">    print(<span class="string">"子进程%d启动--%s"</span> % (name, os.getpid()))</span><br><span class="line">    start = time.time()</span><br><span class="line">    time.sleep(random.choice([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]))</span><br><span class="line">    end = time.time()</span><br><span class="line">    print(<span class="string">"子进程%d结束--%s--耗时%.2f"</span> % (name, os.getpid(), end-start))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    print(<span class="string">"父进程启动"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#创建多个进程</span></span><br><span class="line">    <span class="comment">#进程池</span></span><br><span class="line">    <span class="comment">#表示可以同时执行的进程数量</span></span><br><span class="line">    <span class="comment">#Pool默认大小是CPU核心数</span></span><br><span class="line">    pp = Pool(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):</span><br><span class="line">        <span class="comment">#创建进程，放入进程池同意管理</span></span><br><span class="line">        pp.apply_async(run,args=(i,))</span><br><span class="line"></span><br><span class="line">    <span class="comment">#在调用join之前必须先调用close,调用close之后就不能再继续添加新的进程了</span></span><br><span class="line">    pp.close()</span><br><span class="line">    <span class="comment">#进程池对象调用join，会等待进程池中所有的子进程结束完毕再去执行父进程</span></span><br><span class="line">    pp.join()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"父进程结束"</span>)</span><br></pre></td></tr></table></figure>
+<p>####拷贝文件</p>
+<p>普通的文件拷贝</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> os, time</span><br><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Pool</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#实现文件的拷贝</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">copyFile</span><span class="params">(rPath, wPath)</span>:</span></span><br><span class="line">    fr = open(rPath, <span class="string">"rb"</span>)</span><br><span class="line">    fw = open(wPath, <span class="string">"wb"</span>)</span><br><span class="line">    context = fr.read()</span><br><span class="line">    fw.write(context)</span><br><span class="line">    fr.close()</span><br><span class="line">    fw.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">path = <span class="string">r"C:\Users\xlg\Desktop\Python-1704\day20\2、进程\file"</span></span><br><span class="line">toPath = <span class="string">r"C:\Users\xlg\Desktop\Python-1704\day20\2、进程\toFile"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#读取path下的都有的文件</span></span><br><span class="line">filesList = os.listdir(path)</span><br><span class="line"></span><br><span class="line"><span class="comment">#启动for循环处理每一个文件</span></span><br><span class="line">start = time.time()</span><br><span class="line"><span class="keyword">for</span> fileName <span class="keyword">in</span> filesList:</span><br><span class="line">    copyFile(os.path.join(path,fileName), os.path.join(toPath,fileName))</span><br><span class="line">end = time.time()</span><br><span class="line">print(<span class="string">"总耗时：%0.2f"</span> % (end-start))</span><br></pre></td></tr></table></figure>
+<p>我们看一下多进程版本高的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os, time</span><br><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Pool</span><br><span class="line"></span><br><span class="line"><span class="comment">#实现文件的拷贝</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">copyFile</span><span class="params">(rPath, wPath)</span>:</span></span><br><span class="line">    fr = open(rPath, <span class="string">"rb"</span>)</span><br><span class="line">    fw = open(wPath, <span class="string">"wb"</span>)</span><br><span class="line">    context = fr.read()</span><br><span class="line">    fw.write(context)</span><br><span class="line">    fr.close()</span><br><span class="line">    fw.close()</span><br><span class="line"></span><br><span class="line">path = <span class="string">r"C:\Users\xlg\Desktop\Python-1704\day20\2、进程\file"</span></span><br><span class="line">toPath = <span class="string">r"C:\Users\xlg\Desktop\Python-1704\day20\2、进程\toFile"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="comment"># 读取path下的都有的文件</span></span><br><span class="line">    filesList = os.listdir(path)</span><br><span class="line"></span><br><span class="line">    start = time.time()</span><br><span class="line">    pp = Pool(<span class="number">4</span>)</span><br><span class="line">    <span class="keyword">for</span> fileName <span class="keyword">in</span> filesList:</span><br><span class="line">        pp.apply_async(copyFile, args=(os.path.join(path,fileName), os.path.join(toPath,fileName)))</span><br><span class="line"></span><br><span class="line">    pp.close()</span><br><span class="line">    pp.join()</span><br><span class="line">    end = time.time()</span><br><span class="line">    print(<span class="string">"总耗时：%0.2f"</span> % (end-start))</span><br></pre></td></tr></table></figure>
+<p>####封装进程对象</p>
+<p>为什么要封装了？</p>
+<p>就是为了看的更加的清晰，我们上面的例子里面一写就一大堆并不好看。</p>
+<p>我们先封装：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#myProcess.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process</span><br><span class="line"><span class="keyword">import</span> os, time</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyProcess</span><span class="params">(Process)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,name)</span>:</span></span><br><span class="line">        Process.__init__(self)</span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"子进程(%s-%s)启动"</span> % (self.name, os.getpid()))</span><br><span class="line">        <span class="comment">#子进程的功能</span></span><br><span class="line">        time.sleep(<span class="number">3</span>)</span><br><span class="line">        print(<span class="string">"子进程(%s-%s)结束"</span> % (self.name, os.getpid()))</span><br></pre></td></tr></table></figure>
+<p>封装好在下面使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> myProcess <span class="keyword">import</span> MyProcess</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    print(<span class="string">"父进程启动"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#创建子进程</span></span><br><span class="line">    p = MyProcess(<span class="string">"test"</span>)</span><br><span class="line">    <span class="comment"># 自动调用p进程对象的run方法</span></span><br><span class="line">    p.start()</span><br><span class="line">    p.join()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"父进程结束"</span>)</span><br></pre></td></tr></table></figure>
+<p>####进程间的通信</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process, Queue</span><br><span class="line"><span class="keyword">import</span> os, time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write</span><span class="params">(q)</span>:</span></span><br><span class="line">    print(<span class="string">"启动写子进程%s"</span> % (os.getpid()))</span><br><span class="line">    <span class="keyword">for</span> chr <span class="keyword">in</span> [<span class="string">"A"</span>, <span class="string">"B"</span>, <span class="string">"C"</span>, <span class="string">"D"</span>]:</span><br><span class="line">        q.put(chr)</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">    print(<span class="string">"结束写子进程%s"</span> % (os.getpid()))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read</span><span class="params">(q)</span>:</span></span><br><span class="line">    print(<span class="string">"启动读子进程%s"</span> % (os.getpid()))</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        value = q.get(<span class="keyword">True</span>)</span><br><span class="line">        print(<span class="string">"value = "</span> + value)</span><br><span class="line">    print(<span class="string">"结束读子进程%s"</span> % (os.getpid()))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="comment">#父进程创建队列，并传递给子进程</span></span><br><span class="line">    q = Queue()</span><br><span class="line">    pw = Process(target=write, args=(q,))</span><br><span class="line">    pr = Process(target=read, args=(q,))</span><br><span class="line"></span><br><span class="line">    pw.start()</span><br><span class="line">    pr.start()</span><br><span class="line"></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    pw.join()</span><br><span class="line">    <span class="comment">#pr进程里是个死循环，无法等待其结束，只能强行结束</span></span><br><span class="line">    pr.terminate()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"父进程结束"</span>)</span><br></pre></td></tr></table></figure>
+<p>###【3】线程</p>
+<p>在一个进程的内部，要同时干多件事，就需要同时运行多个“子任务”，我们把进程内的这些“子任务”叫做线程</p>
+<p>线程通常叫做轻型的进程。线程是共享内存空间的并发执行的多任务，每一个线程都共享一个进程的资源</p>
+<p>线程是最小的执行单元，而进程由至少一个线程组成。如何调度进程和线程，完全由操作系统决定，程序自己不能决定什么时候执行，执行多长时间</p>
+<p>模块</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、_thread模块       低级模块</span><br><span class="line"><span class="comment">#低级模块就是接近底层的模块，越是底层就越难</span></span><br><span class="line"><span class="number">2</span>、threading模块     高级模块，对_thread进行了封装</span><br></pre></td></tr></table></figure>
+<p>####启动线程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading,time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(num)</span>:</span></span><br><span class="line">    print(<span class="string">"子线程(%s)开始"</span> % (threading.current_thread().name))</span><br><span class="line"></span><br><span class="line">    <span class="comment">#实现线程的功能</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    print(<span class="string">"打印"</span>, num)</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"子线程(%s)结束"</span> % (threading.current_thread().name))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="comment">#任何进程默认就会启动一个线程，称为主线程，主线程可以启动新的子线程</span></span><br><span class="line">    <span class="comment">#current_thread()：返回返回当前线程的实例</span></span><br><span class="line">    print(<span class="string">"主线程(%s)启动"</span> % (threading.current_thread().name))</span><br><span class="line"></span><br><span class="line">    <span class="comment">#创建子线程                     线程的名称</span></span><br><span class="line">    t = threading.Thread(target=run, name=<span class="string">"runThread"</span>, args=(<span class="number">1</span>,))</span><br><span class="line">    t.start()</span><br><span class="line"></span><br><span class="line">    <span class="comment">#等待线程结束</span></span><br><span class="line">    t.join()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"主线程(%s)结束"</span> % (threading.current_thread().name))</span><br></pre></td></tr></table></figure>
+<p>####线程共享数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">多线程和多进程最大的不同在于，多进程中，同一个变量，各自有一份拷贝存在每个进程中，互不影响。而多线程中，所有变量都由所有线程共享。所以，任何一个变量都可以被任意一个线程修改，因此，线程之间共享数据最大的危险在于多个线程同时修改一个变量，容易把内容改乱了。</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">num = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> num</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10000000</span>):</span><br><span class="line">        num += n    <span class="comment">#  15 = 9 + 6</span></span><br><span class="line">        num -= n    <span class="comment">#  9</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    t1 = threading.Thread(target=run, args=(<span class="number">6</span>,))</span><br><span class="line">    t2 = threading.Thread(target=run, args=(<span class="number">9</span>,))</span><br><span class="line">    t1.start()</span><br><span class="line">    t2.start()</span><br><span class="line">    t1.join()</span><br><span class="line">    t2.join()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"num ="</span>,num)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">线程1   num = num + 6</span></span><br><span class="line"><span class="string">        num - 6  = 3</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">线程2   num = num + 9</span></span><br><span class="line"><span class="string">        3 - 9  =  -6</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/05/21/python基础16/" data-id="cjhfjx3e1000cw4qxgu3zdzat" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2018/05/21/python基础17/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2018/05/21/python基础15/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/05/21/pymysql/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/Mysql主从复制/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/MySQL第五课/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/MySQL第四课/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/python基础17/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 ZY<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

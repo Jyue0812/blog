@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ZY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#Lesson 12  ##第十四章 ###【9】描述符(property的原理)此前提到过property()函数，现在我们来剖析一下它是怎么实现的。 描述符(descriptor)，用一句话来解释，描述符就是将某种特殊类型的类的实例指派给一个类的属性，那什么是特殊类型的类了？就是至少要在这个类中定义了__get__()、__set__()、__delete__()三个特殊方法中的任意一个。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZY">
+<meta property="og:url" content="https://jyue0812.github.io/2018/05/21/python基础12/index.html">
+<meta property="og:site_name" content="ZY">
+<meta property="og:description" content="#Lesson 12  ##第十四章 ###【9】描述符(property的原理)此前提到过property()函数，现在我们来剖析一下它是怎么实现的。 描述符(descriptor)，用一句话来解释，描述符就是将某种特殊类型的类的实例指派给一个类的属性，那什么是特殊类型的类了？就是至少要在这个类中定义了__get__()、__set__()、__delete__()三个特殊方法中的任意一个。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-01-31T06:08:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ZY">
+<meta name="twitter:description" content="#Lesson 12  ##第十四章 ###【9】描述符(property的原理)此前提到过property()函数，现在我们来剖析一下它是怎么实现的。 描述符(descriptor)，用一句话来解释，描述符就是将某种特殊类型的类的实例指派给一个类的属性，那什么是特殊类型的类了？就是至少要在这个类中定义了__get__()、__set__()、__delete__()三个特殊方法中的任意一个。">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="ZY" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">ZY</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jyue0812.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python基础12" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/21/python基础12/" class="article-date">
+  <time datetime="2018-05-21T01:02:30.160Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#Lesson 12</p>
+<hr>
+<p>##第十四章</p>
+<p>###【9】描述符(property的原理)<br>此前提到过property()函数，现在我们来剖析一下它是怎么实现的。</p>
+<p>描述符(descriptor)，用一句话来解释，描述符就是将某种特殊类型的类的实例指派给一个类的属性，那什么是特殊类型的类了？就是至少要在这个类中定义了<code>__get__()</code>、<code>__set__()</code>、<code>__delete__()</code>三个特殊方法中的任意一个。</p>
+<table>
+<thead>
+<tr>
+<th>魔术方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>get</strong>(self,instance,owner)</td>
+<td>用于访问它的属性，它返回属性的值</td>
+</tr>
+<tr>
+<td><strong>set</strong>(self, instance,value)</td>
+<td>将在属性分配操作中调用，不返回任何内容</td>
+</tr>
+<tr>
+<td><strong>delete</strong>(self,instance)</td>
+<td>控制删除操作，不返回任何内容</td>
+</tr>
+</tbody>
+</table>
+<p>instance表示实例对象，owner是所有者的类。</p>
+<p>descriptor的实例自己访问自己是不会触发<strong>get</strong>，而会触发<strong>call</strong>，只有descriptor作为其它类的属性才有意义。</p>
+<p>举个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyDescriptor</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'__get'</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self,instance,value)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'__set__'</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span><span class="params">(self, instance)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'__delete__'</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span>:</span></span><br><span class="line">    x = MyDescriptor()</span><br><span class="line"></span><br><span class="line">test = Test()</span><br><span class="line"></span><br><span class="line">print(test.x)</span><br><span class="line"></span><br><span class="line"><span class="comment">#__get</span></span><br></pre></td></tr></table></figure>
+<p>上面的例子MyDescriptor实现了方法<code>__get__()</code>、<code>__set__()</code>、<code>__delete__()</code>，并且将它的类实例指派给Test类的属性里面，所以MyDescriptor就是所谓的描述符类。</p>
+<p>在调用x属性的时候，它会自动调用<code>__get__()</code>属性，那么在从新赋值和删除都是一样的了。</p>
+<p>那我们封装自己的property方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyProperty</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fget=None, fset=None, fdel=None)</span>:</span></span><br><span class="line">        self.fget = fget</span><br><span class="line">        self.fset = fset</span><br><span class="line">        self.fdel = fdel</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.fget(instance)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span></span><br><span class="line">        self.fset(instance, value)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span><span class="params">(self, instance)</span>:</span></span><br><span class="line">        self.fdel(instance)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._x = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getX</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._x</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setX</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        self._x = value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delX</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">del</span> self._x</span><br><span class="line"></span><br><span class="line">    x = MyProperty(getX, setX, delX)</span><br><span class="line"></span><br><span class="line">test = Test()</span><br><span class="line"><span class="comment">#获取</span></span><br><span class="line">print(test._x)</span><br><span class="line"><span class="comment">#设置</span></span><br><span class="line">test.x = <span class="string">'tom'</span></span><br><span class="line">print(test._x)</span><br><span class="line"><span class="comment">#删除成功</span></span><br><span class="line"><span class="keyword">del</span> test._x</span><br><span class="line"></span><br><span class="line"><span class="comment">#None</span></span><br><span class="line"><span class="comment">#tom</span></span><br></pre></td></tr></table></figure>
+<p>###【10】网上银行系统</p>
+<p>见网上银行系统文件夹。</p>
+<p>模拟网上银行系统，由于现在我们没有任何的数据库和缓存系统，我们所有的记录都要保存在文件中。</p>
+<p>#第十五章</p>
+<p>##高阶函数的使用</p>
+<p>###【1】reduce()函数</p>
+<p>reduce函数和我们之前学习的map函数类似。</p>
+<p>reduce也是接受两个参数，一个函数f，一个list，但行为不同，reduce()传入的函数 f 必须接收两个参数，reduce()对list的每个元素反复调用函数f，并返回最终结果值。</p>
+<p>例如，编写一个f函数，接收x和y，返回x和y的和：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line">reduce(f, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>])</span><br></pre></td></tr></table></figure>
+<p>调用 reduce(f, [1, 3, 5, 7, 9])时，reduce函数将做如下计算</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">先计算头两个元素：f(<span class="number">1</span>, <span class="number">3</span>)，结果为<span class="number">4</span>；</span><br><span class="line">再把结果和第<span class="number">3</span>个元素计算：f(<span class="number">4</span>, <span class="number">5</span>)，结果为<span class="number">9</span>；</span><br><span class="line">再把结果和第<span class="number">4</span>个元素计算：f(<span class="number">9</span>, <span class="number">7</span>)，结果为<span class="number">16</span>；</span><br><span class="line">再把结果和第<span class="number">5</span>个元素计算：f(<span class="number">16</span>, <span class="number">9</span>)，结果为<span class="number">25</span>；</span><br><span class="line">由于没有更多的元素了，计算结束，返回结果<span class="number">25</span>。</span><br></pre></td></tr></table></figure>
+<p>上述计算实际上是对 list 的所有元素求和。虽然Python内置了求和函数sum()，但是，利用reduce()求和也很简单。</p>
+<p>reduce()还可以接收第3个可选参数，作为计算的初始值。如果把初始值设为100，计算：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reduce(f, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>], <span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+<p>结果将变为125，因为第一轮计算是：</p>
+<p>计算初始值和第一个元素：f(100, 1)，结果为101。</p>
+<p>###【2】sorted()函数</p>
+<p>sorted函数是python的内置函数，和sort差不多，只不过sort是list的方法而已。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#普通排序</span></span><br><span class="line">list1 = [<span class="number">4</span>,<span class="number">7</span>,<span class="number">2</span>,<span class="number">6</span>,<span class="number">3</span>]</span><br><span class="line">list2 = sorted(list1)<span class="comment">#默认升序排序</span></span><br><span class="line">print(list1)</span><br><span class="line">print(list2)</span><br><span class="line"></span><br><span class="line"><span class="comment">#按绝对值大小排序</span></span><br><span class="line">list3 = [<span class="number">4</span>,<span class="number">-7</span>,<span class="number">2</span>,<span class="number">6</span>,<span class="number">-3</span>]</span><br><span class="line"><span class="comment">#key接受函数来实现自定义排序规则</span></span><br><span class="line">list4 = sorted(list3, key=abs)</span><br><span class="line">print(list3)</span><br><span class="line">print(list4)</span><br><span class="line"></span><br><span class="line"><span class="comment">#降序</span></span><br><span class="line">list5 = [<span class="number">4</span>,<span class="number">7</span>,<span class="number">2</span>,<span class="number">6</span>,<span class="number">3</span>]</span><br><span class="line">list6 = sorted(list5, reverse=<span class="keyword">True</span>)<span class="comment">#默认升序排序</span></span><br><span class="line">print(list5)</span><br><span class="line">print(list6)</span><br><span class="line"></span><br><span class="line"><span class="comment">#函数可以自己写</span></span><br><span class="line"><span class="comment">#按照字符的长短排序</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myLen</span><span class="params">(str)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> len(str)</span><br><span class="line">list7 = [<span class="string">'b333'</span>,<span class="string">'a1111111'</span>,<span class="string">'c22'</span>,<span class="string">'d5554'</span>]</span><br><span class="line">list8 = sorted(list7,key=myLen)<span class="comment">#默认升序排序</span></span><br><span class="line">print(list7)</span><br><span class="line">print(list8)</span><br></pre></td></tr></table></figure>
+<p>###【3】冒泡排序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">array = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line">num = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(array)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(i):</span><br><span class="line">        num += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> array[j] &gt; array[j + <span class="number">1</span>]:</span><br><span class="line">            array[j], array[j + <span class="number">1</span>] = array[j + <span class="number">1</span>], array[j]</span><br><span class="line">print(array,num)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 0.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 0.0</span></span><br><span class="line"><span class="comment"># 0.1</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 0.0</span></span><br><span class="line"><span class="comment"># 0.1</span></span><br><span class="line"><span class="comment"># 0.2</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 0.0</span></span><br><span class="line"><span class="comment"># 0.1</span></span><br><span class="line"><span class="comment"># 0.2</span></span><br><span class="line"><span class="comment"># 0.4</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 0.0</span></span><br><span class="line"><span class="comment"># 0.1</span></span><br><span class="line"><span class="comment"># 0.2</span></span><br><span class="line"><span class="comment"># 0.4</span></span><br><span class="line"><span class="comment"># 0.5</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#[1, 2, 3, 5, 4, 6] 15</span></span><br></pre></td></tr></table></figure>
+<p>while循环的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">array = [<span class="number">1</span>, <span class="number">-2</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">tmp = <span class="string">''</span></span><br><span class="line">start = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> len(array) == <span class="number">0</span> <span class="keyword">and</span> len(array) == <span class="number">1</span>:</span><br><span class="line">    print(array)</span><br><span class="line">    exit()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(array)<span class="number">-1</span>):</span><br><span class="line">    <span class="keyword">while</span> array[i+<span class="number">1</span>] &lt; array[i]:</span><br><span class="line">        tmp = array[i+<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">del</span> array[i+<span class="number">1</span>]</span><br><span class="line">        array.insert(i,tmp)</span><br><span class="line"></span><br><span class="line">print(array)</span><br><span class="line"></span><br><span class="line"><span class="comment">#[-2, 1, 4, 6, 3, 2, 3, 7]</span></span><br></pre></td></tr></table></figure>
+<p>###单元测试</p>
+<p>####【4】函数的单元测试</p>
+<p>unittest是一个python的单元测试框架。那么它是做什么的了？</p>
+<p>作用：用来对一个函数、一个类或者一个模块来进行正确性校验工作</p>
+<p>1、单元测试通过了，说明我们测试的函数是正常的</p>
+<p>2、单元测试不通过，说明函数功能有BUG，要么测试条件输入有误</p>
+<p>看下面的例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"><span class="keyword">from</span> demo <span class="keyword">import</span> mySum</span><br><span class="line"><span class="keyword">from</span> demo <span class="keyword">import</span> mySub</span><br><span class="line"></span><br><span class="line"><span class="comment">#unittest是一个继承包</span></span><br><span class="line"><span class="comment">#继承unittest包的TestCase类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span><span class="params">(unittest.TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"开始测试时自动调用"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">"结束测试时自动调用"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#为了测试mySum</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_mySum</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment">#这是一个断言，继承testcase得到的第一个是调用的函数，第二个是值</span></span><br><span class="line">        self.assertEqual(mySum(<span class="number">1</span>,<span class="number">2</span>), <span class="number">3</span>, <span class="string">"加法有误"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_mySub</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.assertEqual(mySub(<span class="number">2</span>,<span class="number">1</span>), <span class="number">1</span>, <span class="string">"减法有误"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    unittest.main()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#demo.py</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mySum</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mySub</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x - y</span><br><span class="line"></span><br><span class="line">print(mySum(<span class="number">1</span>,<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>这是一个成功的案例那么我们让它失败：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#demo.py</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#我们在后面加上一个+1，这样结果就不相同了</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mySum</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x + y + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mySub</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x - y</span><br><span class="line"></span><br><span class="line">print(mySum(<span class="number">1</span>,<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>再次运行</p>
+<p>会报错，应为4 != 3 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Traceback (most recent call last):</span></span><br><span class="line"><span class="comment">#  File "/Users/ruidong/PycharmProjects/project/demo.py", line #15, in test_mySum</span></span><br><span class="line"><span class="comment">#    self.assertEqual(mySum(1,2), 3, "加法有误")</span></span><br><span class="line"><span class="comment">#AssertionError: 4 != 3 : 加法有误</span></span><br></pre></td></tr></table></figure>
+<image src="images/TestCase.png">
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">一个TestCase的实例就是一个测试用例。什么是测试用例呢？就是一个完整的测试流程，包括测试前准备环境的搭建(setUp)，执行测试代码(run)，以及测试后环境的还原(tearDown)。元测试(unit test)的本质也就在这里，一个测试用例是一个完整的测试单元，通过运行这个测试单元，可以对某一个问题进行验证。</span><br><span class="line"></span><br><span class="line">而多个测试用例集合在一起，就是TestSuite，而且TestSuite也可以嵌套TestSuite。</span><br><span class="line"></span><br><span class="line">TestLoader是用来加载TestCase到TestSuite中的，其中有几个loadTestsFrom__()方法，就是从各个地方寻找TestCase，创建它们的实例，然后add到TestSuite中，再返回一个TestSuite实例。</span><br><span class="line"></span><br><span class="line">TextTestRunner是来执行测试用例的，其中的run(test)会执行TestSuite/TestCase中的run(result)方法。</span><br><span class="line"></span><br><span class="line">测试的结果会保存到TextTestResult实例中，包括运行了多少测试用例，成功了多少，失败了多少等信息。</span><br></pre></td></tr></table></figure>
+<p>###【5】对类进行单元测试</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"><span class="keyword">from</span> person <span class="keyword">import</span> Person</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span><span class="params">(unittest.TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_init</span><span class="params">(self)</span>:</span></span><br><span class="line">        p = Person(<span class="string">"hanmeimei"</span>, <span class="number">20</span>)</span><br><span class="line">        self.assertEqual(p.name, <span class="string">"hanmeimei"</span>, <span class="string">"属性赋值有误"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_getAge</span><span class="params">(self)</span>:</span></span><br><span class="line">        p = Person(<span class="string">"hanmeimei"</span>, <span class="number">22</span>)</span><br><span class="line">        self.assertEqual(p.getAge(), p.age, <span class="string">"getAge函数有误"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    unittest.main()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#person.py</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age  = age</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getAge</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.age</span><br></pre></td></tr></table></figure>
+<p>###【6】文档测试</p>
+<p>检查是否</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> doctest</span><br><span class="line"><span class="comment">#doctest模块可以提取注释中的的代码执行</span></span><br><span class="line"><span class="comment">#doctest严格按照Python交互模式的输入提取</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mySum</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    get The Sum from x and Y</span></span><br><span class="line"><span class="string">    :param x: firstNum</span></span><br><span class="line"><span class="string">    :param y: SecondNum</span></span><br><span class="line"><span class="string">    :return: sum</span></span><br><span class="line"><span class="string">    注意有空格</span></span><br><span class="line"><span class="string">    example:</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; print(mySum(1,2))</span></span><br><span class="line"><span class="string">    3</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="keyword">return</span> x + y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(mySum(<span class="number">2</span>, <span class="number">2</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#进行文档测试</span></span><br><span class="line">doctest.testmod()</span><br></pre></td></tr></table></figure></image>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/05/21/python基础12/" data-id="cjhfjx3dp0007w4qxfxhkdjux" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2018/05/21/python基础13/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2018/05/21/python基础11/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/05/21/pymysql/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/Mysql主从复制/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/MySQL第五课/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/MySQL第四课/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/python基础17/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 ZY<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

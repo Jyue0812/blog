@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ZY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#Lesson 7  ##第十章 ###【3】装饰器和生成器 ####生成器我们知道通过列表生成式，我们可以直接创建列表。但是了会受到内存的限制，列表容量肯定是受限制的。而且，创建一个包含100元个元素的列表，不仅占用内存空间，如果我们仅仅需要访问前面几个元素，那后面绝大多素元素占用的空间白白浪费了。 所以，如果列表元素可以按照某种算法推算出来的话，那我们是否可以在循环的过程中不断推算出后续的元素">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZY">
+<meta property="og:url" content="https://jyue0812.github.io/2018/05/21/python基础7/index.html">
+<meta property="og:site_name" content="ZY">
+<meta property="og:description" content="#Lesson 7  ##第十章 ###【3】装饰器和生成器 ####生成器我们知道通过列表生成式，我们可以直接创建列表。但是了会受到内存的限制，列表容量肯定是受限制的。而且，创建一个包含100元个元素的列表，不仅占用内存空间，如果我们仅仅需要访问前面几个元素，那后面绝大多素元素占用的空间白白浪费了。 所以，如果列表元素可以按照某种算法推算出来的话，那我们是否可以在循环的过程中不断推算出后续的元素">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-13T13:00:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ZY">
+<meta name="twitter:description" content="#Lesson 7  ##第十章 ###【3】装饰器和生成器 ####生成器我们知道通过列表生成式，我们可以直接创建列表。但是了会受到内存的限制，列表容量肯定是受限制的。而且，创建一个包含100元个元素的列表，不仅占用内存空间，如果我们仅仅需要访问前面几个元素，那后面绝大多素元素占用的空间白白浪费了。 所以，如果列表元素可以按照某种算法推算出来的话，那我们是否可以在循环的过程中不断推算出后续的元素">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="ZY" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">ZY</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jyue0812.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python基础7" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/21/python基础7/" class="article-date">
+  <time datetime="2018-05-21T01:01:24.691Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#Lesson 7</p>
+<hr>
+<p>##第十章</p>
+<p>###【3】装饰器和生成器</p>
+<p>####生成器<br>我们知道通过列表生成式，我们可以直接创建列表。但是了会受到内存的限制，列表容量肯定是受限制的。而且，创建一个包含100元个元素的列表，不仅占用内存空间，如果我们仅仅需要访问前面几个元素，那后面绝大多素元素占用的空间白白浪费了。</p>
+<p>所以，如果列表元素可以按照某种算法推算出来的话，那我们是否可以在循环的过程中不断推算出后续的元素呢？这样就不必创建完整的list，从而节约大量的空间。在python中，这一种一边循环一边计算的的机制，称为生成器（generator）。</p>
+<p>第一类：生成器函数：还是使用 def 定义函数，但是，使用yield而不是return语句返回结果。yield语句一次返回一个结果，在每个结果中间，挂起函数的状态，以便下次从它离开的地方继续执行。</p>
+<p>如下案例加以说明：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用next()生成斐波那契数列</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Fib</span><span class="params">(max)</span>:</span></span><br><span class="line">    n, a, b = <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> n &lt; max:</span><br><span class="line">        <span class="keyword">yield</span> b</span><br><span class="line">        a, b = b, a + b</span><br><span class="line">        n = n + <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'亲！没有数据了...'</span></span><br><span class="line"><span class="comment"># 调用方法，生成出10个数来</span></span><br><span class="line">f=Fib(<span class="number">10</span>)</span><br><span class="line"><span class="comment"># 使用一个循环捕获最后return 返回的值，保存在异常StopIteration的value中</span></span><br><span class="line">list1 = []</span><br><span class="line"><span class="keyword">while</span>  <span class="keyword">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        x = next(f)</span><br><span class="line">        list1.append(x)</span><br><span class="line">    <span class="keyword">except</span> StopIteration <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">"生成器最后的返回值是："</span>,e.value)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">print(list1)</span><br></pre></td></tr></table></figure>
+<p>第二类：生成器表达式：类似于列表推导，只不过是把一对大括号[]变换为一对小括号()。但是，生成器表达式是按需产生一个生成器结果对象，要想拿到每一个元素，就需要循环遍历。</p>
+<p>如下案例加以说明：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">generator1 = [ i*i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>)]</span><br><span class="line">generator2 = ( i*i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>))</span><br><span class="line">print(generator1)</span><br><span class="line">print(generator2)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> generator2:</span><br><span class="line">	print(i)</span><br><span class="line"></span><br><span class="line"><span class="comment">#[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</span></span><br><span class="line"><span class="comment">#&lt;generator object &lt;genexpr&gt; at 0x10452a0a0&gt;</span></span><br></pre></td></tr></table></figure>
+<p>####装饰器<br>内衣可以遮羞，但是到了寒冷的季节它无法抵御严寒，于是聪明的人类发明了棉衣棉裤，给我们提供了保暖的功效，装饰器就像棉衣棉裤一样，在不影响内衣的作用下，还能给我们提供另一种功效.</p>
+<p>概念：是一个闭包，把一个函数当做参数,返回一个替代版的函数，本质上就是一个返回函数的函数</p>
+<p>简单的装饰器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#简单的装饰器</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"上海好啊！！！"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">"*******************"</span>)</span><br><span class="line">        func()</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"><span class="comment">#f是函数func1的加强版本</span></span><br><span class="line">f = outer(func1)()</span><br></pre></td></tr></table></figure>
+<p>复杂一点的装饰器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(age)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> age &lt; <span class="number">0</span>:</span><br><span class="line">            age = <span class="number">0</span></span><br><span class="line">        func(age)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"><span class="comment">#使用@符号将装饰器应用到函数</span></span><br><span class="line"><span class="comment">#@python2.4支持使用@符号</span></span><br><span class="line"><span class="meta">@outer   #相当于say = outer(say)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">say</span><span class="params">(age)</span>:</span></span><br><span class="line">    print(<span class="string">"he is %d years old"</span> % (age))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">say(<span class="number">-10</span>)</span><br></pre></td></tr></table></figure>
+<p>通用一点的装饰器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment">#添加修改的功能</span></span><br><span class="line">        print(<span class="string">"&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;"</span>)</span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@outer #say = outer(say)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">say</span><span class="params">(name, age)</span>:</span> <span class="comment">#函数的参数力理论上是无限制的，但实际上最好不要超过6、7个</span></span><br><span class="line">    print(<span class="string">"my name is %s, I am %d years old"</span> % (name, age))</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"aaaa"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">say(<span class="string">"tom"</span>, <span class="number">18</span>)</span><br></pre></td></tr></table></figure>
+<p>###偏函数<br>functools，用于高阶函数：指那些作用于函数或者返回其它函数的函数，通常只要是可以被当做函数调用的对象就是这个模块的目标。</p>
+<p>在Python 2.7 中具备如下方法，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cmp_to_key，将一个比较函数转换关键字函数；</span><br><span class="line"></span><br><span class="line">partial，针对函数起作用，并且是部分的；</span><br><span class="line"></span><br><span class="line">reduce，与python内置的reduce函数功能一样；</span><br><span class="line"></span><br><span class="line">total_ordering，在类装饰器中按照缺失顺序，填充方法；</span><br><span class="line"></span><br><span class="line">update_wrapper，更新一个包裹（wrapper）函数，使其看起来更像被包裹（wrapped）的函数；</span><br><span class="line"></span><br><span class="line">wraps，可用作一个装饰器，简化调用update_wrapper的过程；</span><br></pre></td></tr></table></figure>
+<p>偏函数的实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> functools</span><br><span class="line"></span><br><span class="line">print(int(<span class="string">"1010"</span>, base = <span class="number">2</span>)) <span class="comment">#设置成2进制</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">int2</span><span class="params">(str, base = <span class="number">2</span>)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> int(str, base)</span><br><span class="line">print(int2(<span class="string">"1011"</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#partial把一个参数固定住，形成一个新的函数</span></span><br><span class="line">int3 = functools.partial(int, base = <span class="number">2</span>)</span><br><span class="line">print(int3(<span class="string">"111"</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#那么现在int3默认就是返回2进制的</span></span><br></pre></td></tr></table></figure>
+<p>##第十一章</p>
+<hr>
+<p>###【1】你不可能总是对的</p>
+<p>我们是人，不是神，所以我们经常会犯错，就算你是个经验丰富的程序员，也不能保证你写的代码百分之百的没有问题。</p>
+<p>另外作为一个合格的程序员，再编程的时候你要记住一点，就是永远都不要相信你的用户。要把他们想象成熊孩子，把他们想象成黑客，这样你才能写出安全稳定的程序。</p>
+<p>我们看例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var = float(input(<span class="string">'请输入一个数字:'</span>))</span><br><span class="line">print(var)</span><br><span class="line"></span><br><span class="line"><span class="comment">#请输入一个数字:q</span></span><br><span class="line"><span class="comment">#ValueError: could not convert string to float: 'q'</span></span><br></pre></td></tr></table></figure>
+<p>上面这个例子就报错了ValueError异常，那么python会抛出那些异常了</p>
+<p><image src="images/错误代码1.png" width="500"></image></p>
+<p><image src="images/错误代码2.png" width="500"></image></p>
+<image src="images/错误代码3.png" width="500">
+
+<p>####1、AssertionError:断言语句(assert)失败</p>
+<p>assert 关键字 在前面的章节里面讲过了，在测试程序的时候使用</p>
+<p>它在条件不成立的情况下抛出 AssertionError</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var = float(input(<span class="string">'请输入一个数字'</span>))</span><br><span class="line"><span class="keyword">assert</span> var&lt;<span class="number">0</span></span><br><span class="line">print(var)</span><br><span class="line"></span><br><span class="line"><span class="comment">#请输入一个数字100</span></span><br><span class="line"><span class="comment">#AssertionError</span></span><br></pre></td></tr></table></figure>
+<p>####2、AttributeError:尝试访问位置的对象属性</p>
+<p>当试图访问的对象属性不存在时抛出异常：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list1 = []</span><br><span class="line">list1.shanghai</span><br><span class="line"></span><br><span class="line"><span class="comment">#AttributeError: 'list' object has no attribute 'china'</span></span><br></pre></td></tr></table></figure>
+<p>####3、IndexError:索引超出范围</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">list1[<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#IndexError: list index out of range</span></span><br></pre></td></tr></table></figure>
+<p>####4、KeyError:字典中没有这个键</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list1 = &#123;<span class="number">1</span>:<span class="number">2</span>,<span class="number">3</span>:<span class="number">4</span>&#125;</span><br><span class="line">list1[<span class="number">6</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#KeyError: 6</span></span><br></pre></td></tr></table></figure>
+<p>####5、TypeError:不同类型间的无效操作</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">1</span> + <span class="string">'1'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#TypeError: unsupported operand type(s) for +: 'int' and 'str'</span></span><br></pre></td></tr></table></figure>
+<p>####ZeroDivsionError:除数为零</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">5</span> / <span class="number">0</span></span><br><span class="line"></span><br><span class="line">ZeroDivisionError: division by zero</span><br></pre></td></tr></table></figure>
+<p>###【2】try-except语句</p>
+<p>格式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">	检测范围</span><br><span class="line"><span class="keyword">except</span> Exception [<span class="keyword">as</span> reason]:</span><br><span class="line">	出现异常的代码</span><br></pre></td></tr></table></figure>
+<p>举个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    var = int(input(<span class="string">'请输入一个数字：'</span>))</span><br><span class="line">    print(var)</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    print(<span class="string">'输入错误'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">#请输入一个数字：q</span></span><br><span class="line"><span class="comment">#输入错误   </span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="comment">#当然也可以这样写，错误信息会更加准确    </span></span><br><span class="line"><span class="comment">#except ValueError as reason:</span></span><br><span class="line"><span class="comment">#    print('输入错误,错误原因:'+ str(reason))</span></span><br></pre></td></tr></table></figure>
+<p>####针对不同的异常设置多个except</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    var = int(input(<span class="string">'请输入一个数字：'</span>))</span><br><span class="line">    rel = var + <span class="string">'1'</span></span><br><span class="line">    print(rel)</span><br><span class="line"><span class="keyword">except</span> ValueError <span class="keyword">as</span> reason:</span><br><span class="line">    print(<span class="string">'输入错误,错误原因:'</span>+ str(reason))</span><br><span class="line"><span class="keyword">except</span> TypeError <span class="keyword">as</span> reason:</span><br><span class="line">    print(<span class="string">'输入错误,错误原因:'</span> + str(reason))</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="comment">#请输入一个数字：1</span></span><br><span class="line"><span class="comment">#输入错误,错误原因:unsupported operand type(s) for +: 'int' and 'str'</span></span><br></pre></td></tr></table></figure>
+<p>####捕获所有异常</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    var = int(input(<span class="string">'请输入一个数字：'</span>))</span><br><span class="line">    rel = var + <span class="string">'1'</span></span><br><span class="line">    print(rel)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">'报错了'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">#请输入一个数字：q</span></span><br><span class="line"><span class="comment">#报错了</span></span><br></pre></td></tr></table></figure>
+<p>###【3】try-finally语句</p>
+<p>这里我们使用打开文件作为例子，因为文件打开了不管报不报错都需要关闭。</p>
+<p>文件操作在后续内容会讲到</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    f = open(<span class="string">'我是一个不存在的文件.txt'</span>) <span class="comment">#打开文件</span></span><br><span class="line">    print(f.read())</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">'出错了'</span>)  <span class="comment">#在没有finally的时候报错了就会被终止</span></span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    <span class="comment">#f.close()   #关闭文件,这里给大家看的，注释去掉会报错</span></span><br><span class="line">    print(<span class="string">'关闭文件成功'</span>)</span><br></pre></td></tr></table></figure>
+<p>在try没有报错的情况下，会跳到finally里面执行代码。</p>
+<p>try报错了，会执行except，在执行finally。</p>
+<p>finally就是确保无论如何都要被执行的。</p>
+<p>###【4】raise语句</p>
+<p>它的作用是随时随地抛出一个异常，可以带参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">raise</span> ZeroDivisionError</span><br><span class="line"></span><br><span class="line"><span class="comment">#raise TypeError('类型错误')</span></span><br></pre></td></tr></table></figure>
+<p>###【5】丰富的else语句</p>
+<p>这里的else说的不是if-else那个玩意。</p>
+<p>不过if-else也可以抛出异常,我们已经玩过了，比如说是不是大于某个数。</p>
+<p>例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    int(<span class="string">'abc'</span>)</span><br><span class="line"><span class="keyword">except</span> ValueError <span class="keyword">as</span> reason:</span><br><span class="line">    print(<span class="string">'出错了，错误原因是：'</span> + str(reason))</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'没有问题'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#出错了，错误原因是：invalid literal for int() with base 10: 'abc'</span></span><br></pre></td></tr></table></figure>
+<p>上面的这个例子else中代码没有执行，因为else是在try中没有问题的情况下执行的。</p>
+<p>###【6】简洁的with语句<br>我们上面讲过了finally，在文件读取的时候可以用它来关闭文件，想想又要打开又要关闭，太烦人，那么我们的<code>with</code>就可以上场了，在你忘记关闭文件的时候它会自动帮你关上。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'我是一个不存在的文件.txt'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        print(f.read())</span><br><span class="line"><span class="keyword">except</span> OSError <span class="keyword">as</span> reason:</span><br><span class="line">    print(<span class="string">'挂啦！原因是:'</span> + str(reason))</span><br></pre></td></tr></table></figure>
+<p>这样写是不是方便多了，也不怕忘记关闭文件。</p>
+<p>##第十二章</p>
+<hr>
+<p>###【1】文件恒久远，一个永流传<br>大多数的程序都是遵循，输入-&gt;处理-&gt;输出的模型，首先接受输入数据，然后按照要求进行处理，最后输出结果。可能以后你的需求就不止这些了，你可能需要你的程序可以去自动的分析系统的日志，然后分析结果在保存作为一个新的日志，这时候就需要用到文件了。</p>
+<p>或者说你在IDLE中写程序，突然一个不对劲，电脑蓝屏了，在开机，你的代码都没了，但是在pycharm中为什么就不会了，因为必须要新建一个文件，然后你写的时候自动存储在文件里，文件是写在硬盘上的。</p>
+<p>在你编写代码的时候，操作系统为了更快的做出响应，会把当前的数据全部保存在内存中，因为内存和CPU之间的数据传输是最快的，比硬盘和CPU快多了。但是内存的不足就是一断电就玩完了。</p>
+<p>文件的格式我们也见过很多，windows 的.exe .txt还有我们python 的.py等等，这些都是文件。</p>
+<p>####字符串类型和字节类型</p>
+<p>字符串类型向字节类型转化称之为编码  encode</p>
+<p>字节类型向字符串类型转化称之为解码  decode</p>
+<font color="red">注意编解码格式一定要保持一致，如果是程序会报错，如果是编辑器查看，直接乱码</font>
+
+<p>常用的字符集都是什么意思</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ascii  </span><br><span class="line">	这玩意就是美国搞的一套标准，用的是一个字节，用了其中的<span class="number">0</span><span class="number">-127</span>表示了所有的老外用的东西</span><br><span class="line">ansi </span><br><span class="line">	这玩意用两个字节，叫做扩展的ascii码，<span class="number">128</span><span class="number">-0xffff</span></span><br><span class="line">gbk  </span><br><span class="line">	扩展的国标，在gb2312的基础上又多了好多的繁体字xxx，兼容gb2312 </span><br><span class="line">gb2312 </span><br><span class="line">	这玩意是中国搞了一套自己编解码（韩国搞了一套自己的、日本也搞了一套自己的）</span><br><span class="line">	对应的中国的ansi </span><br><span class="line">utf<span class="number">-8</span>   </span><br><span class="line">	互联网兴起了，迫切需要统一的编码，utf<span class="number">-8</span>就在unicode的基础上规定了存储和读取的方式，他存储的时候是变化的，如果存储英文字母，其使用的是<span class="number">1</span>个字节，如果用来存储汉字，占用<span class="number">3</span>个字节</span><br><span class="line">unicode</span><br><span class="line">	是一套国际标准，称之为万国码，也是两个字节</span><br><span class="line">	并没有真正的执行起来，而且也没有规定怎么存储和读取</span><br></pre></td></tr></table></figure>
+<font color="red">注意：以后你要用的话，应该都是utf-8无bom的格式，如果碰到了gbk，你要自己会转化相应的格式</font>
+
+<p>###【2】打开文件</p>
+<p>在python中，使用open()这个函数来打开文件返回文件对象：</p>
+<p>open(file,mode = ‘r’,buffering = -1,encoding = None,errors = None,newline = None,closefd = True,opener = None)</p>
+<p>open()这个函数有很多参数，但作为初学者来说，只需要知道第一个和第二个参数就可以了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">file：              要打开的文件名，需加路径(除非是在当前目录)。唯一强制参数</span><br><span class="line">mode：              文件打开的模式</span><br><span class="line">buffering：         设置buffer（取值为<span class="number">0</span>,<span class="number">1</span>,&gt;<span class="number">1</span>）</span><br><span class="line">encoding：          返回数据的编码（一般为UTF8或GBK）</span><br><span class="line">errors：            报错级别（一般为strict，ignore）</span><br><span class="line">newline：           用于区分换行符(只对文本模式有效，可以取的值有<span class="keyword">None</span>,<span class="string">'\n'</span>,<span class="string">'\r'</span>,<span class="string">''</span>,<span class="string">'\r\n'</span>)</span><br><span class="line">closefd：           传入的file参数类型（缺省为<span class="keyword">True</span>）</span><br></pre></td></tr></table></figure>
+<p>mode对照表：</p>
+<table>
+<thead>
+<tr>
+<th>打开模式</th>
+<th>执行操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>r</td>
+<td>以只读方式打开文件。文件的指针将会放在文件的开头。这是默认模式。</td>
+</tr>
+<tr>
+<td>rb</td>
+<td>以二进制格式打开一个文件用于只读。文件指针将会放在文件的开头。这是默认模式。</td>
+</tr>
+<tr>
+<td>r+</td>
+<td>打开一个文件用于读写。文件指针将会放在文件的开头。</td>
+</tr>
+<tr>
+<td>rb+</td>
+<td>以二进制格式打开一个文件用于读写。文件指针将会放在文件的开头。</td>
+</tr>
+<tr>
+<td>w</td>
+<td>打开一个文件只用于写入。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td>wb</td>
+<td>以二进制格式打开一个文件只用于写入。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td>w+</td>
+<td>打开一个文件用于读写。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td>wb+</td>
+<td>以二进制格式打开一个文件用于读写。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td>a</td>
+<td>打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入。</td>
+</tr>
+<tr>
+<td>ab</td>
+<td>以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入。</td>
+</tr>
+<tr>
+<td>a+</td>
+<td>打开一个文件用于读写。如果该文件已存在，文件指针将会放在文件的结尾。文件打开时会是追加模式。如果该文件不存在，创建新文件用于读写。</td>
+</tr>
+<tr>
+<td>ab+</td>
+<td>以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。如果该文件不存在，创建新文件用于读写。</td>
+</tr>
+</tbody>
+</table>
+<p>例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">path = <span class="string">r"C:\Users\xlg\Desktop\Python-1704\day07\5-文件读写\file1.txt"</span></span><br><span class="line"><span class="comment">#ignore  忽略错误</span></span><br><span class="line"><span class="comment">#f = open(path, "r", encoding="utf-8", errors="ignore")</span></span><br><span class="line">f = open(path, <span class="string">"r"</span>, encoding=<span class="string">"utf-8"</span>)</span><br></pre></td></tr></table></figure>
+<p>###【3】文件对象的方法</p>
+<p>打开文件并获取文件对象以后，就可以利用文件对象的一些方法对文件进行读取或修改等操作。</p>
+<table>
+<thead>
+<tr>
+<th>文件对象方法</th>
+<th>执行操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>close()</td>
+<td>关闭文件</td>
+</tr>
+<tr>
+<td>read(size =-1)</td>
+<td>从文件读取size个字符，当未给定或者给定负值的时候，读取剩余的所有的字符，然后作为字符返回</td>
+</tr>
+<tr>
+<td>reading()</td>
+<td>从文件中读取一整行字符</td>
+</tr>
+<tr>
+<td>write()</td>
+<td>将字符串str写入文件</td>
+</tr>
+<tr>
+<td>writelines(seq)</td>
+<td>向文件写入字符串序列seq，seq应该是一个返回字符串的可迭代对象</td>
+</tr>
+<tr>
+<td>seek(offset,from)</td>
+<td>在文件中移入文件指针，从from(0代表文件起始位置，1代表当前位置，2代表文件末尾)偏移offset个字节</td>
+</tr>
+<tr>
+<td>tell()</td>
+<td>返回当前在文件中的位置</td>
+</tr>
+</tbody>
+</table>
+<p>###【4】文件的关闭</p>
+<p>close()方法用于关闭文件。如果是C语言的话，我在这里一定会强调一万次关闭的，如果你不关闭的话，别人想要读写就会无法完成 。不关闭文件会导致（other）无法再次已写的方式打开，以前是连只读的方式都不行。而python拥有垃圾回收机制，会在文件对象的引用此计数降至零的时候自动关闭文件。</p>
+<p>但是并不代表可以不关闭文件，如果你对文件进行写入操作的话，那么应该在完成写入之后关闭文件。因为python可能会缓存你写入的数据，如果中途发生类似断电之类的事故，那些缓存的数据根本就不会写入到文件中。所以，为了安全起见，要养成使用完文件后立即关闭的好习惯。</p>
+<p>###【5】文件的读取和定位</p>
+<p>文件的读取方法很多，可以使用文件对象read()和readline()方法，也可以直接list(f)或者直接使用迭代来读取。</p>
+<p>read()方法是按字节来的去，如果不设置字节数，那么会全部读取。tell()方法会告诉你当前文件的指针位置。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">f = open(<span class="string">r'/Users/ruidong/PycharmProjects/project/demo.txt'</span>)</span><br><span class="line">print(f.read())</span><br><span class="line">print(f.tell())</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<p>刚刚提到文件指针是个什么玩意？你可以认为它是一个书签，起到定位的作用。使用seek()方法可以调整文件指针的位置。seek（offset，from）方法有两个参数。</p>
+<p>也就是文件读取了多少以后，会生成指针，只能向后读，不能再读取已度去过的，除非使用seek()重新调整指针。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span>  表示从(<span class="number">0</span>代表当前文件起始位置，<span class="number">1</span>代表当前位置，<span class="number">2</span>代表文件末尾)偏移 offset字节。</span><br></pre></td></tr></table></figure>
+<p>因此，将文件指针设置到文件起始位置，使用seek(0,0)即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">f = open(<span class="string">r'/Users/ruidong/PycharmProjects/project/demo.txt'</span>)</span><br><span class="line">print(f.read())</span><br><span class="line">print(f.tell())</span><br><span class="line">f.seek(<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line">print(<span class="string">'\n********************\n'</span>)</span><br><span class="line">print(f.read())</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<p>readline()方法用于在文件中读取一整行，就是从文件指针的位置向后读取，直到遇到换行符(\n)结束。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">r'/Users/ruidong/PycharmProjects/project/demo.txt'</span>)</span><br><span class="line">print(f.readline())</span><br><span class="line">print(f.readline())</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<p>此前介绍过列表强大，说什么都可以往里面放，这不，也可以把整个文件的内容放到列表中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">f = open(<span class="string">r'/Users/ruidong/PycharmProjects/project/demo.txt'</span>)</span><br><span class="line">lines = list(f)</span><br><span class="line"><span class="keyword">for</span> each_line <span class="keyword">in</span> lines:</span><br><span class="line">    print(each_line)</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<p>这样写是没有问题的，但是了感觉像是非要用酒精烧开水，水能烧的开，但是效率不高。文件本来就是可以迭代的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">f = open(<span class="string">r'/Users/ruidong/PycharmProjects/project/demo.txt'</span>)</span><br><span class="line"><span class="keyword">for</span> each_line <span class="keyword">in</span> f:</span><br><span class="line">    print(each_line)</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<p>###【6】文件的写入</p>
+<p>如果需要写入文件，请确保之前的打开模式有‘w’或者‘a’或者多带上‘+’，否者在写入的时候回出错：</p>
+<p>open 没有 ‘w’那些可写入的操作符或报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">'touch wdemo.txt'</span>)  <span class="comment">#在当前文件夹下新建一个wdemo.txt文件</span></span><br><span class="line">f = open(<span class="string">r'/Users/ruidong/PycharmProjects/project/wdemo.txt'</span>)</span><br><span class="line">f.write(<span class="string">'这是一个神奇的地方'</span>)</span><br><span class="line">f.close()</span><br><span class="line"></span><br><span class="line"><span class="comment">#io.UnsupportedOperation: not writable</span></span><br></pre></td></tr></table></figure>
+<p>使用‘r+’读写模式，但是要注意‘r+’或者是‘w’会把原来的文件内容给删除。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">r'/Users/ruidong/PycharmProjects/project/wdemo.txt'</span>,<span class="string">'r+'</span>)</span><br><span class="line">f.write(<span class="string">'这是一个神奇的地方'</span>)</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<p>如果是追加的话，要不然会造成血淋淋的教训，那就要使用‘a’操作符打开：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">f = open(<span class="string">r'/Users/ruidong/PycharmProjects/project/wdemo.txt'</span>,<span class="string">'a+'</span>)</span><br><span class="line">f.write(<span class="string">'\n这是一个美丽的地方'</span>)</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<p>将序列单行写入</p>
+<p>writelines() 方法用于向文件中写入一序列的字符串。<br>这一序列字符串可以是由迭代对象产生的，如一个字符串列表。<br>换行需要制定换行符 \n。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"wdemo.txt"</span>, <span class="string">"w"</span>)</span><br><span class="line"></span><br><span class="line">seq = [<span class="string">'千锋教育\n'</span>,<span class="string">'python'</span>]</span><br><span class="line">f.writelines(seq)</span><br></pre></td></tr></table></figure>
+<p>####刷新缓冲区域</p>
+<p>文件在写入的时候斌没有直接写入，而是在内存中，只有我们执行f.close()关闭文件以后，它才会写入。</p>
+<p>如果想不关闭文件直接写入，那么使用f.flush(),它的作用是立即将内存上的数据写入硬盘。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">'wdemo.txt'</span>,<span class="string">'w'</span>)</span><br><span class="line">f.write(<span class="string">'niahoa'</span>)</span><br><span class="line">f.flush()</span><br></pre></td></tr></table></figure>
+<p>###【7】一个文件案例</p>
+<p>下面我们做个案例对record.txt文件进行分割，规则如下：</p>
+<p>（1）将千锋吴彦祖的对话单独保存为boy_*.txt的文件(去掉‘千锋吴彦祖’)</p>
+<p>（2）将千锋客服的对话单独保存为girl_*.txt的文件(去掉‘千锋吴彦祖’)</p>
+<p>（3）文件中总共有三段对话，分别保存为boy_1（2、3）.txt、girl_1（2、3）.txt</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#record.txt</span></span><br><span class="line"></span><br><span class="line">千锋客服:吴彦祖，今天有客户问你有没有女朋友？</span><br><span class="line">千锋吴彦祖:咦？？</span><br><span class="line">千锋客服:我跟她说你有女朋友了！</span><br><span class="line">千锋吴彦祖:。。。。。。</span><br><span class="line">千锋客服:她让你分手后考虑下她！然后我说:<span class="string">"您要买个优盘，我就帮您留意下~"</span></span><br><span class="line">千锋吴彦祖:然后呢？</span><br><span class="line">千锋客服:她买了两个，说发一个货就好~</span><br><span class="line">千锋吴彦祖:呃。。。。。。你真牛！</span><br><span class="line">千锋客服:那是，谁让我是千锋最可爱的客服嘛~</span><br><span class="line">千锋吴彦祖:下次有人想调戏你我不阻止~</span><br><span class="line">千锋客服:滚！！！</span><br><span class="line">================================================================================</span><br><span class="line">千锋客服:千锋吴彦祖，有个好评很好笑哈。</span><br><span class="line">千锋吴彦祖:哦？</span><br><span class="line">千锋客服:<span class="string">"有了吴彦祖，以后妈妈再也不用担心我的学习了~"</span></span><br><span class="line">千锋吴彦祖:哈哈哈，我看到丫，我还发微博了呢~</span><br><span class="line">千锋客服:嗯嗯，我看了你的微博丫~</span><br><span class="line">千锋吴彦祖:哟西~</span><br><span class="line">千锋客服:那个有条回复“左手拿著彦祖，右手拿著打火機，哪裡不會點哪裡，so easy ^_^”</span><br><span class="line">千锋吴彦祖:T_T</span><br><span class="line">================================================================================</span><br><span class="line">千锋客服:千锋吴彦祖，今天一个会员想找你</span><br><span class="line">千锋吴彦祖:哦？什么事？</span><br><span class="line">千锋客服:他说你一个学生月薪已经超过<span class="number">12</span>k了！！</span><br><span class="line">千锋吴彦祖:哪里的？</span><br><span class="line">千锋客服:上海的</span><br><span class="line">千锋吴彦祖:那正常，哪家公司？</span><br><span class="line">千锋客服:他没说呀。</span><br><span class="line">千锋吴彦祖:哦</span><br><span class="line">千锋客服:老大，为什么我工资那么低啊？？是时候涨涨工资了！！</span><br><span class="line">千锋吴彦祖:啊，你说什么？我在外边呢，这里好吵吖。。。。。。</span><br><span class="line">千锋客服:滚！！！</span><br></pre></td></tr></table></figure>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#思路：</span></span><br><span class="line"><span class="comment">#我们首先知道我们要把三段对话分别分成boy_1、2、3和girl_1、2、3，一共是6个文件</span></span><br><span class="line"><span class="comment">#我没知道每段对话都是以'==='组成的</span></span><br><span class="line"><span class="comment">#我们列表的的写入需要用到writeline()</span></span><br><span class="line"><span class="comment">#我们的文件用完以后需要关闭</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_file</span><span class="params">(boy,girl,count)</span>:</span></span><br><span class="line">    file_name_boy = <span class="string">'boy'</span> + str(count) + <span class="string">'.txt'</span></span><br><span class="line">    file_name_girl = <span class="string">'girl'</span> + str(count) + <span class="string">'.txt'</span></span><br><span class="line">    boy_file = open(file_name_boy,<span class="string">'w'</span>)</span><br><span class="line">    girl_file = open(file_name_girl,<span class="string">'w'</span>)</span><br><span class="line">    boy_file.writelines(boy)</span><br><span class="line">    girl_file.writelines(girl)</span><br><span class="line">    boy_file.close()</span><br><span class="line">    girl_file.close()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">split_file</span><span class="params">()</span>:</span></span><br><span class="line">    boy = []</span><br><span class="line">    girl = []</span><br><span class="line">    count = <span class="number">1</span></span><br><span class="line">    f = open(<span class="string">r'/Users/ruidong/PycharmProjects/project/record.txt'</span>)</span><br><span class="line">    <span class="keyword">for</span> eachLine <span class="keyword">in</span> f:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> eachLine.startswith(<span class="string">'='</span>):</span><br><span class="line">            (role,line_spoken) = eachLine.split(<span class="string">':'</span>,<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">if</span> role == <span class="string">"千锋吴彦祖"</span>:</span><br><span class="line">                boy.append(line_spoken)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> role == <span class="string">"千锋客服"</span>:</span><br><span class="line">                girl.append(line_spoken)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            save_file(boy,girl,count)</span><br><span class="line">            boy = []</span><br><span class="line">            girl = []</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">    save_file(boy, girl, count)</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line">split_file()</span><br></pre></td></tr></table></figure>
+</image>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/05/21/python基础7/" data-id="cjhfjx3ek000jw4qxth2glalg" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2018/05/21/python基础8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2018/05/21/python基础6/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/05/21/pymysql/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/Mysql主从复制/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/MySQL第五课/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/MySQL第四课/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/python基础17/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 ZY<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

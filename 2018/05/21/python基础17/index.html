@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ZY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#Lesson 17  ##第十七章 ###【3】线程 ####线程锁解决数据混乱 threading.Lock()互斥锁 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849&apos;&apos;&apos;两个线程同时工作，一个存钱，一个取钱可能导致数据异常思路：加锁，&apos;&apos;&apos;import thre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZY">
+<meta property="og:url" content="https://jyue0812.github.io/2018/05/21/python基础17/index.html">
+<meta property="og:site_name" content="ZY">
+<meta property="og:description" content="#Lesson 17  ##第十七章 ###【3】线程 ####线程锁解决数据混乱 threading.Lock()互斥锁 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849&apos;&apos;&apos;两个线程同时工作，一个存钱，一个取钱可能导致数据异常思路：加锁，&apos;&apos;&apos;import thre">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-01-31T06:07:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ZY">
+<meta name="twitter:description" content="#Lesson 17  ##第十七章 ###【3】线程 ####线程锁解决数据混乱 threading.Lock()互斥锁 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849&apos;&apos;&apos;两个线程同时工作，一个存钱，一个取钱可能导致数据异常思路：加锁，&apos;&apos;&apos;import thre">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="ZY" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">ZY</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jyue0812.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python基础17" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/21/python基础17/" class="article-date">
+  <time datetime="2018-05-21T01:03:38.310Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#Lesson 17</p>
+<hr>
+<p>##第十七章</p>
+<p>###【3】线程</p>
+<p>####线程锁解决数据混乱</p>
+<p>threading.Lock()互斥锁</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">两个线程同时工作，一个存钱，一个取钱</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">可能导致数据异常</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">思路：加锁，</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="comment">#锁对象</span></span><br><span class="line">lock = threading.Lock()</span><br><span class="line"></span><br><span class="line">num = <span class="number">0</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> num</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10000000</span>):</span><br><span class="line">        <span class="comment"># 锁</span></span><br><span class="line">        <span class="comment"># 确保了这段代码只能由一个线程从头到尾的完整执行</span></span><br><span class="line">        <span class="comment"># 阻止了多线程的并发执行，包含锁的某段代码实际上只能以单线程模式执行，所以效率大大滴降低了</span></span><br><span class="line">        <span class="comment"># 由于可以存在多个锁，不同线程持有不同的锁，并试图获取其他的锁，可能造成死锁，导致多个线程挂起。只能靠操作系统强制终止</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        lock.acquire()</span></span><br><span class="line"><span class="string">        try:</span></span><br><span class="line"><span class="string">            num = num + n    #  15 = 9 + 6</span></span><br><span class="line"><span class="string">            num = num - n    #  9</span></span><br><span class="line"><span class="string">        finally:</span></span><br><span class="line"><span class="string">            #修改完一定要释放锁</span></span><br><span class="line"><span class="string">            lock.release()</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#与上面代码功能相同，with lock可以自动上锁与解锁</span></span><br><span class="line">        <span class="keyword">with</span> lock:</span><br><span class="line">            num = num + n</span><br><span class="line">            num = num - n</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    t1 = threading.Thread(target=run, args=(<span class="number">6</span>,))</span><br><span class="line">    t2 = threading.Thread(target=run, args=(<span class="number">9</span>,))</span><br><span class="line">    t1.start()</span><br><span class="line">    t2.start()</span><br><span class="line">    t1.join()</span><br><span class="line">    t2.join()</span><br><span class="line">    print(<span class="string">"num ="</span>,num)</span><br></pre></td></tr></table></figure>
+<p>####threadlocal</p>
+<p>如果有一个全局变量的话，那么在线程中是可以共享的，那么就会造成数据混乱的可能。这时候我们可以使用threadlocal，它本身也是一个全局的对象，但是它可以给每个线程创建一个局部变量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">num = <span class="number">0</span></span><br><span class="line"><span class="comment">#创建一个全局的ThreadLocal对象</span></span><br><span class="line"><span class="comment">#每个线程有独立的存储空间</span></span><br><span class="line"><span class="comment">#每个线程对ThreadLocal对象都可以读写，但是互不影响</span></span><br><span class="line">local = threading.local()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(x, n)</span>:</span></span><br><span class="line">    x = x + n</span><br><span class="line">    x = x - n</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="comment">#每个线程都有local.x，就是线程的局部变量</span></span><br><span class="line">    local.x = num</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000000</span>):</span><br><span class="line">        run(local.x, n)</span><br><span class="line">    print(<span class="string">"%s-%d"</span>%(threading.current_thread().name, local.x))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    t1 = threading.Thread(target=func, args=(<span class="number">6</span>,))</span><br><span class="line">    t2 = threading.Thread(target=func, args=(<span class="number">9</span>,))</span><br><span class="line">    t1.start()</span><br><span class="line">    t2.start()</span><br><span class="line">    t1.join()</span><br><span class="line">    t2.join()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"num ="</span>,num)</span><br><span class="line"></span><br><span class="line"><span class="comment">#作用：为每个线程绑定一个数据库链接，HTTP请求，用户身份信息等，这样一个线程的所有调用到的处理函数都可以非常方便地访问这些资源</span></span><br></pre></td></tr></table></figure>
+<p>####客户端与服务器间的数据交互</p>
+<p>客户端：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#server.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">server.bind((<span class="string">'172.16.61.1'</span>,<span class="number">8081</span>))</span><br><span class="line">server.listen(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(ck)</span>:</span></span><br><span class="line">  data = clientSocket.recv(<span class="number">1024</span>)</span><br><span class="line">  print(<span class="string">"客户端说："</span> + data.decode(<span class="string">"utf-8"</span>))</span><br><span class="line">  sendData = input(<span class="string">"输入返回给客户端的数据"</span>)</span><br><span class="line">  <span class="keyword">if</span> len(sendData):</span><br><span class="line">    clientSocket.send(sendData.encode(<span class="string">"utf-8"</span>))</span><br><span class="line"></span><br><span class="line">print(<span class="string">"服务器启动成功，等待客户端的链接"</span>)</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">  clientSocket, clientAddress = server.accept()</span><br><span class="line">  <span class="comment">#print("%s --  %s 链接成功" % (str(clientSocket), clientAddress))</span></span><br><span class="line">  t = threading.Thread(target=run, args=(clientSocket,))</span><br><span class="line">  t.start()</span><br></pre></td></tr></table></figure>
+<p>客户端：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#client.py</span></span><br><span class="line"><span class="comment">#客户端可以有多个</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line">client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">client.connect((<span class="string">"192.168.3.3"</span>, <span class="number">8081</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    data = input(<span class="string">"请输入给服务器发送的数据"</span>)</span><br><span class="line">    client.send(data.encode(<span class="string">"utf-8"</span>))</span><br><span class="line">    info = client.recv(<span class="number">1024</span>)</span><br><span class="line">    print(<span class="string">"服务器说："</span>, info.decode(<span class="string">"utf-8"</span>))</span><br></pre></td></tr></table></figure>
+<p>####信号量控制线程数量</p>
+<p>什么是信号量？</p>
+<p>也可以叫信号灯，信号量是多线程环境下使用的一种设施。</p>
+<p>我们打个比方，比如现在的路口是单行道，而且还是双行道，现在绿灯了，我们假设车的速度都是一样的，那么是不是两两一起过这个路口。</p>
+<p>那么我们线程一样的，几个线程一起一执行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> threading,time</span><br><span class="line"></span><br><span class="line">sem = threading.Semaphore(<span class="number">2</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">with</span> sem:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">            print(<span class="string">'%s--%d'</span>%(threading.current_thread().name,i))</span><br><span class="line">            time.sleep(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">        threading.Thread(target=run).start()</span><br></pre></td></tr></table></figure>
+<p>####分界线控制运行数量</p>
+<p>分解线这个我们很常见，它的作用就是讲什么分开。</p>
+<p>我们这里的分界线，好比是游乐场玩过山车的，过山车上好比就是8个座位吧，那是不是凑够了8个人才能开一趟。</p>
+<p>我们看看例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> threading,time</span><br><span class="line"></span><br><span class="line">bar = threading.Barrier(<span class="number">2</span>)<span class="comment">#凑够了三个一起执行</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"%s--start"</span> % (threading.current_thread().name))</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    bar.wait()   <span class="comment">#这里开始等待，达到条件了就可以释放了</span></span><br><span class="line">    print(<span class="string">"%s--end"</span> % (threading.current_thread().name))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">        threading.Thread(target=run).start()</span><br></pre></td></tr></table></figure>
+<p>####延时执行线程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"我被延迟了"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">go</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"我是正常的执行的"</span>)</span><br><span class="line"><span class="comment">#延时执行线程</span></span><br><span class="line">r = threading.Timer(<span class="number">5</span>, run)</span><br><span class="line">g = threading.Timer(<span class="number">1</span>, go)</span><br><span class="line">r.start()</span><br><span class="line">g.start()</span><br><span class="line"></span><br><span class="line">r.join()</span><br><span class="line">g.join()</span><br><span class="line">print(<span class="string">"结束"</span>)</span><br></pre></td></tr></table></figure>
+<p>####事件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading, time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#事件对象</span></span><br><span class="line">    event = threading.Event()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">            <span class="comment">#阻塞，等待事件的触发</span></span><br><span class="line">            event.wait()</span><br><span class="line">            <span class="comment">#重置</span></span><br><span class="line">            event.clear()<span class="comment">#这里是清除事件的</span></span><br><span class="line">            print(<span class="string">"第%d次循环"</span>%i)</span><br><span class="line">    t = threading.Thread(target=run).start()</span><br><span class="line">    <span class="keyword">return</span> event</span><br><span class="line"></span><br><span class="line">e = func()</span><br><span class="line"></span><br><span class="line"><span class="comment">#触发事件</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    e.set()<span class="comment">#这里我们知道这个事件对象是e，那么直接就可以设置事件对象</span></span><br></pre></td></tr></table></figure>
+<p>####生产者于消费者</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading,queue,time,random</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#这个是生产者</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">product</span><span class="params">(id,q)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        num = random.randint(<span class="number">0</span>,<span class="number">10000</span>)</span><br><span class="line">        q.put(num)</span><br><span class="line">        print(<span class="string">'生产者%d生产的%d已经放入队列了'</span>%(id,num))</span><br><span class="line">        time.sleep(<span class="number">3</span>)</span><br><span class="line">    <span class="comment">#队列任务完成时</span></span><br><span class="line">    q.task_done()</span><br><span class="line"><span class="comment">#这个是消费者</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">customer</span><span class="params">(id,q)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        item = q.get()</span><br><span class="line">        print(<span class="string">'消费者%d消费了%d'</span> % (id, item))</span><br><span class="line">        time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="comment">#队列任务完成时</span></span><br><span class="line">    q.task_done()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment">#实例化消息队列</span></span><br><span class="line">    q = queue.Queue()</span><br><span class="line">    <span class="comment">#启动生产者</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">        threading.Thread(target=product,args=(i,q)).start()</span><br><span class="line">    <span class="comment">#启动消费者</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):</span><br><span class="line">        threading.Thread(target=customer, args=(i, q)).start()</span><br></pre></td></tr></table></figure>
+<p>####线程调度</p>
+<p>我们有的时候需要在第一个线程中运行完一个程序，然后在第二个线程里面在运行，让这两个线程相互切换。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading,time</span><br><span class="line"></span><br><span class="line">con = threading.Condition()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">with</span> con:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">10</span>,<span class="number">2</span>):</span><br><span class="line">            print(threading.current_thread().name,i)</span><br><span class="line">            time.sleep(<span class="number">1</span>)</span><br><span class="line">            <span class="comment">#1、我先执行，打印出来以后我开始等待</span></span><br><span class="line">            con.wait()</span><br><span class="line">            <span class="comment">#4、我接受到了通知我🈶开始走了。</span></span><br><span class="line">            con.notify()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">go</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">with</span> con:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">10</span>,<span class="number">2</span>):</span><br><span class="line">            print(threading.current_thread().name,i)</span><br><span class="line">            time.sleep(<span class="number">1</span>)</span><br><span class="line">            <span class="comment">#2、在你等待的时间里面我走完了，那么我高数你，你也走吧</span></span><br><span class="line">            con.notify()</span><br><span class="line">            <span class="comment">#3、在你执行的时候我开始等待</span></span><br><span class="line">            con.wait()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    r = threading.Thread(target=run).start()</span><br><span class="line">    g = threading.Thread(target=go).start()</span><br></pre></td></tr></table></figure>
+<p>###【4】协程</p>
+<p>协程不是进程或线程，其执行过程更类似于子例程（就是某个主程序中的一部分代码，函数也是一个子例程），或者说不带返回值的函数调用。</p>
+<p>协成的执行看起来好像是两个线程是工作，实际上是在一个线程中完成的。</p>
+<p>python需要使用一个叫genertor生成器来实现的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">子程序/函数：在所有语言中都是层级调用，比如A调用B，在B执行的过程中又可以调用C，C执行完毕返回，B执行完毕返回，最后是A执行完毕。是通过栈实现的，一个线程就是执行一个子程序，子程序调用总是一个入口，一次返回，调用的顺序是明确的</span><br><span class="line"></span><br><span class="line">概述：看上去也是子程序，但执行过程中，在子程序的内部可中断，然后转而执行别的子程序，不是函数调用</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">C</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"C--start"</span>)</span><br><span class="line">    print(<span class="string">"C--end"</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">B</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"B--start"</span>)</span><br><span class="line">    C()</span><br><span class="line">    print(<span class="string">"B--end"</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">A</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"A--start"</span>)</span><br><span class="line">    B()</span><br><span class="line">    print(<span class="string">"A--end"</span>)</span><br><span class="line"></span><br><span class="line">A()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">A</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="number">1</span>)</span><br><span class="line">    print(<span class="number">2</span>)</span><br><span class="line">    print(<span class="number">3</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">B</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="string">"x"</span>)</span><br><span class="line">    print(<span class="string">"y"</span>)</span><br><span class="line">    print(<span class="string">"z"</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line">x</span><br><span class="line">y</span><br><span class="line">z</span><br><span class="line"><span class="number">3</span></span><br><span class="line">执行出这个结果</span><br><span class="line">但是A中是没有B的调用</span><br><span class="line">看起来A、B执行过程有点像线程，但协程的特点在于是一个线程执行</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">与线程相比，协程的执行效率极高，因为只有一个线程，也不存在同时写变量的冲突，在协程中共享资源不加锁，只需要判断状态</span><br></pre></td></tr></table></figure>
+<p>Python对协程的支持是通过generator实现的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    print(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">10</span></span><br><span class="line">    print(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">20</span></span><br><span class="line">    print(<span class="number">3</span>)</span><br><span class="line">    <span class="keyword">yield</span> <span class="number">30</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#协程的最简单风格，控制函数的阶段执行，节约线程或者进程的切换</span></span><br><span class="line"><span class="comment">#返回值是一个生成器</span></span><br><span class="line">m = run()</span><br><span class="line">print(next(m))</span><br><span class="line">print(next(m))</span><br><span class="line">print(next(m))</span><br></pre></td></tr></table></figure>
+<p>####数据传输</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#空变量，存储的作用data始终为空</span></span><br><span class="line">    data = <span class="string">""</span></span><br><span class="line">    r = <span class="keyword">yield</span> data</span><br><span class="line">    <span class="comment">#r = a</span></span><br><span class="line">    print(<span class="number">1</span>, r, data)</span><br><span class="line">    r = <span class="keyword">yield</span> <span class="string">"aa"</span></span><br><span class="line">    <span class="comment">#r = b</span></span><br><span class="line">    print(<span class="number">2</span>, r, data)</span><br><span class="line">    r = <span class="keyword">yield</span> <span class="string">"bb"</span></span><br><span class="line">    <span class="comment">#r = c</span></span><br><span class="line">    print(<span class="number">3</span>, r, data)</span><br><span class="line">    r = <span class="keyword">yield</span> <span class="string">"cc"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">m = run()</span><br><span class="line"><span class="comment">#启动m</span></span><br><span class="line">print(m.send(<span class="keyword">None</span>))</span><br><span class="line">print(m.send(<span class="string">"a"</span>))</span><br><span class="line">print(m.send(<span class="string">"b"</span>))</span><br><span class="line">print(m.send(<span class="string">"c"</span>))</span><br><span class="line">print(<span class="string">"******"</span>)</span><br></pre></td></tr></table></figure>
+<p>####生产者与消费者</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">product</span><span class="params">(c)</span>:</span></span><br><span class="line">    c.send(<span class="keyword">None</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">        print(<span class="string">"生产者产生数据%d"</span>%i)</span><br><span class="line">        r = c.send(str(i))</span><br><span class="line">        print(<span class="string">"消费者消费了数据%s"</span>%r)</span><br><span class="line">    c.close()</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">customer</span><span class="params">()</span>:</span></span><br><span class="line">    data = <span class="string">""</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        n = <span class="keyword">yield</span> data</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> n:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        print(<span class="string">"消费者消费了%s"</span>%n)</span><br><span class="line">        data = <span class="string">"200"</span></span><br><span class="line">c = customer()</span><br><span class="line">product(c)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/05/21/python基础17/" data-id="cjhfjx3e3000dw4qxercfmvtx" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2018/05/21/MySQL第四课/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2018/05/21/python基础16/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/05/21/pymysql/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/Mysql主从复制/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/MySQL第五课/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/MySQL第四课/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/python基础17/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 ZY<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

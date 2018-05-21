@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ZY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#Lesson_4  ##第七章 ###【1】布尔值 布尔类型是特殊的整形，尽管布尔类型用True和False来表示‘真’和‘假’，但是布尔型可以当做整数来对待，这个型内容我们在前面已经体现过了，True相当于整形值1，False相当于整形值0： 12print(True + True)  #2print(True * False) #0 ###【2】空值 空值None，它是python里的一个特">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZY">
+<meta property="og:url" content="https://jyue0812.github.io/2018/05/21/python基础4/index.html">
+<meta property="og:site_name" content="ZY">
+<meta property="og:description" content="#Lesson_4  ##第七章 ###【1】布尔值 布尔类型是特殊的整形，尽管布尔类型用True和False来表示‘真’和‘假’，但是布尔型可以当做整数来对待，这个型内容我们在前面已经体现过了，True相当于整形值1，False相当于整形值0： 12print(True + True)  #2print(True * False) #0 ###【2】空值 空值None，它是python里的一个特">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-01-31T06:07:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ZY">
+<meta name="twitter:description" content="#Lesson_4  ##第七章 ###【1】布尔值 布尔类型是特殊的整形，尽管布尔类型用True和False来表示‘真’和‘假’，但是布尔型可以当做整数来对待，这个型内容我们在前面已经体现过了，True相当于整形值1，False相当于整形值0： 12print(True + True)  #2print(True * False) #0 ###【2】空值 空值None，它是python里的一个特">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="ZY" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">ZY</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jyue0812.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python基础4" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/21/python基础4/" class="article-date">
+  <time datetime="2018-05-21T01:00:43.257Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#Lesson_4</p>
+<hr>
+<p>##第七章</p>
+<p>###【1】布尔值</p>
+<p>布尔类型是特殊的整形，尽管布尔类型用True和False来表示‘真’和‘假’，但是布尔型可以当做整数来对待，这个型内容我们在前面已经体现过了，True相当于整形值1，False相当于整形值0：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="keyword">True</span> + <span class="keyword">True</span>)  <span class="comment">#2</span></span><br><span class="line">print(<span class="keyword">True</span> * <span class="keyword">False</span>) <span class="comment">#0</span></span><br></pre></td></tr></table></figure>
+<p>###【2】空值</p>
+<p>空值<code>None</code>，它是python里的一个特殊的值。None不能理解为0，因为0是有意思的，而None是一个特殊值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">n = <span class="keyword">None</span></span><br><span class="line">print(n)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;<span class="keyword">None</span></span><br></pre></td></tr></table></figure>
+<p>###【3】list(列表)</p>
+<p>有的时候需要把一堆东西暂时储存起来，因为它们的某种直接或间接的关系，需要把他们放在一组或者一个集合中，因为将来可能用的上。很多接触过程序的人都知道<code>数组</code>，数组是把一大堆同种类型的数据挨个放一块儿，然后通过下标去寻找。由于python的变量没有数据类型，也就是说python是没有数组的，所以python加入了更加强大的列表。</p>
+<p>python列表有多强大了？如果说数组比作是集装箱，那么python的列表就是仓库。</p>
+<p>先看一个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">age1 = <span class="number">18</span></span><br><span class="line">age2 = <span class="number">19</span></span><br><span class="line">age3 = <span class="number">20</span></span><br><span class="line">age4 = <span class="number">21</span></span><br><span class="line">age5 = <span class="number">22</span></span><br><span class="line">print((age1 + age2 + age3 + age4 + age5) / <span class="number">5</span>)   <span class="comment">#20.0</span></span><br></pre></td></tr></table></figure>
+<p>这样一次就声明了5个变量，写起来还非常的麻烦，那么我们用列表来试试：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">list2 = [<span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">21</span>, <span class="number">22</span>]</span><br><span class="line">print(sum(list2)/len(list2))   <span class="comment">#20.0</span></span><br></pre></td></tr></table></figure>
+<p>使用列表以后代码变得非常的简洁.</p>
+<p>####创建列表</p>
+<p>创建列表和创建普通变量一样，只是把数据用中括号括起来就可以了，数据之间用逗号隔开。</p>
+<p>先创建一个空的列表；</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list1 =[]</span><br><span class="line"></span><br><span class="line">print(list1,<span class="string">'----------'</span>,type(list1))</span><br></pre></td></tr></table></figure>
+<p>再创建一个带有元素的列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">list2 = [<span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">21</span>, <span class="number">22</span>]</span><br><span class="line"></span><br><span class="line">print(list2)</span><br></pre></td></tr></table></figure>
+<p>####访问列表中的元素</p>
+<p>我们访问元素中的单个值，可以通过元素的索引值（index）</p>
+<font color="red">注意，列表的索引值是从零开始的：</font>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">name = [<span class="string">'鸡蛋'</span>,<span class="string">'鸭蛋'</span>,<span class="string">'鹅蛋'</span>,<span class="string">'傻蛋'</span>]</span><br><span class="line"></span><br><span class="line">print(name[<span class="number">0</span>])</span><br><span class="line">print(name[<span class="number">3</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;鸡蛋</span><br><span class="line">&gt;&gt;&gt;傻蛋</span><br></pre></td></tr></table></figure>
+<p>我们看到上面的列表一面一共只有4个元素，那么索引值就是0、1、2、3，<br>如果输入name[4]的话，那就超出范围了，会报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name = [<span class="string">'鸡蛋'</span>,<span class="string">'鸭蛋'</span>,<span class="string">'鹅蛋'</span>,<span class="string">'傻蛋'</span>]</span><br><span class="line"></span><br><span class="line">print(name[<span class="number">4</span>])</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;IndexError: list index out of range</span><br></pre></td></tr></table></figure>
+<p>有的时候，list可能会非常的长，我们不可能去数它，在计算索引值啊，那怎么办了？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">现在我要找这个列表中间的元素</span><br><span class="line"></span><br><span class="line">name = [<span class="string">'鸡蛋'</span>,<span class="string">'鸭蛋'</span>,<span class="string">'鹅蛋'</span>,<span class="string">'傻蛋'</span>,<span class="string">'李狗蛋'</span>]</span><br><span class="line"></span><br><span class="line">print(name[int(len(name)/<span class="number">2</span>)])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>鹅蛋</span><br></pre></td></tr></table></figure>
+<p>####列表的组合</p>
+<p>列表的组合其实和字符串拼接是一样的，都是使用+号相连接。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">name = [<span class="string">'鸡蛋'</span>,<span class="string">'鸭蛋'</span>,<span class="string">'鹅蛋'</span>,<span class="string">'傻蛋'</span>,<span class="string">'鱼蛋'</span>]</span><br><span class="line"></span><br><span class="line">nameto = [<span class="string">'鸵鸟蛋'</span>,<span class="string">'恐龙蛋'</span>,<span class="string">'鳄鱼蛋'</span>,<span class="string">'王八蛋'</span>,<span class="string">'李狗蛋'</span>]</span><br><span class="line"></span><br><span class="line">print(nameto + name )</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[<span class="string">'鸵鸟蛋'</span>, <span class="string">'恐龙蛋'</span>, <span class="string">'鳄鱼蛋'</span>, <span class="string">'王八蛋'</span>, <span class="string">'李狗蛋'</span>, <span class="string">'鸡蛋'</span>, <span class="string">'鸭蛋'</span>, <span class="string">'鹅蛋'</span>, <span class="string">'傻蛋'</span>, <span class="string">'鱼蛋'</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#合并的时候那个数组在前面，那个数组的索引的值就偏小</span></span><br></pre></td></tr></table></figure>
+<p>####列表的重复</p>
+<p>列表的重复和字符串是一样的，使用 * </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">name = [<span class="string">'鸡蛋'</span>,<span class="string">'鸭蛋'</span>,<span class="string">'鹅蛋'</span>,<span class="string">'傻蛋'</span>,<span class="string">'鱼蛋'</span>]</span><br><span class="line">print(name * <span class="number">3</span> )</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[<span class="string">'鸡蛋'</span>, <span class="string">'鸭蛋'</span>, <span class="string">'鹅蛋'</span>, <span class="string">'傻蛋'</span>, <span class="string">'鱼蛋'</span>, <span class="string">'鸡蛋'</span>, <span class="string">'鸭蛋'</span>, <span class="string">'鹅蛋'</span>, <span class="string">'傻蛋'</span>, <span class="string">'鱼蛋'</span>, <span class="string">'鸡蛋'</span>, <span class="string">'鸭蛋'</span>, <span class="string">'鹅蛋'</span>, <span class="string">'傻蛋'</span>, <span class="string">'鱼蛋'</span>]</span><br></pre></td></tr></table></figure>
+<p>####判断元素是不是这个列表中的</p>
+<p>我们学过in 和 not in ，返回布尔值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">name = [<span class="string">'鸡蛋'</span>,<span class="string">'鸭蛋'</span>,<span class="string">'鹅蛋'</span>,<span class="string">'傻蛋'</span>,<span class="string">'鱼蛋'</span>]</span><br><span class="line"></span><br><span class="line">print(<span class="string">'驴蛋'</span> <span class="keyword">in</span> name)</span><br><span class="line">print(<span class="string">'驴蛋'</span> <span class="keyword">not</span> <span class="keyword">in</span> name)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;<span class="keyword">False</span></span><br><span class="line">&gt;&gt;&gt;<span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>####列表的分片</p>
+<p>依然和字符串一样</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">name = [<span class="string">'鸡蛋'</span>,<span class="string">'鸭蛋'</span>,<span class="string">'鹅蛋'</span>,<span class="string">'傻蛋'</span>,<span class="string">'鱼蛋'</span>]</span><br><span class="line"></span><br><span class="line">print(name[:<span class="number">2</span>])   <span class="comment">#从0开始取2个</span></span><br><span class="line">print(name[::<span class="number">2</span>])  <span class="comment">#从0开始，每两个取一次</span></span><br><span class="line">print(name[::<span class="number">-1</span>])  <span class="comment">#返回翻转</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[<span class="string">'鸡蛋'</span>, <span class="string">'鸭蛋'</span>]</span><br><span class="line">&gt;&gt;&gt;[<span class="string">'鸡蛋'</span>, <span class="string">'鹅蛋'</span>, <span class="string">'鱼蛋'</span>]</span><br><span class="line">&gt;&gt;&gt;[<span class="string">'鱼蛋'</span>, <span class="string">'傻蛋'</span>, <span class="string">'鹅蛋'</span>, <span class="string">'鸭蛋'</span>, <span class="string">'鸡蛋'</span>]</span><br></pre></td></tr></table></figure>
+<p>####二维列表</p>
+<p>什么是二维列表，就是列表的元素也是列表</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">list1 = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>],[<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line">[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]]</span><br></pre></td></tr></table></figure>
+<p>二维列表获取元素是一样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">list1 = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>],[<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">print(list1[<span class="number">1</span>][<span class="number">2</span>])  <span class="comment">#6</span></span><br><span class="line">print(list1[<span class="number">0</span>][<span class="number">1</span>])  <span class="comment">#2</span></span><br><span class="line">print(list1[<span class="number">2</span>][<span class="number">0</span>])  <span class="comment">#7</span></span><br></pre></td></tr></table></figure>
+<p>####在列表中末尾添加新的元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">list1.append(<span class="number">6</span>)</span><br><span class="line">list1.append([<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>])</span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line"><span class="comment">#添加的是列表，那么这个元素也是列表</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]]</span><br></pre></td></tr></table></figure>
+<p>####在末尾一次性追加另一个列表中的多个值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">list1.extend([<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>])</span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#extend()插入的只能是list类型的</span></span><br></pre></td></tr></table></figure>
+<p>####在指定下标处添加一个元素，不覆盖原数据，原数据向后顺延</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">list1.insert(<span class="number">2</span>, <span class="number">100</span>)</span><br><span class="line">list1.insert(<span class="number">2</span>, [<span class="number">200</span>,<span class="number">300</span>])</span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">200</span>, <span class="number">300</span>], <span class="number">100</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+<p>####弹出(移除)列表中指定下标处的元素（默认移除最后一个元素）,并返回删除的数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">list1.pop()  <span class="comment">#不写索引的话默认弹出最后一个元素</span></span><br><span class="line"><span class="comment">#写就是等于是list1.pop(-1)</span></span><br><span class="line">list1.pop(<span class="number">2</span>)</span><br><span class="line">print(list1.pop(<span class="number">1</span>))</span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;<span class="number">2</span></span><br><span class="line">&gt;&gt;&gt;[<span class="number">1</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p>####修改指定的值</p>
+<p>修改list只需要通过索引重新复制就可以了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">list1[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">list1[<span class="number">-1</span>] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#[0, 2, 3, 4, [1, 2, 3]]</span></span><br></pre></td></tr></table></figure>
+<h4 id="移除列表中的某个元素第一个匹配的结果"><a href="#移除列表中的某个元素第一个匹配的结果" class="headerlink" title="移除列表中的某个元素第一个匹配的结果"></a>移除列表中的某个元素第一个匹配的结果</h4><p>remove()在不知道值的下表情况下使用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line">list1.remove(<span class="number">4</span>) <span class="comment">#删除第一个4</span></span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<p>删除所有指定的重复值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="number">4</span> <span class="keyword">in</span> list1:</span><br><span class="line">    list1.remove(<span class="number">4</span>)</span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+<p>####获取列表值得下标(索引)</p>
+<p>index() 函数用于从列表中找出某个值第一个匹配项的索引位置。</p>
+<p>该方法返回查找对象的索引位置，如果没有找到对象则抛出异常。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line">print(list1.index(<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;<span class="number">2</span>   <span class="comment">#返回3的索引是2</span></span><br></pre></td></tr></table></figure>
+<p>index还有两个参数：</p>
+<p>index(需要查找的值,start,stop)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">one = list1.index(<span class="number">4</span>)   <span class="comment">#这是第一个四的位置</span></span><br><span class="line"></span><br><span class="line">end = len(list1)    <span class="comment">#这是list1的含有元素长度,代表结束的位置，list1里面没有下表为8的地方那么默认不会去查找</span></span><br><span class="line"></span><br><span class="line">start_two = one + <span class="number">1</span>        <span class="comment">#第一个4的下表为'3'，那么+1以后就不会从下表为3的位置开始找</span></span><br><span class="line"></span><br><span class="line">two = list1.index(<span class="number">4</span>,start_two,end) <span class="comment">#获取第二个two的下标值，把值赋给变量two</span></span><br><span class="line"></span><br><span class="line">start_three = two + <span class="number">1</span>   <span class="comment">#代表第三次查找的开始位置</span></span><br><span class="line"></span><br><span class="line">three = list1.index(<span class="number">4</span>,start_three,end)</span><br><span class="line"></span><br><span class="line">print(one,two,three)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;<span class="number">3</span> <span class="number">5</span> <span class="number">7</span></span><br></pre></td></tr></table></figure>
+<p>####语句删除del</p>
+<p>注意del 不是list的一个方法，所以后面不用加小括号，它的删除方式和pop有些类似，不过del 必须指定下标,如果不加索引，那就是删除整个列表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"><span class="keyword">del</span> list1[<span class="number">0</span>]</span><br><span class="line"><span class="keyword">del</span> list1[<span class="number">-1</span>]</span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+<p>####清楚列表中的所有数据</p>
+<p>del list</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"><span class="keyword">del</span> list1</span><br><span class="line"></span><br><span class="line">print(list1)</span><br><span class="line">&gt;&gt;&gt;[]</span><br></pre></td></tr></table></figure>
+<p>clear()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line">list1.clear()</span><br><span class="line"></span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[]</span><br></pre></td></tr></table></figure>
+<p>####计算指定值在列表中出现的次数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">print(list1.count(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;<span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>####获取列表中元素的个数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">print(len(list1))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;<span class="number">8</span></span><br></pre></td></tr></table></figure>
+<p>####列表的的最大值、最小值、列表中数字的总和</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">print(max(list1),min(list1))</span><br><span class="line">print(sum(list1))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;<span class="number">5</span> <span class="number">1</span></span><br><span class="line">&gt;&gt;&gt;<span class="number">28</span></span><br></pre></td></tr></table></figure>
+<p>####翻转列表</p>
+<p>我们原来说过list[：：-1]的方法可以返回翻转列表的结果，但是默认是不影响列表的原来的值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">print(list1[::<span class="number">-1</span>])</span><br><span class="line"></span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#[4, 5, 4, 5, 4, 3, 2, 1]</span></span><br><span class="line"><span class="comment">#[1, 2, 3, 4, 5, 4, 5, 4]  并没有被影响</span></span><br></pre></td></tr></table></figure>
+<p>list.reverse(),它也是翻转列表，但是它影响原来的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">list1.reverse()</span><br><span class="line"></span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line"><span class="comment">#[4, 5, 4, 5, 4, 3, 2, 1]</span></span><br></pre></td></tr></table></figure>
+<p>####列表的排序</p>
+<p>list.sort(func,key,reverse)</p>
+<p>func和key参数用于设置排序得到方法和关键字，默认使用的是归并排序，reverse的默认值是False，也就是正序排列。</p>
+<p>正序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">list1.sort()  <span class="comment">#没有写默认是从小到大</span></span><br><span class="line"></span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+<p>倒序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">list1.sort(reverse=<span class="keyword">True</span>)  <span class="comment">#指定了reverse=True就是倒叙排列</span></span><br><span class="line"></span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[<span class="number">5</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<p>模拟倒序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">list1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">list1.sort()</span><br><span class="line"></span><br><span class="line">list1.reverse()</span><br><span class="line"></span><br><span class="line">print(list1)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[<span class="number">5</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<p>####关于分片“拷贝”概念  深拷贝和浅拷贝</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">list1 = [<span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">9</span>,<span class="number">7</span>,<span class="number">8</span>]</span><br><span class="line"></span><br><span class="line">list2 = list1[:]  <span class="comment">#分片拷贝的并没有受到影响，深拷贝，它在内存中的地址与list1不一样</span></span><br><span class="line"></span><br><span class="line">list3 = list1     <span class="comment">#浅拷贝</span></span><br><span class="line"></span><br><span class="line">list4 = list1.copy()  <span class="comment">#深拷贝，它在内存中的地址与list1不一样，深拷贝也不会受到影响</span></span><br><span class="line"></span><br><span class="line">list1.sort()</span><br><span class="line"></span><br><span class="line">print(<span class="string">'list1：'</span>,list1,id(list1))</span><br><span class="line">print(<span class="string">'list2：'</span>,list2,id(list2))</span><br><span class="line">print(<span class="string">'list3：'</span>,list3,id(list3))</span><br><span class="line">print(<span class="string">'list4：'</span>,list4,id(list4))</span><br><span class="line"></span><br><span class="line"><span class="comment">#list1： [1, 2, 3, 7, 8, 9] 4323685000</span></span><br><span class="line"><span class="comment">#list2： [1, 3, 2, 9, 7, 8] 4323686152</span></span><br><span class="line"><span class="comment">#list3： [1, 2, 3, 7, 8, 9] 4323685000</span></span><br><span class="line"><span class="comment">#list4： [1, 3, 2, 9, 7, 8] 4323686536</span></span><br></pre></td></tr></table></figure>
+<p>分片拷贝了就是把原先的list表的值复制到一个新的地址上，所以原来的list发生改变都不会影响到。</p>
+<image src="images/copy.jpg" width="500">
+
+
+<p>####将其它类型转换成list</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">tu = (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">list1 = list(tu)</span><br><span class="line"></span><br><span class="line">print(tu,type(tu))</span><br><span class="line">print(list1,type(list1))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#(1, 2, 3) &lt;class 'tuple'&gt;</span></span><br><span class="line"><span class="comment">#[1, 2, 3] &lt;class 'list'&gt;</span></span><br></pre></td></tr></table></figure>
+<p>##第八章</p>
+<p>###【1】条件控制语句</p>
+<hr>
+<p>####if-elif-else</p>
+<p>我们在没有学习这一章节之前只有if-else，那么这样可能会写很多的if语句，我们看一个例子。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#现在做一个100分制的成绩评价，90分以上为A，80-90为B，70-80为C，60-70为D，60以下为E</span></span><br><span class="line"></span><br><span class="line">score = int(input(<span class="string">'请输入0到100之间成绩：'</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="number">100</span> &gt;= score &gt;=<span class="number">90</span>:</span><br><span class="line">    print(<span class="string">'A'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="number">90</span> &gt;= score &gt;=<span class="number">80</span>:</span><br><span class="line">    print(<span class="string">"B"</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="number">80</span> &gt;= score &gt;=<span class="number">70</span>:</span><br><span class="line">    print(<span class="string">'C'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="number">70</span> &gt;= score &gt;= <span class="number">60</span>:</span><br><span class="line">    print(<span class="string">'D'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="number">60</span> &gt;= score &gt;= <span class="number">0</span>:</span><br><span class="line">    print(<span class="string">"E"</span>)</span><br><span class="line"><span class="keyword">if</span> score &gt; <span class="number">100</span> <span class="keyword">or</span> score &lt; <span class="number">0</span>:</span><br><span class="line">    print(<span class="string">'输入错误，输入0到100之间成绩'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">#这样的话需要很多的if</span></span><br></pre></td></tr></table></figure>
+<p>但是你也可以这样去写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">score = int(input(<span class="string">'请输入0到100之间成绩：'</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="number">100</span> &gt;= score &gt;= <span class="number">90</span>:</span><br><span class="line">    print(<span class="string">'A'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">if</span> <span class="number">90</span> &gt;= score &gt;= <span class="number">80</span>:</span><br><span class="line">        print(<span class="string">"B"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="number">80</span> &gt;= score &gt;= <span class="number">70</span>:</span><br><span class="line">            print(<span class="string">'C'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="number">70</span> &gt;= score &gt;= <span class="number">60</span>:</span><br><span class="line">                print(<span class="string">'D'</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> <span class="number">60</span> &gt;= score &gt;= <span class="number">0</span>:</span><br><span class="line">                    print(<span class="string">"E"</span>)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">if</span> score &gt; <span class="number">100</span> <span class="keyword">or</span> score &lt; <span class="number">0</span>:</span><br><span class="line">                        print(<span class="string">'输入错误，输入0到100之间成绩'</span>)</span><br></pre></td></tr></table></figure>
+<p>其实我们可以用一个if去搞定：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">score = int(input(<span class="string">'请输入0到100之间成绩：'</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="number">100</span> &gt;= score &gt;=<span class="number">90</span>:</span><br><span class="line">    print(<span class="string">'A'</span>)</span><br><span class="line"><span class="keyword">elif</span> <span class="number">90</span> &gt;= score &gt;=<span class="number">80</span>:</span><br><span class="line">    print(<span class="string">"B"</span>)</span><br><span class="line"><span class="keyword">elif</span> <span class="number">80</span> &gt;= score &gt;=<span class="number">70</span>:</span><br><span class="line">    print(<span class="string">'C'</span>)</span><br><span class="line"><span class="keyword">elif</span> <span class="number">70</span> &gt;= score &gt;= <span class="number">60</span>:</span><br><span class="line">    print(<span class="string">'D'</span>)</span><br><span class="line"><span class="keyword">elif</span> <span class="number">60</span> &gt;= score &gt;= <span class="number">0</span>:</span><br><span class="line">    print(<span class="string">"E"</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'输入错误，输入0到100之间成绩'</span>)</span><br></pre></td></tr></table></figure>
+<font color="red">注意：elif后面是没有冒号的</font>
+
+<p>这三个是个很简单的例子，但是这里面有一个问题，假设我们第一次输入100,第一种写法会打印出一个A，然后继续向后面的2，3，4，5一次判断，然后条件都不符合，退出程序。</p>
+<p>如果现在我们使用第二种或第三种，在第一次判断的时候就会打印出A，而后面的程序将不再执行，直接退出。</p>
+<p>假设每一次判读都会耗费一次CPU的时间，那么第一种写法比第二种和第三种要多耗费400%的时间，要成为一个优秀的程序员，必须要养成一个良好的思维逻辑。而python可以锻炼你这方面的能力。</p>
+<p>###【2】python可以有效避免“悬挂else”（了解）</p>
+<p>什么是“悬挂else”？</p>
+<p>举个例子，初学C的人很容易被一下代码欺骗：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">if</span>(a &gt;<span class="number">0</span>)</span><br><span class="line">	<span class="keyword">if</span>(a &gt; <span class="number">10</span>)</span><br><span class="line">		print(<span class="string">'这真的很大！！！'</span>)</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	print(<span class="string">'你个辣鸡！！'</span>)</span><br></pre></td></tr></table></figure>
+<p>这个例子里面，else和if都是最外层的，我们在python里面能看出来它是术语最外面一层if的，但是在C语言里面，有个就近原则，那么它就是里面一层if的。</p>
+<p>这样一不小心就会导致错误，这就是著名的‘悬挂else’，但是在python里，它是不可能出现的。python只有保证缩进整齐就可以决定else是谁的</p>
+<p>###【3】不同的if-else（条件表达式或三元运算符）</p>
+<p>我们说多少元操作符取决于它有多少个操作数。例如赋值<code>a = 2</code>它是二元操作符，因为它左右各有一个操作数，那么<code>-1</code>它就是一个医院操作符。</p>
+<p>想必大家都已经才出来三元操作符了吧。</p>
+<p>通过三元运算符你可以简单的完成下面的判断：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">b = <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> a&lt;b:</span><br><span class="line">    print(<span class="string">'a&lt;b'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'a&gt;b'</span>)</span><br></pre></td></tr></table></figure>
+<p>使用三元运算符：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">a = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">b = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">c = <span class="string">'a&lt;b'</span> <span class="keyword">if</span> a&lt;b <span class="keyword">else</span> <span class="string">'a&gt;b'</span></span><br><span class="line">print(c)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#条件成立执行了左边，左边是if的代码体</span></span><br><span class="line"><span class="comment">#条件不成立执行右边，右边是else的代码体</span></span><br></pre></td></tr></table></figure>
+<p>###【4】断言、断点</p>
+<p>####断言</p>
+<p>断言(assert)的语法就像是if条件分支的‘近亲’。</p>
+<p>当这个关键字的条件为False的时候，程序会抛出<code>AssertionError</code>这样的异常。</p>
+<p>在设么情况下会使用assert了？在我们测试的时候,与其让错误的条件继续运行，不如直接把错误抛出来。</p>
+<p>我们看下面的例子：</p>
+<p>条件为False的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">a = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">b = <span class="number">2</span></span><br><span class="line"><span class="keyword">assert</span> a &gt; b</span><br><span class="line"><span class="keyword">if</span> a&lt;b:</span><br><span class="line">    print(<span class="string">'a&lt;b'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'a&gt;b'</span>)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&gt;&gt;&gt;AssertionError</span><br></pre></td></tr></table></figure>
+<p>条件为True的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">a = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">b = <span class="number">2</span></span><br><span class="line"><span class="keyword">assert</span> a &lt; b  <span class="comment">#结果为真，什么都不会发生</span></span><br><span class="line"><span class="keyword">if</span> a&lt;b:</span><br><span class="line">    print(<span class="string">'a&lt;b'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'a&gt;b'</span>)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&gt;&gt;&gt;a&lt;b</span><br></pre></td></tr></table></figure>
+<p>###【5】while循环语句</p>
+<p>python的while循环和if的条件分支类似，在条件为真的情况下，执行一段代码，不同的是，while循环会一直重复执行那段代码，把这段代码称为循环体。</p>
+<p>while 条件：<br>    循环体</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">a = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>  a &lt; <span class="number">10</span>：</span><br><span class="line">	print(a)</span><br><span class="line">	a += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>这是一个死循环</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">	print(<span class="number">123</span>)</span><br></pre></td></tr></table></figure>
+<p>###【6】for循环语句</p>
+<p>for循环是python的计数器循环，虽然说python是由C语言编写的，但是它的for循环和C语言的for循环不太一样，python的for循环显得更为智能和强大！这主要表现在它会自动调用迭代器 next()，会自动捕获StopIteration异常并结束循环。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">string = <span class="string">'1000phone'</span></span><br><span class="line"><span class="keyword">for</span> each <span class="keyword">in</span> string:</span><br><span class="line">	print(each,end=<span class="string">'-'</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;e-a-c-h-</span><br></pre></td></tr></table></figure>
+<p>###【7】range()、enumerate() </p>
+<p>####range()</p>
+<p>range()我们在前面的几章里面已经见识过了。其实它是for最好的小伙伴。</p>
+<p>range(start，stop, skip)</p>
+<p>start:计数从start开始。默认是从0开始。例如range（5）等价于range（0， 5）;</p>
+<p>end:技术到end结束，但不包括end.例如：range（0， 5） 是[0, 1, 2, 3, 4]没有5</p>
+<p>skip：每次跳跃的间距，默认为1。例如：range（0， 5） 等价于 range(0, 5, 1)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">101</span>,<span class="number">10</span>):</span><br><span class="line">	print(i)</span><br></pre></td></tr></table></figure>
+<p>####enumerate() </p>
+<p>enumerate() 函数用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列出数据和数据下标，一般用在 for 循环当中。</p>
+<p>语法：enumerate(sequence, [start=0])</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sequence -- 一个序列、迭代器或其他支持迭代对象。</span><br><span class="line">start -- 下标起始位置。</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="string">"这"</span>, <span class="string">"是"</span>, <span class="string">"一个"</span>, <span class="string">"测试"</span>]</span><br><span class="line"><span class="keyword">for</span> index, item <span class="keyword">in</span> enumerate(list1):</span><br><span class="line">    <span class="keyword">print</span>（index, item）</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;<span class="number">0</span> 这</span><br><span class="line">&gt;&gt;&gt;<span class="number">1</span> 是</span><br><span class="line">&gt;&gt;&gt;<span class="number">2</span> 一个</span><br><span class="line">&gt;&gt;&gt;<span class="number">3</span> 测试</span><br></pre></td></tr></table></figure>
+<p>使用enumerate()生成键值对元祖</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">list1 = [<span class="string">"这"</span>, <span class="string">"是"</span>, <span class="string">"一个"</span>, <span class="string">"测试"</span>]</span><br><span class="line"></span><br><span class="line">print(list(enumerate(list1)))</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;[(<span class="number">0</span>, <span class="string">'这'</span>), (<span class="number">1</span>, <span class="string">'是'</span>), (<span class="number">2</span>, <span class="string">'一个'</span>), (<span class="number">3</span>, <span class="string">'测试'</span>)]</span><br></pre></td></tr></table></figure>
+<p>for循环的魅力不止这一点，还有其它的各式各样的搭档帮助实现各种乱七八糟的功能，后面在讲解元祖的时候在介绍给大家</p>
+<p>###【8】break、continue</p>
+<p>break 语句的作用是终止当前循环，并且跳出循环体。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">bingo = <span class="string">'我最帅'</span></span><br><span class="line">answer = input(<span class="string">'请输入我最想听的一句话:'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="keyword">if</span> bingo == answer:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    answer = input(<span class="string">'答对了才能出去：'</span>)</span><br><span class="line">print(<span class="string">'哎哟，不错哦~'</span>)</span><br></pre></td></tr></table></figure>
+<p>continue 语句的作用是终止本轮循环并直接开始下一轮循环</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    <span class="keyword">if</span> i % <span class="number">2</span> != <span class="number">0</span>:</span><br><span class="line">        print(<span class="string">''</span>)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    i += <span class="number">2</span></span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+<p>###海龟制图</p>
+<p>python2.6版本中后引入的一个简单的绘图工具，叫做海龟绘图(Turtle Graphics),turtle库是python的内部库,使用导入即可 <code>import turtle</code></p>
+<p>先说明一下turtle绘图的基础知识:</p>
+<p>####1、画布(canvas)</p>
+<p>画布就是turtle为我们展开用于绘图区域, 我们可以设置它的大小和初始位置</p>
+<p>#####screensize()<br>设置画布大小:<br>turtle.screensize(canvwidth=None, canvheight=None, bg=None)<br>参数分别为画布的宽(单位像素), 高, 背景颜色</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">turtle.screensize(<span class="number">800</span>, <span class="number">600</span>, <span class="string">"green"</span>)</span><br><span class="line">turtle.screensize() <span class="comment">#返回默认大小(400, 300)</span></span><br></pre></td></tr></table></figure>
+<p>#####setup()<br>turtle.setup(width=0.5, height=0.75, startx=None, starty=None)</p>
+<p>参数:<br>width, height: 输入宽和高为整数时, 表示像素; 为小数时, 表示占据电脑屏幕的比例<br>(startx, starty): 这一坐标表示 矩形窗口左上角顶点的位置, 如果为空,则窗口位于屏幕中心</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">turtle.setup(width=<span class="number">0.6</span>, height=<span class="number">0.6</span>)</span><br><span class="line">turtle.setup(width=<span class="number">800</span>, height=<span class="number">800</span>, startx=<span class="number">100</span>, starty=<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+<p>####2. 画笔</p>
+<p>#####画笔的状态<br>在画布上,默认有一个坐标原点为画布中心的坐标轴, 坐标原点上有一只面朝x轴正方向小乌龟. 这里我们描述小乌龟时使用了两个词语:坐标原点(位置),面朝x轴正方向(方向), turtle绘图中, 就是使用位置方向描述小乌龟(画笔)的状态</p>
+<p>#####画笔的属性<br>画笔(画笔的属性，颜色、画线的宽度)<br>1) turtle.pensize()：设置画笔的宽度；<br>2) turtle.pencolor(); 没有参数传入,返回当前画笔颜色,传入参数设置画笔颜色,可以是字符串如”green”, “red”,也可以是RGB 3元组,</p>
+<p>例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> turtle <span class="keyword">as</span> t</span><br><span class="line">t.pencolor(<span class="string">'brown'</span>)</span><br><span class="line">tup = (<span class="number">0.2</span>, <span class="number">0.8</span>, <span class="number">0.55</span>)</span><br><span class="line">t.pencolor(tup)</span><br></pre></td></tr></table></figure>
+<p>3) turtle.speed(speed): 设置画笔移动速度,画笔绘制的速度范围[0,10]整数, 数字越大越快</p>
+<p>#####绘图命令<br>操纵海龟绘图有着许多的命令,这些命令可以划分为3种:一种为运动命令，一种为画笔控制命令,还有一种是全局控制命令</p>
+<p>(1)画笔运动命令:</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>turtle.forward(distance)</td>
+<td>向当前画笔方向移动distance像素长</td>
+</tr>
+<tr>
+<td>turtle.backward(distance)</td>
+<td>向当前画笔相反方向移动distance像素长度</td>
+</tr>
+<tr>
+<td>turtle.right(degree)</td>
+<td>顺时针移动degree°</td>
+</tr>
+<tr>
+<td>turtle.left(degree)</td>
+<td>逆时针移动degree°</td>
+</tr>
+<tr>
+<td>turtle.pendown()</td>
+<td>移动时绘制图形,缺省时也会绘制</td>
+</tr>
+<tr>
+<td>turtle.goto(x,y)</td>
+<td>将画笔移动到坐标为x,y的位置</td>
+</tr>
+<tr>
+<td>turtle.penup()</td>
+<td>移动时不绘制图形,提起笔，用于另起一个地方绘制时用</td>
+</tr>
+<tr>
+<td>turtle.speed(speed)</td>
+<td>画笔绘制的速度范围[0,10]整数</td>
+</tr>
+<tr>
+<td>turtle.circle()</td>
+<td>画圆,半径为正(负),表示圆心在画笔的左边(右边)画圆</td>
+</tr>
+</tbody>
+</table>
+<p>(2)画笔控制命令:</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>turtle.pensize(width)</td>
+<td>绘制图形时的宽度</td>
+</tr>
+<tr>
+<td>turtle.pencolor()</td>
+<td>画笔颜色</td>
+</tr>
+<tr>
+<td>turtle.fillcolor(colorstring)</td>
+<td>绘制图形的填充颜色</td>
+</tr>
+<tr>
+<td>turtle.color(color1, color2)</td>
+<td>同时设置pencolor=color1, fillcolor=color2</td>
+</tr>
+<tr>
+<td>turtle.filling()</td>
+<td>返回当前是否在填充状态</td>
+</tr>
+<tr>
+<td>turtle.begin_fill()</td>
+<td>准备开始填充图形</td>
+</tr>
+<tr>
+<td>turtle.end_fill()</td>
+<td>填充完成；</td>
+</tr>
+<tr>
+<td>turtle.hideturtle()</td>
+<td>隐藏箭头显示；</td>
+</tr>
+<tr>
+<td>turtle.showturtle()</td>
+<td>与hideturtle()函数对应，显示</td>
+</tr>
+</tbody>
+</table>
+<p>(3) 全局控制命令</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>turtle.clear()</td>
+<td>清空turtle窗口，但是turtle的位置和状态不会改变</td>
+</tr>
+<tr>
+<td>turtle.reset()</td>
+<td>清空窗口，重置turtle状态为起始状态</td>
+</tr>
+<tr>
+<td>turtle.undo()</td>
+<td>撤销上一个turtle动作</td>
+</tr>
+<tr>
+<td>turtle.isvisible()</td>
+<td>返回当前turtle是否可见</td>
+</tr>
+<tr>
+<td>stamp()</td>
+<td>复制当前图形</td>
+</tr>
+<tr>
+<td>turtle.write(s[,font=(“font-name”,font_size,”font_type”)])</td>
+<td>写文本，s为文本内容，font是字体的参数，里面分别为字体名称，大小和类型；font为可选项, font的参数也是可选项</td>
+</tr>
+</tbody>
+</table>
+<p>####3. 命令详解</p>
+<p>turtle.circle(radius, extent=None, steps=None)<br>描述: 以给定半径画圆<br>参数:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">radius(半径); 半径为正(负),表示圆心在画笔的左边(右边)画圆</span><br><span class="line">extent(弧度) (optional);</span><br><span class="line">steps (optional) (做半径为radius的圆的内切正多边形,多边形边数为steps)</span><br></pre></td></tr></table></figure>
+<p>举例:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">circle(50) # 整圆;</span><br><span class="line">circle(50,steps=3) # 三角形;</span><br><span class="line">circle(120, 180) # 半圆</span><br></pre></td></tr></table></figure></p>
+<p>####4. 绘图举例</p>
+<p>画一个太阳花</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> turtle <span class="keyword">as</span> t</span><br><span class="line"><span class="keyword">import</span> turtle <span class="keyword">as</span> t</span><br><span class="line">t.color(<span class="string">"red"</span>, <span class="string">"yellow"</span>)</span><br><span class="line">t.speed(<span class="number">10</span>)</span><br><span class="line">t.begin_fill()</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">50</span>):</span><br><span class="line">    t.forward(<span class="number">200</span>)</span><br><span class="line">    t.left(<span class="number">170</span>)</span><br><span class="line">t.end_fill()</span><br><span class="line">t.done()</span><br></pre></td></tr></table></figure>
+<p>五角星</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> turtle</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">turtle.pensize(<span class="number">5</span>)</span><br><span class="line">turtle.pencolor(<span class="string">"yellow"</span>)</span><br><span class="line">turtle.fillcolor(<span class="string">"red"</span>)</span><br><span class="line"></span><br><span class="line">turtle.begin_fill()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">    turtle.forward(<span class="number">200</span>)</span><br><span class="line">    turtle.right(<span class="number">144</span>)</span><br><span class="line">turtle.end_fill()</span><br><span class="line">time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">turtle.penup()</span><br><span class="line">turtle.goto(<span class="number">70</span>, <span class="number">-50</span>)</span><br><span class="line">turtle.color(<span class="string">"black"</span>)</span><br><span class="line">turtle.write(<span class="string">"千锋"</span>, font=(<span class="string">'Arial'</span>, <span class="number">30</span>, <span class="string">'normal'</span>))</span><br><span class="line">turtle.done()</span><br></pre></td></tr></table></figure>
+<p>##作业：</p>
+<p>###列表都可以存放一些什么东西？</p>
+<p>###向列表里面增加元素的方法有那些？</p>
+<p>###append()方法好extend()方法都是向列表的末尾增加元素，请问区别？</p>
+<p>###list.append([‘a’,’b’])和extend([‘a’,’b’])有真么区别？</p>
+<p>###在列表 name = [‘1’,’0’,’0’,’h’,’o’,’n’,’e’] 的最后一个0和h之间插入一个’s’，怎么插入？</p>
+<p>###用循环完成(自己找规律)<br>name = [‘南帝’,’北丐’,’中神通’,’东邪’,’西毒’]</p>
+<p>变成(一个循环就可以完成，当然办法有很多)</p>
+<p>name = [‘0’,’南帝’,’1’,’北丐’,’2’,’中神通’,’3’,’东邪’,’4’,’西毒’]</p>
+<p>###用for循环和while循环各写一个99乘法表</p>
+</image>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/05/21/python基础4/" data-id="cjhfjx3e8000fw4qxyfmjmpi8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2018/05/21/python基础5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2018/05/21/python基础2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/05/21/pymysql/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/Mysql主从复制/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/MySQL第五课/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/MySQL第四课/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/python基础17/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 ZY<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
