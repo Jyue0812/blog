@@ -62,6 +62,112 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-centos6.8" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/10/centos6.8/" class="article-date">
+  <time datetime="2018-05-10T08:53:07.585Z" itemprop="datePublished">2018-05-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#centos6.8</p>
+<p>#安装CentOS 6.8</p>
+<p>第一步</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;&gt;Install or upgrade an existing system #安装或升级现有的系统</span><br><span class="line"></span><br><span class="line">install system with basic video driver #安装过程中采用基本的显卡驱动</span><br><span class="line"></span><br><span class="line">Rescue installed system #进入系统修复模式</span><br><span class="line"></span><br><span class="line">Boot from local drive #退出安装从硬盘启动</span><br><span class="line"></span><br><span class="line">Memory test #内存检测</span><br></pre></td></tr></table></figure>
+<p>第二步</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这里选择第一项，安装或升级现有的系统，回车。</span><br><span class="line"></span><br><span class="line">出现是否对CD媒体进行测试的提问，这里选择“Skip”跳过测试。</span><br></pre></td></tr></table></figure>
+<p>第三步</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">选择NEXT</span><br></pre></td></tr></table></figure>
+<p>第四步</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">选择中文</span><br></pre></td></tr></table></figure>
+<p>第五步</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">选择键盘</span><br><span class="line">选择美国英语式</span><br></pre></td></tr></table></figure>
+<p>第六步</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">选择基本存储设备</span><br></pre></td></tr></table></figure>
+<p>第七步</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">是，忽略所有的设备</span><br></pre></td></tr></table></figure>
+<p>第八步</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">修改主机名称</span><br></pre></td></tr></table></figure>
+<p>第九步</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">选择时区 亚洲上海</span><br></pre></td></tr></table></figure>
+<p>第十步</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入root用户密码，至少是六位</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果提示密码过于简单，那么就无论如何都要使用</span></span><br></pre></td></tr></table></figure>
+<p>第十一步</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">选择使用所有空间</span><br><span class="line"></span><br><span class="line"><span class="comment">#将修改写入磁盘</span></span><br></pre></td></tr></table></figure>
+<p>#配置网卡<br>vim /etc/sysconfig/network-scripts/ifcfg-eth0<br>修改这个文件，将  ONBOOT=no   将no修改为yes</p>
+<p>重启网卡<br>service network restart</p>
+<p>​    </p>
+<p>#配置yum源<br>常见的yum源：<br>网易源，清华源，阿里源，搜狐源，中科大源</p>
+<p>配置yum源</p>
+<p>cd /etc/yum.repos.d/</p>
+<p>mv CentOS-Base.repo CentOS-Base.repo.back</p>
+<p>1.curl -O <a href="http://mirrors.aliyun.com/repo/Centos-6.repo" target="_blank" rel="noopener">http://mirrors.aliyun.com/repo/Centos-6.repo</a></p>
+<p>2.curl -O <a href="http://mirrors.163.com/.help/CentOS6-Base-163.repo" target="_blank" rel="noopener">http://mirrors.163.com/.help/CentOS6-Base-163.repo</a></p>
+<p>mv CentOS6-Base-163.repo CentOS-Base.repo<br>​<br>配置好之后<br>yum clean all    清空所有缓存<br>yum makecache    生成缓存</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/05/10/centos6.8/" data-id="cjh5njvps000bzsqxhyk56bj3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-centos7__3" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/05/09/centos7__3/" class="article-date">
+  <time datetime="2018-05-09T01:35:24.980Z" itemprop="datePublished">2018-05-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#centos7_3</p>
+<hr>
+<p>##1、用户和组</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">用户</span><br><span class="line">切换用户  su</span><br><span class="line">	root用户切换到普通用户   su ruidong   不用输入密码</span><br><span class="line">	普通用户切换到root用户   su       需要输入密码</span><br><span class="line">	切换完之后，使用exit退出那个用户即可</span><br><span class="line">	whoami   查看当前用户名</span><br><span class="line">	sudo  指令   临时使用root用户执行这条命令，需要输入密码</span><br><span class="line">组</span><br><span class="line"></span><br><span class="line">查看组</span><br><span class="line">cat /etc/group</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">添加</span><br><span class="line">	groupadd  组名</span><br><span class="line">	-g   指定组id</span><br><span class="line">修改</span><br><span class="line">	groupmod</span><br><span class="line">	-g  修改组id</span><br><span class="line">	-n  修改组名   groupmod -n 新名字 旧名字   将tang组名字修改为tangke</span><br><span class="line">删除</span><br><span class="line">	groupdel 组名</span><br><span class="line">	如果一个组是某个用户的主组，那么这个组不允许被删除，你需要首先删除这个用户</span><br><span class="line">	如果一个组是系统自动为用户创建的，那么删除用户的时候会自动将这个同名的组给删除掉</span><br></pre></td></tr></table></figure>
+<p>##2、文件权限</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">r：可读		w：可写		x：可执行		-：没有权限</span><br><span class="line">权限的表示法：  </span><br><span class="line">---		<span class="number">000</span>		<span class="number">0</span>    没有权限</span><br><span class="line">--x		<span class="number">001</span>		<span class="number">1</span>    可执行</span><br><span class="line">-w-		<span class="number">010</span>		<span class="number">2</span>    可写</span><br><span class="line">-wx		<span class="number">011</span>		<span class="number">3</span>    可写可执行</span><br><span class="line">r--		<span class="number">100</span>		<span class="number">4</span>    只读</span><br><span class="line">r-x		<span class="number">101</span>		<span class="number">5</span>    可读可执行</span><br><span class="line">rw-		<span class="number">110</span>		<span class="number">6</span>    可读写</span><br><span class="line">rwx		<span class="number">111</span>		<span class="number">7</span>    可读可写可执行</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">该用户的权限        组内用户的权限		组外用户的权限</span><br><span class="line">rwx    				r-x    				r-x</span><br><span class="line"><span class="number">7</span>                   <span class="number">5</span>                   <span class="number">5</span> </span><br><span class="line"></span><br><span class="line">修改权限    chmod</span><br><span class="line">	格式：  chmod   权限   文件路径</span><br><span class="line">	chmod <span class="number">0755</span> <span class="number">1.</span>txt</span><br><span class="line">	<span class="number">7</span>:user</span><br><span class="line">	<span class="number">5</span>:group</span><br><span class="line">	<span class="number">5</span>:other</span><br><span class="line">    <span class="comment">#不推荐使用,毛病多</span></span><br><span class="line">	chmod u+x <span class="number">1.</span>txt</span><br><span class="line">	chmod g-x <span class="number">2.</span>txt</span><br><span class="line">	chmod o+w <span class="number">1.</span>txt</span><br><span class="line">	chmod u-x,g-w,o-w <span class="number">1.</span>txt</span><br><span class="line">	</span><br><span class="line">	chmod -R <span class="number">777</span> test/</span><br><span class="line">	修改目录权限的时候，添加-R选项，递归的修改子文件的权限和该目录权限一致</span><br><span class="line">    </span><br><span class="line">修改用户</span><br><span class="line">	chown  用户名  文件路径</span><br><span class="line">	chown ruidong <span class="number">1.</span>txt             修改用户</span><br><span class="line">	chown ruidong:ruidong <span class="number">1.</span>txt       修改用户和组</span><br><span class="line">	chown :ruidong <span class="number">1.</span>txt            修改组</span><br><span class="line">修改组</span><br><span class="line">	chgrp   组名   文件路径</span><br><span class="line">	chgrp ruidong <span class="number">1.</span>txt             仅仅修改组</span><br><span class="line">umask</span><br><span class="line">	文件的默认权限是   <span class="number">644</span>  （文件默认都没有执行权限）</span><br><span class="line">	目录的默认权限是   <span class="number">755</span></span><br><span class="line">	<span class="number">777</span><span class="number">-022</span> = <span class="number">755</span></span><br><span class="line">	umask就能决定文件或者目录的默认权限是什么</span><br><span class="line">	umask -S  查看默认权限</span><br><span class="line">	如果想修改默认权限</span><br></pre></td></tr></table></figure>
+<p>##3、文件搜索</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">find    可以找到你想要的文件</span><br><span class="line">格式：  find [目录] [选项] [选项值]</span><br><span class="line">目录：去哪找，可以不写，默认代表当前目录</span><br><span class="line">选项：怎么找</span><br><span class="line">	&gt;&gt; -name   按照名字找</span><br><span class="line">		可以使用通配符</span><br><span class="line">	-size   按照大小找</span><br><span class="line">		单位为  kmg   <span class="number">10</span>k（等于<span class="number">10</span>k）   +<span class="number">10</span>k（大于<span class="number">10</span>k）   <span class="number">-10</span>k（小于<span class="number">10</span>k）</span><br><span class="line">	-user   按照用户名</span><br><span class="line">	-group  按照组名</span><br><span class="line">	-maxdepth  -mindepth   限制查找的目录层级，默认递归查找所有</span><br><span class="line">	-ctime  按照创建时间查找</span><br><span class="line">		单位是天</span><br><span class="line">选项值：找什么</span><br><span class="line">	find / -name demo.txt</span><br><span class="line">	find / -name \*.txt</span><br><span class="line">	find / -size +<span class="number">10</span>k</span><br><span class="line">	find / -user demo.txt</span><br><span class="line">	find / -group demo.txt</span><br><span class="line">	find / -mindepth <span class="number">4</span> -name \*.txt</span><br><span class="line">	find / -mindepth <span class="number">3</span> -maxdepth <span class="number">5</span> -name \*.txt</span><br></pre></td></tr></table></figure>
+<p>##4、文件内容搜索</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">grep   查找的内容   文件路径</span><br><span class="line">grep movie demo.txt</span><br><span class="line">grep that ~/*.txt</span><br><span class="line"></span><br><span class="line">选项</span><br><span class="line">	--color=auto   将颜色高亮显示</span><br><span class="line">		给 grep 指令起一个别名   vi ~/.bashrc</span><br><span class="line">		添加一行     alias grep=<span class="string">'grep --color=auto'</span></span><br><span class="line">		让配置文件立即生效       source ~/.bashrc</span><br><span class="line">	-c         得到内容的个数</span><br><span class="line">	-i         不区分大小写的查找</span><br><span class="line">	-n		   显示在文档中的行号</span><br><span class="line">	-r         递归查找，但是不能限制后缀，只能遍历所有</span><br><span class="line">		grep -r that ~/*</span><br><span class="line">	-l		   只显示文件名，不显示内容</span><br><span class="line">	grep -l 你好 ~/test/*.txt</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">正则表达式进行查找(少用)</span><br><span class="line">	\w(数字字母下划线)   </span><br><span class="line">	\W(除了上面)</span><br><span class="line">	\d(数字)</span><br><span class="line">	\D(非数字)</span><br><span class="line">	.(除了换行符)</span><br><span class="line">	*(任意多个)</span><br><span class="line">	+(至少<span class="number">1</span>个)</span><br><span class="line">	?(0个或者1个)</span><br><span class="line">	te-st@<span class="number">163.</span>com   abc_def@qq.com   lala@sina.cn   benben@meme.net</span><br><span class="line">	</span><br><span class="line">	grep -E .*? demo.txt </span><br><span class="line">	</span><br><span class="line">	-E   使用正则表达式来进行匹配</span><br></pre></td></tr></table></figure>
+<p>##5、管道</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">前一个管道的输出是后一个管道的输入</span><br><span class="line">前一个指令的输出是后一个指令的输入</span><br><span class="line">格式：</span><br><span class="line">	指令<span class="number">1</span> | 指令<span class="number">2</span></span><br><span class="line">	指令<span class="number">1</span>的结果作为指令<span class="number">2</span>的输入，然后将指令<span class="number">2</span>的输出显示到屏幕中</span><br><span class="line">常用的管道指令</span><br><span class="line"></span><br><span class="line">	<span class="comment">#ll=select /etc=table  |  less = page</span></span><br><span class="line">	ll /etc | less</span><br><span class="line">	ll /etc | grep sudo   常用格式</span><br><span class="line">	ll /etc | head <span class="number">-10</span> | tail <span class="number">-5</span>   显示前<span class="number">10</span>条的后<span class="number">5</span>条</span><br></pre></td></tr></table></figure>
+<p>##6、搭建主机信任</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">10.11</span><span class="number">.58</span><span class="number">.35</span></span><br><span class="line">root</span><br><span class="line"><span class="number">123456</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#协议 22</span></span><br><span class="line"><span class="comment">#语法 ssh 帐户@IP地址:端口号(但是,默认的是22,如果端口号被修改过,那么需要带上)</span></span><br><span class="line">ssh root@<span class="number">10.11</span><span class="number">.53</span><span class="number">.58</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#scp上传和下载</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#下载</span></span><br><span class="line"><span class="comment">#语法:scp  帐号@ip:需要下载的文件路径  下载到本地的路径</span></span><br><span class="line">scp username@servername:/path/filename /tmp/local_destination</span><br><span class="line">    </span><br><span class="line"><span class="comment">#上传</span></span><br><span class="line"><span class="comment">#语法:scp 需要上传的文件路径 帐户@IP:上传的路径</span></span><br><span class="line">scp /path/local_filename username@servername:/path  </span><br><span class="line">密码学：加密，解密</span><br><span class="line">rsa 非对称加密</span><br><span class="line">加密和解密的时候，用到一个东西，密钥</span><br><span class="line">加密和解密的时候，密钥是否相同，如果相同，称之为对称加解密，如果不相同，非对称加解密</span><br><span class="line">公钥：公开的，你们都能拿到</span><br><span class="line">私钥：私有的，只有我知道</span><br><span class="line">这一对，成对出现</span><br><span class="line"></span><br><span class="line">ssh免密码登录</span><br><span class="line">主机<span class="number">1</span>通过ssh协议登录主机<span class="number">2</span></span><br><span class="line"><span class="number">1</span>、在主机<span class="number">1</span>上面生成公钥和私钥</span><br><span class="line">	ssh-keygen -t rsa    敲回车生成即可</span><br><span class="line">	在 ~/.ssh 中生成两个文件   id_rsa(私钥)</span><br><span class="line">	</span><br><span class="line">	=====================</span><br><span class="line">Enter file <span class="keyword">in</span> which to save the key (/root/.ssh/id_rsa):    <span class="comment">#显示密钥对的位置</span></span><br><span class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase): </span><br><span class="line">Enter same passphrase again: </span><br><span class="line">Your identification has been saved <span class="keyword">in</span> /root/.ssh/id_rsa.    <span class="comment">#私钥的位置</span></span><br><span class="line">Your public key has been saved <span class="keyword">in</span> /root/.ssh/id_rsa.pub.   <span class="comment">#公钥的位置</span></span><br><span class="line">The key fingerprint <span class="keyword">is</span>:</span><br><span class="line"><span class="number">64</span>:<span class="number">42</span>:ba:<span class="number">35</span>:e7:fb:<span class="number">4</span>d:cf:<span class="number">6</span>c:ad:e8:d5:df:<span class="number">14</span>:f5:<span class="number">1</span>b </span><br><span class="line">	=====================</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>、将公钥粘贴到主机<span class="number">2</span>中</span><br><span class="line"></span><br><span class="line">cd .ssh/;ls</span><br><span class="line"></span><br><span class="line">=========================</span><br><span class="line">id_rsa  id_rsa.pub  known_hosts</span><br><span class="line"></span><br><span class="line"><span class="comment">#把id_rsa.pub文件发送到对方主机上去</span></span><br><span class="line">=========================</span><br><span class="line"></span><br><span class="line">scp id_rsa.pub root@<span class="number">172.16</span><span class="number">.61</span><span class="number">.137</span>:/root/.ssh</span><br><span class="line"><span class="comment">#需要输入密码，显示100%就表示成功了。</span></span><br><span class="line"><span class="comment">#如果对方的主机里面没有.ssh文件夹，那么久手动创建一个</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#本人在root目录操作的,其它人如操作不当,本人一概不负责</span></span><br><span class="line"><span class="comment">#重定向到authorized_keys</span></span><br><span class="line">cat id_rsa.pub &gt;&gt; .ssh/authorized_keys</span><br><span class="line"></span><br><span class="line">rm -f id_rsa.pub</span><br><span class="line"><span class="comment">#把id_rsa.pub写入到authorized_keys文件中</span></span><br><span class="line"></span><br><span class="line">cat authorized_keys</span><br><span class="line"><span class="comment">#查看写入成功没有</span></span><br><span class="line"></span><br><span class="line"><span class="number">3</span>、在主机<span class="number">1</span>再次通过ssh登录实现免密码，免密码传输</span><br></pre></td></tr></table></figure>
+<p>##7、重定向</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">标准输入（stdin，键盘就是其标准输入）、标准输出（stdout，屏幕就是标准输出）</span><br><span class="line">输出重定向</span><br><span class="line">	ls &gt; demo.txt   先清空，再写入</span><br><span class="line">	ll &gt;&gt; demo.txt  追加</span><br><span class="line">错误重定向</span><br><span class="line">	将指令错误提示信息写到文件中</span><br><span class="line">	ls <span class="number">100</span> <span class="number">2</span>&gt; error.txt   </span><br><span class="line">	ls <span class="number">300</span> <span class="number">2</span>&gt;&gt; error.txt</span><br><span class="line">输入重定向（不常用）</span><br><span class="line">	linux默认从键盘获取输入</span><br><span class="line">	cat &gt; <span class="number">1.</span>txt</span><br><span class="line">	从键盘获取输入，完毕之后，敲 ctrl+d  结束输入</span><br><span class="line">重定向</span><br><span class="line">	cat &gt; <span class="number">1.</span>txt &lt; <span class="number">2.</span>txt  <span class="comment"># = cat 2.txt &gt; 1.txt</span></span><br></pre></td></tr></table></figure>
+<p>##8、挂载</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">挂载是什么意思</span><br><span class="line">windows</span><br><span class="line">买了一电脑，有个硬盘，给硬盘搞了几个分区，然后再电脑中就会冒出几个盘符</span><br><span class="line">	c   d   e   f</span><br><span class="line">u盘   弹出一个盘符  打开这个盘符就是操作这个u盘</span><br><span class="line">linux</span><br><span class="line">没有盘符，只有一个  /  </span><br><span class="line">桌面端，这种弹出盘符操作也已经集成好了</span><br><span class="line">在字符界面，问，盘符如何弹出，需要你手动挂载，挂载就是将linux中的一个目录和你的u盘对应的过程，该目录称之为挂载点，以后你操作这个目录就是操作这个u盘</span><br><span class="line">取消挂载，用完之后，取消挂载即可</span><br><span class="line"></span><br><span class="line">插上u盘</span><br><span class="line">查找设备   fdisk -l</span><br><span class="line">一般第一块盘叫sda 第二块叫sdb 第三块 sdc 以此类推</span><br><span class="line"></span><br><span class="line">	/dev/sda    这是你的第一块硬盘 </span><br><span class="line">		/dev/sda1   第一个分区 </span><br><span class="line">		/dev/sda2   第二个分区 </span><br><span class="line">	/dev/sdb    这是你的第二块硬盘</span><br><span class="line">		/dev/sdb1   第一个分区</span><br><span class="line"></span><br><span class="line"><span class="comment">#普通的fat32可以直接挂载</span></span><br><span class="line"><span class="comment">#ntfs 不能直接挂在</span></span><br><span class="line"><span class="comment">#exfat 不能直接挂载</span></span><br><span class="line">mount</span><br><span class="line"></span><br><span class="line">	格式   mount [参数] 设备 挂载点</span><br><span class="line">	-t   指定格式</span><br><span class="line">		msdos===&gt;fat16</span><br><span class="line">		vfat====&gt;fat32</span><br><span class="line">		nfs=====&gt;网络文件系统格式</span><br><span class="line">		auto====&gt;自动识别</span><br><span class="line">		ntfs====&gt;ntfs</span><br><span class="line">	-o</span><br><span class="line">		iocharset=utf8</span><br><span class="line">	mount -o iocharset=utf8 /dev/sdb1 /mnt/usb</span><br><span class="line">	mount -t vfat -o iocharset=utf8 /dev/sdb1 /mnt/usb/</span><br><span class="line">		</span><br><span class="line">umount</span><br><span class="line">	umount /dev/sdb1 /mnt/usb</span><br><span class="line">	umount /dev/sdb1</span><br><span class="line">	umount /mnt/usb</span><br></pre></td></tr></table></figure>
+<p>挂载exFAT格式的优盘</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">需要安装epel库，Nux Dextop库，再安装fuse-exfat和exfat-utils包，即可识别exfat格式。   </span><br><span class="line"></span><br><span class="line">Nux Dextop是类似CentOS、RHEL、ScientificLinux的第三方RPM仓库（比如：Ardour，Shutter等等）。目前，Nux Dextop对CentOS/RHEL <span class="number">6</span>|<span class="number">7</span>可用。</span><br><span class="line"></span><br><span class="line">Nux Dextop库依赖于EPEL库，所有要先安装EPEL库(需要管理员权限)。</span><br><span class="line">如果安装过则跳过。</span><br><span class="line"></span><br><span class="line">yum -y install epel-release</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#对于RHEL/CentOS 7(复制/粘贴):</span></span><br><span class="line">$ rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release<span class="number">-0</span><span class="number">-5.</span>el7.nux.noarch.rpm</span><br><span class="line"></span><br><span class="line">检查Nux Dextop是否安装成功：</span><br><span class="line">$ yum repolist</span><br><span class="line"></span><br><span class="line">如果仓库列表中有Nux Dextop就安装成功。</span><br><span class="line"></span><br><span class="line">由于Nux Dextop仓库可能会与其他第三方库有冲突，比如（Repoforge和ATrpms）。</span><br><span class="line">所以，建议默认情况下不启用Nux Dextop仓库。</span><br><span class="line"></span><br><span class="line"><span class="comment">#打开vim /etc/yum.repos.d/nux-dextop.repo，将"enabled=1" 修改为 "enabled=0"。</span></span><br><span class="line"></span><br><span class="line">sudo vim /etc/yum.repos.d/nux-dextop.repo</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#安装exfat支持库文件</span></span><br><span class="line">yum --enablerepo=nux-dextop  install fuse-exfat exfat-utils -y</span><br><span class="line"></span><br><span class="line"><span class="comment">#现在可以挂载了</span></span><br><span class="line"></span><br><span class="line">mount -o iocharset=utf8 /dev/sdb /mnt/usb</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/05/09/centos7__3/" data-id="cjh5njvpx000dzsqx8h3s98hv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Git" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/05/09/Git/" class="article-date">
@@ -412,73 +518,6 @@
 
 
   
-    <article id="post-2018-04-18" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/04/18/2018-04-18/" class="article-date">
-  <time datetime="2018-04-18T05:13:29.609Z" itemprop="datePublished">2018-04-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>2018年4月18日</p>
-<h4 id="第0006题"><a href="#第0006题" class="headerlink" title="第0006题"></a>第0006题</h4><p>你有一个目录，放了你一个月的日记，都是 txt，为了避免分词的问题，假设内容都是英文，请统计出你认为每篇日记最重要的词。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#读取目录下所有txt文件</span><br><span class="line">import glob</span><br><span class="line">path = glob.glob(&apos;mydiary/*.txt&apos;)</span><br><span class="line"></span><br><span class="line">#打开文章</span><br><span class="line">def openfile(path):</span><br><span class="line">    for p in path:</span><br><span class="line">        with open(p, &apos;r&apos;) as fr:</span><br><span class="line">            passage = fr.read().split(&apos; &apos;)</span><br><span class="line">            diary_name = str(p).lstrip(&apos;mydiary&apos;)[1:-4]</span><br><span class="line">        handle_passage(passage, diary_name)</span><br><span class="line"></span><br><span class="line">#对文章进行处理</span><br><span class="line">dic = &#123;&#125;</span><br><span class="line">def handle_passage(passage, diary_name):</span><br><span class="line">    for word2 in passage:</span><br><span class="line">        if word2 not in dic:</span><br><span class="line">            dic[word2] = 1</span><br><span class="line">        else:</span><br><span class="line">            dic[word2] += 1</span><br><span class="line"></span><br><span class="line">    # 对字典的value排序</span><br><span class="line">    dict = sorted(dic.items(), key=lambda d: d[1], reverse=True)</span><br><span class="line">    print(&apos;日记%s最重要的词是%s&apos; %(diary_name, dict[0][0]))</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">     openfile(path)</span><br></pre></td></tr></table></figure>
-<h4 id="今日总结"><a href="#今日总结" class="headerlink" title="今日总结"></a>今日总结</h4><ol>
-<li>课上学习正则表达式</li>
-<li>学爬虫，用爬虫写爬去内涵段子的小练习 链接：<a href="https://github.com/Jyue0812/exercises" target="_blank" rel="noopener">https://github.com/Jyue0812/exercises</a></li>
-<li>练习题中学会了对字典的key或value值排序，方法如下：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sorted(dic.iteritems(), key=lambda d:d[1], reverse = False )</span><br><span class="line"></span><br><span class="line">#1. 把dic.iteritems()里的元祖传进来</span><br><span class="line">#2. 如果想按照value来进行排序   ==》   key=lambda d:d[1]就可以了</span><br><span class="line">#3. 如果想按照key来进行排序   ==》   key=lambda d:d[0]就可以了</span><br><span class="line">#4. reverse = False(True) 是指是否打开反方向排序</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://jyue0812.github.io/2018/04/18/2018-04-18/" data-id="cjh5njvp60004zsqxs3la0do3" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-2018-04-17" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/blog/2018/04/17/2018-04-17/" class="article-date">
-  <time datetime="2018-04-17T08:37:14.905Z" itemprop="datePublished">2018-04-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>2018年4月17日</p>
-<h4 id="第0005题"><a href="#第0005题" class="headerlink" title="第0005题"></a>第0005题</h4><p>你有一个目录，装了很多照片，把它们的尺寸变成都不大于 iPhone5 分辨率的大小。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">#导入glob和pillow库</span><br><span class="line">import glob</span><br><span class="line">from PIL import Image</span><br><span class="line"></span><br><span class="line">#设置iPhone5的分辨率高度宽度</span><br><span class="line">iphone5_width = 1136</span><br><span class="line">iphone5_depth = 640</span><br><span class="line"></span><br><span class="line">path = glob.glob(&apos;*.jpg&apos;)</span><br><span class="line">for p in path:</span><br><span class="line">    image = Image.open(p, &apos;r&apos;)</span><br><span class="line">    #取图片高宽</span><br><span class="line">    width, height = image.size</span><br><span class="line">	</span><br><span class="line">	#对图片宽度高度与iPhone5高度宽度进行比较</span><br><span class="line">    if width &gt; iphone5_width:</span><br><span class="line">        new_width = iphone5_width * height / width</span><br><span class="line">        new_height = iphone5_depth * height / width</span><br><span class="line">	</span><br><span class="line">	if height &gt; iphone5_height:</span><br><span class="line">        new_width = iphone5_width * height / width</span><br><span class="line">        new_height = iphone5_depth * height / width</span><br><span class="line">        </span><br><span class="line">        #重新等比例缩小图片分辨率</span><br><span class="line">        new_image = image.resize((int(new_width), int(new_height)))</span><br><span class="line">        #以新的名字命名并保存</span><br><span class="line">        new_image_name = p[:-4] + &apos;_new.jpg&apos;</span><br><span class="line">        new_image.save(new_image_name, &apos;jpeg&apos;)</span><br></pre></td></tr></table></figure>
-<h4 id="今日总结"><a href="#今日总结" class="headerlink" title="今日总结"></a>今日总结</h4><ol>
-<li>resize为什么用两对括号</li>
-<li>在学mySql和mongodb和redis</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://jyue0812.github.io/2018/04/17/2018-04-17/" data-id="cjh5njvp00002zsqxykg13o3o" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -502,7 +541,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
     </div>
   </div>
 
@@ -515,6 +554,14 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/06/04/2018-06-04/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/jquery_3/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/05/21/pymysql/">(no title)</a>
           </li>
         
@@ -524,14 +571,6 @@
         
           <li>
             <a href="/blog/2018/05/21/MySQL第五课/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/21/MySQL第四课/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/21/python基础17/">(no title)</a>
           </li>
         
       </ul>

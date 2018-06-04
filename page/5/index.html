@@ -62,6 +62,73 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-2018-04-18" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/04/18/2018-04-18/" class="article-date">
+  <time datetime="2018-04-18T05:13:29.609Z" itemprop="datePublished">2018-04-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>2018年4月18日</p>
+<h4 id="第0006题"><a href="#第0006题" class="headerlink" title="第0006题"></a>第0006题</h4><p>你有一个目录，放了你一个月的日记，都是 txt，为了避免分词的问题，假设内容都是英文，请统计出你认为每篇日记最重要的词。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#读取目录下所有txt文件</span><br><span class="line">import glob</span><br><span class="line">path = glob.glob(&apos;mydiary/*.txt&apos;)</span><br><span class="line"></span><br><span class="line">#打开文章</span><br><span class="line">def openfile(path):</span><br><span class="line">    for p in path:</span><br><span class="line">        with open(p, &apos;r&apos;) as fr:</span><br><span class="line">            passage = fr.read().split(&apos; &apos;)</span><br><span class="line">            diary_name = str(p).lstrip(&apos;mydiary&apos;)[1:-4]</span><br><span class="line">        handle_passage(passage, diary_name)</span><br><span class="line"></span><br><span class="line">#对文章进行处理</span><br><span class="line">dic = &#123;&#125;</span><br><span class="line">def handle_passage(passage, diary_name):</span><br><span class="line">    for word2 in passage:</span><br><span class="line">        if word2 not in dic:</span><br><span class="line">            dic[word2] = 1</span><br><span class="line">        else:</span><br><span class="line">            dic[word2] += 1</span><br><span class="line"></span><br><span class="line">    # 对字典的value排序</span><br><span class="line">    dict = sorted(dic.items(), key=lambda d: d[1], reverse=True)</span><br><span class="line">    print(&apos;日记%s最重要的词是%s&apos; %(diary_name, dict[0][0]))</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">     openfile(path)</span><br></pre></td></tr></table></figure>
+<h4 id="今日总结"><a href="#今日总结" class="headerlink" title="今日总结"></a>今日总结</h4><ol>
+<li>课上学习正则表达式</li>
+<li>学爬虫，用爬虫写爬去内涵段子的小练习 链接：<a href="https://github.com/Jyue0812/exercises" target="_blank" rel="noopener">https://github.com/Jyue0812/exercises</a></li>
+<li>练习题中学会了对字典的key或value值排序，方法如下：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sorted(dic.iteritems(), key=lambda d:d[1], reverse = False )</span><br><span class="line"></span><br><span class="line">#1. 把dic.iteritems()里的元祖传进来</span><br><span class="line">#2. 如果想按照value来进行排序   ==》   key=lambda d:d[1]就可以了</span><br><span class="line">#3. 如果想按照key来进行排序   ==》   key=lambda d:d[0]就可以了</span><br><span class="line">#4. reverse = False(True) 是指是否打开反方向排序</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/04/18/2018-04-18/" data-id="cjh5njvp60004zsqxs3la0do3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2018-04-17" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/04/17/2018-04-17/" class="article-date">
+  <time datetime="2018-04-17T08:37:14.905Z" itemprop="datePublished">2018-04-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>2018年4月17日</p>
+<h4 id="第0005题"><a href="#第0005题" class="headerlink" title="第0005题"></a>第0005题</h4><p>你有一个目录，装了很多照片，把它们的尺寸变成都不大于 iPhone5 分辨率的大小。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">#导入glob和pillow库</span><br><span class="line">import glob</span><br><span class="line">from PIL import Image</span><br><span class="line"></span><br><span class="line">#设置iPhone5的分辨率高度宽度</span><br><span class="line">iphone5_width = 1136</span><br><span class="line">iphone5_depth = 640</span><br><span class="line"></span><br><span class="line">path = glob.glob(&apos;*.jpg&apos;)</span><br><span class="line">for p in path:</span><br><span class="line">    image = Image.open(p, &apos;r&apos;)</span><br><span class="line">    #取图片高宽</span><br><span class="line">    width, height = image.size</span><br><span class="line">	</span><br><span class="line">	#对图片宽度高度与iPhone5高度宽度进行比较</span><br><span class="line">    if width &gt; iphone5_width:</span><br><span class="line">        new_width = iphone5_width * height / width</span><br><span class="line">        new_height = iphone5_depth * height / width</span><br><span class="line">	</span><br><span class="line">	if height &gt; iphone5_height:</span><br><span class="line">        new_width = iphone5_width * height / width</span><br><span class="line">        new_height = iphone5_depth * height / width</span><br><span class="line">        </span><br><span class="line">        #重新等比例缩小图片分辨率</span><br><span class="line">        new_image = image.resize((int(new_width), int(new_height)))</span><br><span class="line">        #以新的名字命名并保存</span><br><span class="line">        new_image_name = p[:-4] + &apos;_new.jpg&apos;</span><br><span class="line">        new_image.save(new_image_name, &apos;jpeg&apos;)</span><br></pre></td></tr></table></figure>
+<h4 id="今日总结"><a href="#今日总结" class="headerlink" title="今日总结"></a>今日总结</h4><ol>
+<li>resize为什么用两对括号</li>
+<li>在学mySql和mongodb和redis</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/04/17/2018-04-17/" data-id="cjh5njvp00002zsqxykg13o3o" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-2018-04-16" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2018/04/17/2018-04-16/" class="article-date">
@@ -201,7 +268,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
     </div>
   </div>
 
@@ -214,6 +281,14 @@
       <ul>
         
           <li>
+            <a href="/blog/2018/06/04/2018-06-04/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/jquery_3/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/blog/2018/05/21/pymysql/">(no title)</a>
           </li>
         
@@ -223,14 +298,6 @@
         
           <li>
             <a href="/blog/2018/05/21/MySQL第五课/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/21/MySQL第四课/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/blog/2018/05/21/python基础17/">(no title)</a>
           </li>
         
       </ul>
