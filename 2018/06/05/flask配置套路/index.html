@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ZY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="flask 应用内： 三个文件夹 + 5个python文件 1234567891011121314151617statictemplatesviewsconfig.pyforms.pymodels.pyextensions.py__init__.py 配置文件 config.py 配置 开发 测试 生产环境 123456789101112131415161718192021222324252627">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZY">
+<meta property="og:url" content="https://jyue0812.github.io/2018/06/05/flask配置套路/index.html">
+<meta property="og:site_name" content="ZY">
+<meta property="og:description" content="flask 应用内： 三个文件夹 + 5个python文件 1234567891011121314151617statictemplatesviewsconfig.pyforms.pymodels.pyextensions.py__init__.py 配置文件 config.py 配置 开发 测试 生产环境 123456789101112131415161718192021222324252627">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-06-05T05:54:07.004Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ZY">
+<meta name="twitter:description" content="flask 应用内： 三个文件夹 + 5个python文件 1234567891011121314151617statictemplatesviewsconfig.pyforms.pymodels.pyextensions.py__init__.py 配置文件 config.py 配置 开发 测试 生产环境 123456789101112131415161718192021222324252627">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="ZY" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">ZY</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jyue0812.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-flask配置套路" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2018/06/05/flask配置套路/" class="article-date">
+  <time datetime="2018-06-05T05:54:06.494Z" itemprop="datePublished">2018-06-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>flask</p>
+<p>应用内：</p>
+<p>三个文件夹 + 5个python文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">static</span><br><span class="line"></span><br><span class="line">templates</span><br><span class="line"></span><br><span class="line">views</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">config.py</span><br><span class="line"></span><br><span class="line">forms.py</span><br><span class="line"></span><br><span class="line">models.py</span><br><span class="line"></span><br><span class="line">extensions.py</span><br><span class="line"></span><br><span class="line">__init__.py</span><br></pre></td></tr></table></figure>
+<p>配置文件 config.py 配置 开发 测试 生产环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">import os</span><br><span class="line">basedir = os.path.abspath(os.path.dirname(__file__))</span><br><span class="line"></span><br><span class="line">class Config:</span><br><span class="line">    SECRET_KEY = os.environ.get(&apos;SECRET_KEY&apos;) or &apos;hard to guess string&apos;</span><br><span class="line">    SQLALCHEMY_COMMIT_ON_TEARDOWN = True</span><br><span class="line">    SQLALCHEMY_TRACK_MODIFICATIONS = False</span><br><span class="line">    FLASKY_POSTS_PER_PAGE = 10</span><br><span class="line"></span><br><span class="line">    FLASK_MAIL_SERVER = &apos;smtp.qq.com&apos;</span><br><span class="line">    FLASK_MAIL_PORT= 465</span><br><span class="line">    FLASK_MAIL_USE_SSL = True</span><br><span class="line">    FLASK_MAIL_USE_TLS = False</span><br><span class="line">    FLASK_MAIL_USERNAME = &apos;1678033705@qq.com&apos;</span><br><span class="line">    FLASK_MAIL_PASSWORD = &apos;coohdgjzpxsnebab&apos;</span><br><span class="line"></span><br><span class="line">    TEMPLATES_AUTO_RELOAD = True</span><br><span class="line"></span><br><span class="line">class DevelopConfig(Config):</span><br><span class="line">    DEBUG = True</span><br><span class="line">    SQLALCHEMY_DATABASE_URI = &quot;sqlite:///&quot; + os.path.join(basedir, &quot;blog-dev.sqlite&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class TestingConfig(Config):</span><br><span class="line">    TESTING = True</span><br><span class="line">    SQLALCHEMY_DATABASE_URI = &quot;sqlite:///&quot; + os.path.join(basedir, &quot;blog-test.sqlite&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class ProductConfig(Config):</span><br><span class="line">    SQLALCHEMY_DATABASE_URI = &quot;sqlite:///&quot; + os.path.join(basedir, &quot;blog.sqlite&quot;)</span><br><span class="line"></span><br><span class="line">config = &#123;</span><br><span class="line">    &apos;develop&apos;: DevelopConfig,</span><br><span class="line">    &apos;testing&apos;: TestingConfig,</span><br><span class="line">    &apos;products&apos;: ProductConfig,</span><br><span class="line">    &apos;default&apos;: DevelopConfig,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>init.py</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask</span><br><span class="line">from app.config import config</span><br><span class="line">from extensions import config_extensions</span><br><span class="line">from app.views import register_blueprint</span><br><span class="line"></span><br><span class="line">def create_app(config_name):</span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.config.from_object(config.get(config_name or &apos;default&apos;))</span><br><span class="line">    config_extensions(app)</span><br><span class="line">    register_blueprint(app)</span><br><span class="line">    register_blueprint(app)</span><br><span class="line">    return app</span><br></pre></td></tr></table></figure>
+<p>extensions.py</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">from flask_bootstrap import Bootstrap</span><br><span class="line">from flask_sqlalchemy import SQLAlchemy</span><br><span class="line">from flask_migrate import Migrate</span><br><span class="line">from flask_mail import Mail</span><br><span class="line">from flask_moment import Moment</span><br><span class="line">from flask_login import LoginManager</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">db = SQLAlchemy()</span><br><span class="line">boot = Bootstrap()</span><br><span class="line">migrate = Migrate(db=db)</span><br><span class="line">mail = Mail()</span><br><span class="line">moment = Moment()</span><br><span class="line">login_manager = LoginManager()</span><br><span class="line">login_manager.session_protection = &apos;strong&apos;</span><br><span class="line">login_manager.login_view = &apos;auth.login&apos;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def config_extensions(app):</span><br><span class="line">    db.init_app(app)</span><br><span class="line">    boot.init_app(app)</span><br><span class="line">    migrate.init_app(app)</span><br><span class="line">    mail.init_app(app)</span><br><span class="line">    moment.init_app(app)</span><br><span class="line">    login_manager.init_app(app)</span><br><span class="line">    login_manager.login_view = &apos;user.login&apos;</span><br><span class="line">    login_manager.login_message = &apos;请登录后再访问&apos;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jyue0812.github.io/2018/06/05/flask配置套路/" data-id="cjil2pq7t0001d4qxjivnffoh" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2018/06/19/2018-06-19/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2018/06/04/2018-06-04/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2018/04/">April 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2018/06/19/2018-06-19/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/06/05/flask配置套路/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/06/04/2018-06-04/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/jquery_3/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2018/05/21/pymysql/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 ZY<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+  <script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
